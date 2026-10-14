@@ -369,6 +369,126 @@ nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,25
 .spinner{width:30px;height:30px;border:3px solid var(--line);border-top-color:var(--primary);
   border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== v2.0 월간 작업 관리 ===== */
+.pbar{height:7px;border-radius:5px;background:var(--gray-bg);overflow:hidden;margin-top:8px}
+.pbar i{display:block;height:100%;border-radius:5px;background:var(--primary);transition:width .35s ease}
+.pbar i.green{background:var(--green)} .pbar i.amber{background:#d08a2c} .pbar i.red{background:var(--red)} .pbar i.gray{background:var(--gray)}
+.pbar.light{background:rgba(255,255,255,.22)} .pbar.light i{background:#fff}
+.ichips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.ichip{font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:7px;white-space:nowrap}
+.ichip.green{background:var(--green-bg);color:var(--green)}
+.ichip.amber{background:var(--amber-bg);color:var(--amber)}
+.ichip.red{background:var(--red-bg);color:var(--red)}
+.ichip.gray{background:var(--gray-bg);color:var(--muted)}
+.wk-row{align-items:flex-start;border-left:4px solid var(--gray)}
+.wk-row.green{border-left-color:var(--green)} .wk-row.amber{border-left-color:#d08a2c} .wk-row.red{border-left-color:var(--red)}
+.wk-row .name{white-space:normal}
+.legend-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;font-size:11.5px;color:var(--muted);font-weight:600;margin:12px 0 4px}
+.legend-row span{display:inline-flex;align-items:center;gap:5px}
+.legend-row i{width:9px;height:9px;border-radius:3px}
+
+/* 작업 상세 시트 */
+.ws-unit{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:9px}
+.ws-unit.done{background:var(--green-bg);border-color:#cfe8d8}
+.ws-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px;font-size:14px}
+.ws-meta{font-size:11px;color:var(--muted);font-weight:600;text-align:right}
+.stseg{display:flex;gap:4px}
+.stseg button{flex:1;padding:10px 2px;border-radius:9px;background:#fff;border:1.5px solid var(--line);font-size:12.5px;font-weight:700;color:var(--muted)}
+.stseg button.past{border-color:#b9d6d3;color:var(--primary)}
+.stseg button.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.ws-unit.done .stseg button.on{background:var(--green);border-color:var(--green)}
+.ws-bot{display:flex;gap:6px;margin-top:8px;align-items:center}
+.mini-sel,.mini-in{min-width:0;padding:9px 10px;border:1.5px solid var(--line);border-radius:9px;background:#fff;font-size:14px;font-family:inherit;color:var(--ink)}
+.mini-sel{flex:0 0 auto;max-width:42%}
+.mini-in{flex:1}
+.mini-go{flex-shrink:0;font-size:13px;font-weight:700;color:var(--primary);padding:9px 8px;text-decoration:none}
+
+/* 촬영 일정 */
+.sh-row{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:9px}
+.sh-row.done{background:var(--green-bg);border-color:#cfe8d8}
+.sh-l{font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.sh-in{display:flex;gap:6px}
+.sh-in input{flex:1;min-width:0;padding:10px;border:1.5px solid var(--line);border-radius:9px;background:var(--surface-2);font-family:inherit;font-size:15px;color:var(--ink)}
+.sh-in input[type=time]{flex:0 0 31%}
+.sh-done{flex-shrink:0;padding:0 12px;border-radius:9px;background:var(--primary-l);color:var(--primary);font-weight:700;font-size:13px}
+.sh-done.on{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+
+/* 직원 화면 */
+body.staff{padding-bottom:calc(env(safe-area-inset-bottom) + 24px)}
+body.staff nav{display:none}
+.hero{background:linear-gradient(155deg,var(--primary),var(--primary-d));color:#fff;border-radius:var(--r);padding:18px 18px 16px;box-shadow:var(--shadow)}
+.hero-k{font-size:13px;font-weight:600;color:rgba(255,255,255,.78)}
+.hero-v{margin-top:8px;display:flex;align-items:baseline;gap:8px}
+.hero-v .num{font-size:42px;font-weight:800;letter-spacing:-.04em;line-height:1}
+.hero-v small{font-size:14px;font-weight:600;color:rgba(255,255,255,.8)}
+.hero-s{font-size:12.5px;color:rgba(255,255,255,.78);margin-top:9px;font-weight:600}
+.stabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 10px}
+.stabs button{background:var(--surface);box-shadow:var(--shadow);border-radius:13px;padding:10px 2px 9px;font-size:13px;font-weight:700;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+.stabs button b{font-size:19px;color:var(--ink);font-weight:800;line-height:1.1}
+.stabs button.alert b{color:var(--red)}
+.stabs button.on{background:var(--primary);color:rgba(255,255,255,.85)}
+.stabs button.on b{color:#fff}
+.stab-hint{font-size:12.5px;color:var(--muted);margin:0 4px 12px;line-height:1.5}
+.ucard{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden}
+.ucard.done{opacity:.75}
+.uc-hd{display:flex;align-items:center;gap:11px;width:100%;padding:13px 14px;text-align:left;border-bottom:1px solid var(--line)}
+.uc-hd:active{background:var(--surface-2)}
+.uc-hd .avatar{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:800;flex-shrink:0}
+.uc-hd .body{flex:1;min-width:0}
+.uc-hd .name{font-weight:800;font-size:15.5px;letter-spacing:-.02em}
+.uc-hd .meta{font-size:12px;color:var(--muted);margin-top:1px;font-weight:600}
+.uc-more{font-size:12.5px;font-weight:700;color:var(--primary);flex-shrink:0}
+.urow{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line)}
+.urow:last-child{border-bottom:none}
+.ur-l{flex:1;min-width:0}
+.ur-name{font-weight:700;font-size:15px}
+.ur-st{font-size:12px;color:var(--muted);margin-top:3px;font-weight:600}
+.stp{display:inline-block;padding:2px 8px;border-radius:6px;background:var(--gray-bg);color:var(--muted);font-weight:700}
+.stp.s1,.stp.s2,.stp.s3{background:var(--amber-bg);color:var(--amber)}
+.nextbtn{flex-shrink:0;min-height:48px;min-width:112px;padding:0 14px;border-radius:13px;background:var(--primary-l);color:var(--primary);font-weight:800;font-size:14.5px}
+.nextbtn:active{background:var(--primary);color:#fff;transform:scale(.97)}
+.nextbtn.fin{background:var(--green-bg);color:var(--green)}
+.nextbtn.fin:active{background:var(--green);color:#fff}
+.uc-donecnt{font-size:12.5px;color:var(--green);font-weight:700;padding:9px 14px;background:var(--green-bg)}
+.uc-done{font-size:13.5px;color:var(--green);font-weight:700;padding:13px 14px;text-align:center}
+
+/* 토스트 + 되돌리기 */
+.toast.act{width:max-content;max-width:94vw;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 18px;text-align:left}
+.toast.act span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.toast.act button{background:rgba(255,255,255,.18);color:#fff;font-weight:800;font-size:13.5px;padding:8px 12px;border-radius:9px;flex-shrink:0}
+body.staff .toast{bottom:calc(env(safe-area-inset-bottom) + 20px)}
+
+/* 약정 작업 편집 */
+.tp-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;padding:8px;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+.tp-row .tp-label{flex:1 1 100%!important}
+.tp-row .tp-label{flex:1;min-width:0;padding:11px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:15px;font-family:inherit;color:var(--ink)}
+.tp-row .tp-label{width:auto}
+.tp-row .tp-type{width:auto;flex:1 1 auto;padding:11px 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:13.5px;font-family:inherit;color:var(--ink)}
+.tp-del{flex-shrink:0;width:34px;height:40px;border-radius:9px;color:var(--red);font-size:15px;font-weight:700}
+.tp-empty{font-size:13px;color:var(--muted);padding:6px 2px 10px}
+.tp-presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.tp-presets button{padding:8px 11px;border-radius:9px;background:var(--primary-l);color:var(--primary);font-weight:700;font-size:12.5px}
+.stepper{display:flex;align-items:center;gap:6px}
+.stepper button{width:40px;height:42px;border-radius:10px;background:var(--surface-2);border:1.5px solid var(--line);font-size:19px;font-weight:700;color:var(--primary)}
+.stepper input{width:52px;text-align:center;padding:10px 4px;border:1.5px solid var(--line);border-radius:10px;background:#fff;font-weight:800;font-size:16px;font-family:inherit}
+.stepper span{font-size:12.5px;color:var(--muted);font-weight:600}
+.stepper.sm button{width:30px;height:40px;font-size:16px}
+.stepper.sm input{width:38px;padding:10px 2px}
+
+/* 로그인 */
+.lg-form{width:100%;max-width:300px;display:flex;flex-direction:column;gap:10px}
+.lg-form input{width:100%;padding:15px 16px;border-radius:13px;border:none;background:rgba(255,255,255,.95);font-size:16px;font-family:inherit;color:var(--ink)}
+.lg-form .lk-msg{margin:2px 0 0;height:auto;min-height:18px;text-align:center;line-height:1.45}
+.lg-btn{width:100%;padding:15px;border-radius:13px;background:#fff;color:var(--primary);font-weight:800;font-size:16px}
+.lg-btn:disabled{opacity:.6}
+.lg-link{margin-top:22px;font-size:13px;color:rgba(255,255,255,.75);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+
+/* 앱 정보 */
+.clog{background:var(--surface-2);border-radius:11px;margin-bottom:8px;padding:0 13px}
+.clog summary{padding:12px 0;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.clog summary small{color:var(--muted);font-weight:600}
+.clog ul{margin:0 0 12px;padding-left:18px;font-size:13px;line-height:1.6;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -377,7 +497,7 @@ nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,25
   <div class="hd-row">
     <div class="hd-title">
       <div class="hd-mark"></div>
-      <div><h1>광고비 관리</h1><span>스테이유 토탈 솔루션</span></div>
+      <div><h1 id="hdTitle">광고비 관리</h1><span>스테이유 토탈 솔루션</span></div>
     </div>
     <button class="hd-btn" data-action="menu">⋯</button>
   </div>
@@ -394,6 +514,10 @@ nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,25
   <button class="nav-btn on" data-tab="dashboard">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
     <span>대시보드</span>
+  </button>
+  <button class="nav-btn" data-tab="work">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="3.5" width="16" height="18" rx="2.5"/><path d="M9 3.5h6v3H9z"/><path d="M8.5 12l2 2 4-4"/><path d="M8.5 17.5h7"/></svg>
+    <span>작업</span>
   </button>
   <button class="nav-btn" data-tab="payments">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.5h19"/><path d="M6.5 15h4"/></svg>
@@ -415,8 +539,10 @@ nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(255,255,25
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc }
+import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc, getDoc, runTransaction, query, where }
   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updatePassword }
+  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
 /* ============================================================
    Firebase 설정 — 아래 값을 실제 프로젝트 값으로 교체하세요.
@@ -433,6 +559,27 @@ const FIREBASE_CONFIG = {
 };
 const USE_FB = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('YOUR_');
 const LS_KEY = 'stayu_ad_billing_v1';
+
+/* ---------- 앱 버전 ---------- */
+const APP_VERSION='2.0.0';
+const CHANGELOG=[
+  {v:'2.0.0', d:'2026-10-14', items:[
+    '월간 작업 관리 추가 — 거래처별 매월 약정 작업(릴스·피드·촬영 등)을 정하면 매달 1일 기준 작업표가 자동으로 생성',
+    '작업 현황판(관리자): 업체별 진행 상황을 완료·진행 중·시작 전·확인 필요 색으로 표시, 입금 상태와 함께 보기',
+    '직원 전용 화면: 이번 달 할 일 · 밀린 것 · 내 작업 · 촬영 일정, 버튼 한 번으로 다음 단계, 되돌리기 지원',
+    '게시 완료 시 게시물 링크 기록 (조회수 분석·광고주 보고서용)',
+    '로그인 방식 변경: 4자리 비밀번호 → 관리자·직원별 아이디/비밀번호, 직원 계정은 금액 정보에 접근 불가',
+    '직원 계정 추가·사용 중지, 비밀번호 변경'
+  ]},
+  {v:'1.x', d:'~2026-10', items:['광고비·입금 관리, 입금 달력, 정산 점검, 부수작업, 통계 (기존 기능)']}
+];
+
+/* ---------- 계정 ---------- */
+const ID_DOMAIN='stayu-ad.app';           // 아이디 → 로그인용 이메일로 바꿀 때 붙이는 주소 (실제 메일 아님)
+const ADMIN_ID='admin';
+const ADMIN_EMAIL=ADMIN_ID+'@'+ID_DOMAIN;
+const idToEmail=id=>{ id=String(id||'').trim().toLowerCase(); return id.includes('@')?id:`${id}@${ID_DOMAIN}`; };
+let fbApp=null, auth=null, secAuth=null;
 
 /* ---------- Utilities ---------- */
 const $ = s => document.querySelector(s);
@@ -483,42 +630,61 @@ const state = {
   payFilter: 'all',
   extraFilter: 'all',
   extraCat: 'all',
-  ready: false
+  ready: false,
+  plans: {}, months: {}, users: [],
+  plansLoaded: false, monthsLoaded: false,
+  role: null, me: null, staffTab: null
 };
 let db=null;
+if(USE_FB){ fbApp=initializeApp(FIREBASE_CONFIG); db=getFirestore(fbApp); auth=getAuth(fbApp); }
+const unsubs=[];
 
 /* ---------- Store (Firebase or localStorage) ---------- */
 const Store = {
-  async init(onChange){
+  async init(role,onChange){
     if(USE_FB){
-      const appFb = initializeApp(FIREBASE_CONFIG);
-      db = getFirestore(appFb);
-      onSnapshot(collection(db,'ad_clients'), snap=>{
-        state.clients = snap.docs.map(d=>({id:d.id,...d.data()}));
-        onChange();
-      });
-      onSnapshot(collection(db,'ad_payments'), snap=>{
-        state.payments = snap.docs.map(d=>({id:d.id,...d.data()}));
-        onChange();
-      });
-      onSnapshot(collection(db,'ad_extras'), snap=>{
-        state.extras = snap.docs.map(d=>({id:d.id,...d.data()}));
-        onChange();
-      });
+      const listen=(q,fn,flag)=>unsubs.push(onSnapshot(q,snap=>{ fn(snap); if(flag) state[flag]=true; onChange(); },err=>onListenError(err)));
+      const mapOf=snap=>{ const o={}; snap.docs.forEach(d=>{ o[d.id]={...d.data(),id:d.id}; }); return o; };
+      if(role==='admin'){
+        listen(collection(db,'ad_clients'),snap=>{ state.clients=snap.docs.map(d=>({id:d.id,...d.data()})); });
+        listen(collection(db,'ad_payments'),snap=>{ state.payments=snap.docs.map(d=>({id:d.id,...d.data()})); });
+        listen(collection(db,'ad_extras'),snap=>{ state.extras=snap.docs.map(d=>({id:d.id,...d.data()})); });
+        listen(collection(db,'ad_users'),snap=>{ state.users=snap.docs.map(d=>({...d.data(),uid:d.id})); });
+        listen(collection(db,'ad_month'),snap=>{ state.months=mapOf(snap); },'monthsLoaded');
+      } else {
+        const now=nowMonth();
+        listen(query(collection(db,'ad_month'),where('month','in',[addMonth(now,-1),now])),snap=>{ state.months=mapOf(snap); },'monthsLoaded');
+      }
+      listen(collection(db,'ad_taskplans'),snap=>{ const o={}; snap.docs.forEach(d=>{ o[d.id]={...d.data(),clientId:d.id}; }); state.plans=o; },'plansLoaded');
     } else {
       const raw = localStorage.getItem(LS_KEY);
-      if(raw){ try{ const o=JSON.parse(raw); state.clients=o.clients||[]; state.payments=o.payments||[]; state.extras=o.extras||[]; }catch(e){} }
+      if(raw){ try{ const o=JSON.parse(raw); state.clients=o.clients||[]; state.payments=o.payments||[]; state.extras=o.extras||[]; state.plans=o.plans||{}; state.months=o.months||{}; }catch(e){} }
+      state.plansLoaded=true; state.monthsLoaded=true;
       onChange();
     }
   },
-  _save(){ if(!USE_FB) localStorage.setItem(LS_KEY, JSON.stringify({clients:state.clients,payments:state.payments,extras:state.extras})); },
+  stop(){ unsubs.splice(0).forEach(f=>{ try{f();}catch(e){} }); },
+  _save(){ if(!USE_FB) localStorage.setItem(LS_KEY, JSON.stringify({clients:state.clients,payments:state.payments,extras:state.extras,plans:state.plans,months:state.months})); },
+  async savePlan(p){
+    if(USE_FB){ await setDoc(doc(db,'ad_taskplans',p.clientId), p); }
+    else { state.plans[p.clientId]=p; this._save(); render(); }
+  },
+  async createMonthIfMissing(d){
+    if(USE_FB){ const ref=doc(db,'ad_month',d.id); await runTransaction(db, async tx=>{ const snap=await tx.get(ref); if(!snap.exists()) tx.set(ref,d); }); }
+    else { if(!state.months[d.id]) state.months[d.id]=d; this._save(); }
+  },
+  async updateMonth(id,fn){
+    if(USE_FB){ const ref=doc(db,'ad_month',id); await runTransaction(db, async tx=>{ const snap=await tx.get(ref); if(!snap.exists()) return; tx.set(ref, fn({...snap.data(),id:snap.id})); }); }
+    else { const d=state.months[id]; if(!d) return; state.months[id]=fn(JSON.parse(JSON.stringify(d))); this._save(); render(); }
+  },
   async saveClient(c){
     if(USE_FB){ await setDoc(doc(db,'ad_clients',c.id), c); }
     else { const i=state.clients.findIndex(x=>x.id===c.id); if(i<0)state.clients.push(c); else state.clients[i]=c; this._save(); render(); }
   },
   async delClient(id){
-    if(USE_FB){ await deleteDoc(doc(db,'ad_clients',id)); for(const p of state.payments.filter(p=>p.clientId===id)) await deleteDoc(doc(db,'ad_payments',p.id)); for(const e of state.extras.filter(e=>e.clientId===id)) await deleteDoc(doc(db,'ad_extras',e.id)); }
-    else { state.clients=state.clients.filter(x=>x.id!==id); state.payments=state.payments.filter(p=>p.clientId!==id); state.extras=state.extras.filter(e=>e.clientId!==id); this._save(); render(); }
+    const mids=Object.values(state.months).filter(d=>d.clientId===id).map(d=>d.id);
+    if(USE_FB){ await deleteDoc(doc(db,'ad_clients',id)); for(const p of state.payments.filter(p=>p.clientId===id)) await deleteDoc(doc(db,'ad_payments',p.id)); for(const e of state.extras.filter(e=>e.clientId===id)) await deleteDoc(doc(db,'ad_extras',e.id)); await deleteDoc(doc(db,'ad_taskplans',id)); for(const m of mids) await deleteDoc(doc(db,'ad_month',m)); }
+    else { state.clients=state.clients.filter(x=>x.id!==id); state.payments=state.payments.filter(p=>p.clientId!==id); state.extras=state.extras.filter(e=>e.clientId!==id); delete state.plans[id]; mids.forEach(m=>delete state.months[m]); this._save(); render(); }
   },
   async savePayment(p){
     if(USE_FB){ await setDoc(doc(db,'ad_payments',p.id), p); }
@@ -538,7 +704,9 @@ const Store = {
   },
   importData(o){
     state.clients=o.clients||[]; state.payments=o.payments||[]; state.extras=o.extras||[];
-    if(USE_FB){ for(const c of state.clients) setDoc(doc(db,'ad_clients',c.id),c); for(const p of state.payments) setDoc(doc(db,'ad_payments',p.id),p); for(const e of state.extras) setDoc(doc(db,'ad_extras',e.id),e); }
+    if(o.plans){ state.plans={}; o.plans.forEach(p=>{ if(p&&p.clientId) state.plans[p.clientId]=p; }); }
+    if(o.months){ state.months={}; o.months.forEach(d=>{ if(d&&d.id) state.months[d.id]=d; }); }
+    if(USE_FB){ for(const c of state.clients) setDoc(doc(db,'ad_clients',c.id),c); for(const p of state.payments) setDoc(doc(db,'ad_payments',p.id),p); for(const e of state.extras) setDoc(doc(db,'ad_extras',e.id),e); if(o.plans) for(const p of o.plans) setDoc(doc(db,'ad_taskplans',p.clientId),p); if(o.months) for(const d of o.months) setDoc(doc(db,'ad_month',d.id),d); }
     else { this._save(); render(); }
   }
 };
@@ -662,8 +830,19 @@ function exFeeText(amount, vatMode){
 /* ============================================================
    RENDER
    ============================================================ */
+let lastViewKey='';
 function render(){
   if(!state.ready) return;
+  const isStaff=state.role==='staff';
+  document.body.classList.toggle('staff',isStaff);
+  $('#hdTitle').textContent=isStaff?'작업 관리':'광고비 관리';
+  if(isStaff){
+    const sd=$('#syncDot'); sd.classList.remove('local'); $('#syncText').textContent=`${state.me.name}님 · 직원`;
+    $('#fab').classList.add('hidden');
+    $('#app').innerHTML=viewStaff();
+    afterRender();
+    return;
+  }
   // sync indicator
   const sd=$('#syncDot'), st=$('#syncText');
   if(USE_FB){ sd.classList.remove('local'); st.textContent='클라우드 동기화'; }
@@ -681,7 +860,12 @@ function render(){
   else if(state.tab==='clients') el.innerHTML=viewClients();
   else if(state.tab==='extras') el.innerHTML=viewExtras();
   else if(state.tab==='stats') el.innerHTML=viewStats();
-  window.scrollTo({top:0});
+  else if(state.tab==='work') el.innerHTML=viewWork();
+  afterRender();
+}
+function afterRender(){
+  const vk=state.role+':'+state.tab+':'+(state.staffTab||'');
+  if(vk!==lastViewKey){ window.scrollTo({top:0}); lastViewKey=vk; }
   // 열려있는 거래처 상세는 데이터 변경 시 자동 갱신 (Firebase 동기화 대응)
   if(openDetailId){
     const c=state.clients.find(x=>x.id===openDetailId);
@@ -695,6 +879,16 @@ function render(){
     const modal=document.querySelector('#modalBg .modal');
     if(c && modal && modal.querySelector('.cal-grid')){ modal.innerHTML='<div class="grabber"></div>'+paymentCalendar(c, openCalMonth); }
     else if(!c) openCalId=null;
+  }
+  // 열려있는 작업 상세 시트 자동 갱신 (입력 중일 때는 건드리지 않음)
+  if(openWorkId){
+    const modal=document.querySelector('#modalBg .modal');
+    if(modal && modal.querySelector('.work-sheet')){
+      const ae=document.activeElement;
+      const typing=ae && modal.contains(ae) && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName);
+      if(!state.months[openWorkId]) closeModal();
+      else if(!typing){ const sc=modal.scrollTop; modal.innerHTML='<div class="grabber"></div>'+workSheet(openWorkId); modal.scrollTop=sc; }
+    }
   }
 }
 
@@ -822,6 +1016,9 @@ function viewDashboard(){
 
     ${(()=>{ const et=extraTotals(); const uc=state.extras.filter(e=>e.status!=='paid').length;
       return uc>0 ? `<button class="btn btn-ghost" data-action="goextras" style="margin-top:9px;color:var(--amber)">🧾 부수작업 미수 ${won(et.unpaid)}원 · ${uc}건 — 확인하기 ›</button>` : ''; })()}
+
+    ${(()=>{ const ds=docsOf(m); if(!ds.length) return ''; const st=unitsStats(ds.flatMap(d=>d.units||[])); const red=ds.filter(d=>docCls(d)==='red').length;
+      return `<button class="btn btn-ghost" data-action="gowork" style="margin-top:9px;${red?'color:var(--red)':''}">🎬 이번 달 작업 ${st.done}/${st.total} 완료${red?` · 확인 필요 ${red}곳`:''} ›</button>`; })()}
 
     <div class="section-label">이번 달 미입금 · 부분입금<span>${unpaidList.length}곳</span></div>
     ${unpaidList.length===0
@@ -1219,7 +1416,7 @@ function openModal(html){
   bg.addEventListener('click',e=>{ if(e.target===bg) closeModal(); });
   document.body.appendChild(bg);
 }
-function closeModal(){ const m=$('#modalBg'); if(m) m.remove(); openDetailId=null; openCalId=null; }
+function closeModal(){ const m=$('#modalBg'); if(m) m.remove(); openDetailId=null; openCalId=null; openWorkId=null; }
 let openDetailId=null; // 현재 열려있는 거래처 상세 (데이터 변경 시 자동 갱신용)
 function showClientDetail(c){ if(!c) return; openModal(clientDetail(c)); openDetailId=c.id; }
 
@@ -1245,6 +1442,7 @@ function clientForm(c){
       </div>
     </div>
     <div class="field ${c.status==='ended'?'':'hidden'}" id="endWrap"><label>종료일</label><input id="f-end" type="date" value="${c.endDate||''}"></div>
+    ${planEditor(isEdit?c:null)}
     <div class="field"><label>메모 <span style="font-weight:500">(선택)</span></label><textarea id="f-memo" placeholder="계약 조건, 특이사항 등">${esc(c.memo||'')}</textarea></div>
     <input type="hidden" id="f-id" value="${isEdit?c.id:''}">
     <input type="hidden" id="f-statusv" value="${c.status||'active'}">
@@ -1274,6 +1472,7 @@ function clientDetail(c){
       <div class="dl"><span class="k">월 청구액 (부가세 포함)</span><span class="v num" style="color:var(--primary)">${won(billOf(c))}원</span></div>
       <div class="dl"><span class="k">청구 개월수</span><span class="v">${due.length}개월</span></div>
       <div class="dl"><span class="k">상태</span><span class="v">${c.status==='ended'?'계약 종료':'계약중'}</span></div>
+      <div class="dl"><span class="k">매월 약정 작업</span><span class="v" style="text-align:right;max-width:62%;${hasPlan(c.id)?'':'color:var(--muted)'}">${hasPlan(c.id)?esc(planSummary(c.id)):'미설정'}</span></div>
       ${c.memo?`<div class="dl" style="flex-direction:column;align-items:flex-start;gap:4px"><span class="k">메모</span><span class="v" style="font-weight:500;line-height:1.5">${esc(c.memo)}</span></div>`:''}
     </div>
     <div class="btn-row" style="margin-bottom:16px">
@@ -1559,8 +1758,11 @@ function menuSheet(){
     <button class="btn btn-ghost" data-action="export" style="margin-bottom:10px">📤 데이터 백업 (JSON 내보내기)</button>
     <button class="btn btn-ghost" data-action="importbtn" style="margin-bottom:10px">📥 백업 복원 (JSON 불러오기)</button>
     <input type="file" id="importFile" accept="application/json" class="hidden">
-    <button class="btn btn-ghost" data-action="lock" style="margin-top:6px">🔒 이 기기 잠금 (비밀번호 다시 입력)</button>
+    ${USE_FB?`<button class="btn btn-ghost" data-action="staffmgr" style="margin-bottom:10px">👥 직원 계정 관리 (${state.users.filter(u=>u.active!==false).length}명)</button>
+    <button class="btn btn-ghost" data-action="pwchange" style="margin-bottom:10px">🔑 관리자 비밀번호 변경</button>
+    <button class="btn btn-ghost" data-action="logout">로그아웃</button>`:''}
     <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:14px">거래처 ${state.clients.length}곳 · 입금 ${state.payments.length}건 · 부수작업 ${state.extras.length}건</div>
+    ${changelogHtml()}
   </div>`;
 }
 
@@ -1622,7 +1824,7 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('[data-action]'); if(!t) return;
   const a=t.dataset.action, id=t.dataset.id;
   switch(a){
-    case 'menu': openModal(menuSheet()); break;
+    case 'menu': openModal(state.role==='staff'?staffMenuSheet():menuSheet()); break;
     case 'close': closeModal(); break;
     case 'mprev': state.month=addMonth(state.month,-1); render(); break;
     case 'mnext': state.month=addMonth(state.month,1); render(); break;
@@ -1652,7 +1854,25 @@ document.addEventListener('click',e=>{
     case 'delpay': if(confirm('이 입금 내역을 삭제할까요?')){ const p=state.payments.find(x=>x.id===id); Store.delPayment(id); const c=p&&state.clients.find(x=>x.id===p.clientId); if(c){ setTimeout(()=>showClientDetail(state.clients.find(x=>x.id===c.id)),60);} else closeModal(); toast('삭제되었습니다'); } break;
     case 'export': exportData(); break;
     case 'importbtn': $('#importFile').click(); break;
-    case 'lock': lockDevice(); break;
+    case 'lock': case 'logout': doLogout(); break;
+    case 'adminsetup': showLogin('setup'); break;
+    case 'adminback': showLogin(); break;
+    case 'gowork': state.tab='work'; render(); break;
+    case 'work': openWork(id); break;
+    case 'editclientw': openModal(clientForm(state.clients.find(c=>c.id===id))); break;
+    case 'adv': advanceUnit(t.dataset.doc,t.dataset.uid); break;
+    case 'setstage': setStage(t.dataset.doc,t.dataset.uid,+t.dataset.s); break;
+    case 'shootdone': { const d=state.months[t.dataset.doc]; const sh=d&&(d.shoots||[]).find(x=>x.n===+t.dataset.n); if(sh) patchShoot(t.dataset.doc,sh.n,{done:!sh.done,by:state.me.name,at:Date.now()}); } break;
+    case 'stab': state.staffTab=t.dataset.v; render(); break;
+    case 'linksave': { const v=($('#lk-url')?.value||'').trim(); if(v) patchUnit(t.dataset.doc,t.dataset.uid,{link:v}); closeModal(); if(v) toast('링크를 저장했습니다'); } break;
+    case 'tpadd': { const i=+t.dataset.i; const pr=i>=0?TASK_PRESETS[i]:{label:'',type:'sns',count:1}; $('#tpList').insertAdjacentHTML('beforeend',planRow({...pr,id:uid()})); $('#tpEmpty')?.classList.add('hidden'); if(i<0){ const ins=document.querySelectorAll('#tpList .tp-label'); ins[ins.length-1].focus(); } } break;
+    case 'tpdel': t.closest('.tp-row')?.remove(); if(!document.querySelector('#tpList .tp-row')) $('#tpEmpty')?.classList.remove('hidden'); break;
+    case 'tpstep': { const inp=t.parentElement.querySelector('input'); const min=inp.id==='f-shoot'?0:1; inp.value=Math.max(min,Math.min(inp.id==='f-shoot'?20:50,(parseInt(inp.value)||0)+(+t.dataset.d))); } break;
+    case 'staffmgr': openModal(staffSheet()); break;
+    case 'addstaff': createStaffFromForm(); break;
+    case 'staffactive': toggleStaffActive(id); break;
+    case 'pwchange': openModal(pwSheet()); break;
+    case 'pwsave': savePassword(); break;
     case 'goextras': state.tab='extras'; render(); break;
     case 'exfilter': state.extraFilter=t.dataset.v; render(); break;
     case 'excat': state.extraCat=t.dataset.v; render(); break;
@@ -1687,7 +1907,16 @@ function saveClientForm(){
     memo:$('#f-memo').value.trim(),
     createdAt:existing?.createdAt||Date.now()
   };
-  Store.saveClient(c); closeModal(); toast(existing?'저장되었습니다':'거래처가 등록되었습니다');
+  const items=collectPlanItems();
+  const shootCount=Math.max(0,Math.min(20,parseInt($('#f-shoot')?.value)||0));
+  Store.saveClient(c);
+  if(items.length || shootCount || state.plans[id]){
+    const plan={clientId:id, name:c.name, status:c.status, contractDate:c.contractDate, endDate:c.endDate, items, shootCount, updatedAt:Date.now()};
+    state.plans[id]=plan;
+    Store.savePlan(plan).catch(e=>toast('약정 작업 저장 실패: '+(e.code||e.message),3000));
+    syncPlanToMonth(plan);
+  }
+  closeModal(); render(); toast(existing?'저장되었습니다':'거래처가 등록되었습니다');
 }
 function savePaymentForm(){
   const clientId=$('#p-client').value;
@@ -1783,7 +2012,7 @@ function undoBatchSettle(clientId){
 }
 
 function exportData(){
-  const data={clients:state.clients,payments:state.payments,extras:state.extras,exportedAt:new Date().toISOString()};
+  const data={clients:state.clients,payments:state.payments,extras:state.extras,plans:Object.values(state.plans),months:Object.values(state.months),appVersion:APP_VERSION,exportedAt:new Date().toISOString()};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a'); a.href=url;
@@ -1797,59 +2026,600 @@ function importData(file){
   r.readAsText(file);
 }
 
-/* ---------- PIN Lock ---------- */
-const APP_PIN='1426';
-const UNLOCK_KEY='stayu_ad_unlocked';
-let pinBuf='';
-function isUnlocked(){ return localStorage.getItem(UNLOCK_KEY)==='1'; }
-function lockDevice(){ localStorage.removeItem(UNLOCK_KEY); location.reload(); }
-function showLock(){
-  pinBuf='';
-  const keys=['1','2','3','4','5','6','7','8','9','','0','⌫'];
-  const el=document.createElement('div');
-  el.className='lock'; el.id='lockScreen';
+
+/* ============================================================
+   월간 작업 관리 (v2.0.0)
+   - 거래처별 약정 작업(ad_taskplans) → 매달 1일 기준 작업표(ad_month) 자동 생성
+   - 작업표 문서 id = 'YYYY-MM__거래처id'
+   ============================================================ */
+const STAGES={ sns:['예정','촬영 완료','편집 중','업로드 예약','게시 완료'], simple:['할 일','완료'] };
+const STAGE_SHORT={ sns:['예정','촬영','편집','예약','게시'], simple:['할 일','완료'] };
+const tKey=t=>t==='simple'?'simple':'sns';
+const lastStage=t=>STAGES[tKey(t)].length-1;
+const stageName=(t,s)=>STAGES[tKey(t)][s]||'';
+const isDone=u=>(+u.stage||0)>=lastStage(u.type);
+const URGENT_DAYS=7;   // 마감 며칠 전부터 '시작 안 한 작업'을 빨간색/밀린 것으로 볼지
+const TASK_PRESETS=[
+  {label:'릴스',type:'sns',count:4},
+  {label:'피드 게시물',type:'sns',count:2},
+  {label:'유튜브 쇼츠',type:'sns',count:2},
+  {label:'스마트플레이스 업데이트',type:'simple',count:1},
+  {label:'월간 보고서 전달',type:'simple',count:1},
+];
+const monthDocId=(m,cid)=>`${m}__${cid}`;
+const ensured=new Set();
+let openWorkId=null;
+
+function newUnit(it,n){ return {uid:`${it.id}-${n}`, itemId:it.id, label:it.label, type:tKey(it.type), n, stage:0, assignee:'', assigneeName:'', link:'', by:'', at:0}; }
+function newShoot(n){ return {n, date:'', time:'', done:false, memo:''}; }
+function buildMonthDoc(plan,m){
+  const items=(plan.items||[]).map(x=>({...x}));
+  const units=[]; items.forEach(it=>{ for(let n=1;n<=(+it.count||0);n++) units.push(newUnit(it,n)); });
+  const shoots=Array.from({length:+plan.shootCount||0},(_,i)=>newShoot(i+1));
+  return {id:monthDocId(m,plan.clientId), month:m, clientId:plan.clientId, name:plan.name||'', items, units, shoots, createdAt:Date.now()};
+}
+// 약정 작업이 바뀌었을 때 이번 달 작업표에 반영 — 이미 손댄 작업은 지우지 않음 (같은 계획으로 여러 번 적용해도 결과가 같음)
+function mergePlan(d,plan){
+  const byItem={};
+  (d.units||[]).forEach(u=>{ (byItem[u.itemId]=byItem[u.itemId]||[]).push(u); });
+  const keep=[];
+  (plan.items||[]).forEach(it=>{
+    const t=tKey(it.type);
+    const list=(byItem[it.id]||[]).sort((a,b)=>a.n-b.n).map(u=>({...u,label:it.label,type:t,stage:Math.min(+u.stage||0,lastStage(t))}));
+    while(list.length>(+it.count||0)){
+      let idx=-1; for(let i=list.length-1;i>=0;i--){ if(!(+list[i].stage)){ idx=i; break; } }
+      if(idx<0) break; list.splice(idx,1);
+    }
+    let n=list.reduce((a,u)=>Math.max(a,u.n),0);
+    while(list.length<(+it.count||0)){ n++; list.push(newUnit(it,n)); }
+    keep.push(...list); delete byItem[it.id];
+  });
+  Object.values(byItem).flat().forEach(u=>{ if(+u.stage>0) keep.push(u); });
+  const shoots=[...(d.shoots||[])].sort((a,b)=>a.n-b.n);
+  const sc=+plan.shootCount||0;
+  while(shoots.length>sc){
+    let idx=-1; for(let i=shoots.length-1;i>=0;i--){ if(!shoots[i].date && !shoots[i].done){ idx=i; break; } }
+    if(idx<0) break; shoots.splice(idx,1);
+  }
+  while(shoots.length<sc) shoots.push(newShoot(shoots.reduce((a,s)=>Math.max(a,s.n),0)+1));
+  return {...d, name:plan.name||d.name, items:(plan.items||[]).map(x=>({...x})), units:keep, shoots};
+}
+const hasPlan=id=>{ const p=state.plans[id]; return !!(p && ((p.items||[]).length || +p.shootCount)); };
+// 이번 달 작업표가 없으면 만들어 둠 (매달 1일 이후 누가 앱을 처음 열든 자동 생성)
+function ensureCurrentMonth(){
+  if(!state.plansLoaded || !state.monthsLoaded) return;
+  const m=nowMonth();
+  Object.values(state.plans).forEach(p=>{
+    if(!p.clientId || !hasPlan(p.clientId) || !isActiveInMonth(p,m)) return;
+    const id=monthDocId(m,p.clientId);
+    if(state.months[id] || ensured.has(id)) return;
+    ensured.add(id);
+    const d=buildMonthDoc(p,m);
+    state.months[id]=d;
+    Store.createMonthIfMissing(d).catch(()=>{ ensured.delete(id); });
+  });
+}
+function syncPlanToMonth(plan){
+  const id=monthDocId(nowMonth(),plan.clientId);
+  if(state.months[id]){
+    const apply=d=>mergePlan(d,plan);
+    state.months[id]=apply(state.months[id]);
+    Store.updateMonth(id,apply).catch(e=>toast('작업표 반영 실패: '+(e.code||e.message)));
+  } else ensureCurrentMonth();
+}
+
+/* ---------- 집계 ---------- */
+function docsOf(m){ return Object.values(state.months).filter(d=>d.month===m).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')); }
+function unitsStats(units){ const total=units.length, done=units.filter(isDone).length, started=units.filter(u=>+u.stage>0&&!isDone(u)).length; return {total,done,started,todo:total-done}; }
+function daysLeftIn(m){
+  const now=nowMonth(); if(m<now) return -1; if(m>now) return 99;
+  const d=new Date(); return new Date(d.getFullYear(),d.getMonth()+1,0).getDate()-d.getDate();
+}
+function itemOrder(d){ const o={}; (d.items||[]).forEach((it,i)=>o[it.id]=i); return o; }
+function sortUnits(d,units){ const o=itemOrder(d); return [...units].sort((a,b)=>((o[a.itemId]??99)-(o[b.itemId]??99))||(a.n-b.n)); }
+function itemGroups(d){
+  const map=new Map();
+  sortUnits(d,d.units||[]).forEach(u=>{ if(!map.has(u.itemId)) map.set(u.itemId,{itemId:u.itemId,label:u.label,type:u.type,units:[]}); map.get(u.itemId).units.push(u); });
+  return [...map.values()].map(g=>({...g, done:g.units.filter(isDone).length, started:g.units.filter(u=>+u.stage>0&&!isDone(u)).length}));
+}
+function groupCls(g,m){
+  const n=g.units.length; if(n && g.done===n) return 'green';
+  const dl=daysLeftIn(m); if(dl<0) return 'red';
+  if(g.done+g.started===0) return dl<=URGENT_DAYS?'red':'gray';
+  return 'amber';
+}
+function shootCls(s,m){ if(s.done) return 'green'; if(daysLeftIn(m)<0) return 'red'; if(s.date) return 'amber'; return daysLeftIn(m)<=URGENT_DAYS?'red':'gray'; }
+function docCls(d){
+  const cs=[...itemGroups(d).map(g=>groupCls(g,d.month)), ...(d.shoots||[]).map(s=>shootCls(s,d.month))];
+  if(!cs.length) return 'gray';
+  if(cs.includes('red')) return 'red';
+  if(cs.every(c=>c==='green')) return 'green';
+  return cs.some(c=>c==='amber'||c==='green')?'amber':'gray';
+}
+function shootLabel(s){ return s.date?`${mmdd(s.date)}${s.time?' '+s.time:''}`:'날짜 미정'; }
+function fmtAt(ts){ if(!ts) return ''; const d=new Date(ts); return `${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function safeUrl(u){ u=String(u||'').trim(); if(!u) return ''; return /^https?:\/\//i.test(u)?u:'https://'+u.replace(/^[a-z]+:/i,''); }
+function planSummary(id){
+  const p=state.plans[id]; if(!hasPlan(id)) return '';
+  const parts=(p.items||[]).map(it=>`${it.label} ${it.count}`);
+  if(+p.shootCount) parts.push(`촬영 ${p.shootCount}회`);
+  return parts.join(' · ');
+}
+
+/* ---------- 저장 (항상 '값을 정해서' 덮어쓰기 → 두 번 적용돼도 안전) ---------- */
+function patchUnit(docId,uid,patch){
+  const apply=d=>({...d, units:(d.units||[]).map(u=>u.uid===uid?{...u,...patch}:u)});
+  if(state.months[docId]) state.months[docId]=apply(state.months[docId]);
+  render();
+  Store.updateMonth(docId,apply).catch(e=>toast('저장 실패: '+(e.code||e.message),3000));
+}
+function patchShoot(docId,n,patch){
+  const apply=d=>({...d, shoots:(d.shoots||[]).map(s=>s.n===n?{...s,...patch}:s)});
+  if(state.months[docId]) state.months[docId]=apply(state.months[docId]);
+  render();
+  Store.updateMonth(docId,apply).catch(e=>toast('저장 실패: '+(e.code||e.message),3000));
+}
+function findUnit(docId,uid){ const d=state.months[docId]; return d && (d.units||[]).find(u=>u.uid===uid); }
+function unitTitle(docId,u){ const d=state.months[docId]; const many=d&&(d.units||[]).filter(x=>x.itemId===u.itemId).length>1; return `${u.label}${many?' '+u.n:''}`; }
+function advanceUnit(docId,uid){
+  const u=findUnit(docId,uid); if(!u) return;
+  const s=+u.stage||0, last=lastStage(u.type); if(s>=last) return;
+  const prev={stage:s, by:u.by||'', at:u.at||0, assignee:u.assignee||'', assigneeName:u.assigneeName||''};
+  const patch={stage:s+1, by:state.me.name, at:Date.now()};
+  if(state.role==='staff' && !u.assignee){ patch.assignee=state.me.uid; patch.assigneeName=state.me.name; }
+  const title=unitTitle(docId,u);
+  patchUnit(docId,uid,patch);
+  toastAction(`${title} → ${stageName(u.type,s+1)}`,'되돌리기',()=>{ patchUnit(docId,uid,prev); toast('되돌렸습니다'); });
+  if(s+1===last && tKey(u.type)==='sns' && !u.link) setTimeout(()=>{ if(!$('#modalBg')) openModal(linkSheet(docId,uid)); },350);
+}
+function setStage(docId,uid,stage){
+  const u=findUnit(docId,uid); if(!u || (+u.stage||0)===stage) return;
+  const patch={stage, by:state.me.name, at:Date.now()};
+  if(state.role==='staff' && !u.assignee && stage>0){ patch.assignee=state.me.uid; patch.assigneeName=state.me.name; }
+  patchUnit(docId,uid,patch);
+}
+function setAssignee(docId,uid,val){
+  let name='';
+  if(val){ if(val===state.me.uid) name=state.me.name; else { const s=state.users.find(x=>x.uid===val); name=s?s.name:(findUnit(docId,uid)||{}).assigneeName||''; } }
+  patchUnit(docId,uid,{assignee:val, assigneeName:name});
+}
+
+/* ---------- 관리자: 작업 현황판 ---------- */
+function viewWork(){
+  const m=state.month, now=nowMonth();
+  const order={red:0,amber:1,gray:2,green:3};
+  const docs=docsOf(m).sort((a,b)=>(order[docCls(a)]-order[docCls(b)])||(a.name||'').localeCompare(b.name||'','ko'));
+  const st=unitsStats(docs.flatMap(d=>d.units||[]));
+  const pct=st.total?Math.round(st.done/st.total*100):0;
+  const reds=docs.filter(d=>docCls(d)==='red').length;
+  const noPlan=state.clients.filter(c=>c.status!=='ended' && isActiveInMonth(c,m) && !hasPlan(c.id))
+    .sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
+  let list;
+  if(docs.length) list=docs.map(boardRow).join('');
+  else if(m>now) list=`<div class="card" style="padding:22px;text-align:center;color:var(--muted);font-size:13.5px;line-height:1.6">${mLabel(m)} 작업표는 그 달 1일에 자동으로 만들어집니다</div>`;
+  else list=`<div class="card" style="padding:22px;text-align:center;color:var(--muted);font-size:13.5px;line-height:1.6">${mLabel(m)} 작업표가 없습니다${m===now?'<br>거래처 수정에서 매월 약정 작업을 정하면 바로 만들어져요':''}</div>`;
+  return `<div class="view">
+    <div class="month-nav">
+      <button data-action="mprev">‹</button>
+      <div class="mlabel">${mLabel(m)}<small>월간 작업</small></div>
+      <button data-action="mnext">›</button>
+    </div>
+    <div class="stat accent" style="margin-top:12px">
+      <div class="k">${mLabel(m)} 작업 진행</div>
+      <div class="v num">${st.done}<small style="color:rgba(255,255,255,.75)"> / ${st.total}건 완료</small></div>
+      <div class="pbar light"><i style="width:${pct}%"></i></div>
+      <div class="sub">${m===now?`마감까지 ${daysLeftIn(m)}일 · `:''}남은 작업 ${st.todo}건${reds?` · 확인 필요 ${reds}곳`:''}</div>
+    </div>
+    <div class="legend-row">
+      <span><i style="background:var(--green)"></i>완료</span><span><i style="background:#d08a2c"></i>진행 중</span>
+      <span><i style="background:var(--gray)"></i>시작 전</span><span><i style="background:var(--red)"></i>확인 필요</span>
+    </div>
+    ${list}
+    ${noPlan.length?`<div class="section-label">약정 작업 미설정 <span>${noPlan.length}곳</span></div>
+      <div style="font-size:12.5px;color:var(--muted);margin:0 4px 10px;line-height:1.55">매달 할 작업이 정해져 있지 않아 작업표가 만들어지지 않는 거래처예요. 눌러서 약정 작업을 정해 주세요.</div>
+      ${noPlan.map(c=>`<button class="row" data-action="editclient" data-id="${c.id}">
+        <div class="avatar" style="background:${colorFor(c.name)}">${initial(c.name)}</div>
+        <div class="body"><div class="name">${esc(c.name)}</div><div class="meta">약정 작업 정하기 ›</div></div></button>`).join('')}`:''}
+  </div>`;
+}
+function boardRow(d){
+  const gs=itemGroups(d), st=unitsStats(d.units||[]), cls=docCls(d);
+  const pct=st.total?Math.round(st.done/st.total*100):(cls==='green'?100:0);
+  const c=state.clients.find(x=>x.id===d.clientId);
+  const pay=c&&isActiveInMonth(c,d.month)?statusOf(c,d.month):null;
+  const many=(d.shoots||[]).length>1;
+  return `<button class="row wk-row ${cls}" data-action="work" data-id="${d.id}">
+    <div class="avatar" style="background:${colorFor(d.name)}">${initial(d.name)}</div>
+    <div class="body">
+      <div class="name">${esc(d.name)}${pay?` <span class="badge ${pay.cls}" style="margin-left:2px">입금 ${pay.s}</span>`:''}</div>
+      <div class="pbar"><i class="${cls}" style="width:${pct}%"></i></div>
+      <div class="ichips">${gs.map(g=>`<span class="ichip ${groupCls(g,d.month)}">${esc(g.label)} ${g.done}/${g.units.length}</span>`).join('')}${(d.shoots||[]).map(s=>`<span class="ichip ${shootCls(s,d.month)}">📷 ${many?s.n+'차 ':''}${s.done?'촬영 완료':shootLabel(s)}</span>`).join('')}</div>
+    </div>
+    <div class="right"><div class="amt num">${st.done}/${st.total}</div></div>
+  </button>`;
+}
+
+/* ---------- 작업 상세 시트 (관리자·직원 공용) ---------- */
+function openWork(id){ if(!state.months[id]) return; openModal(workSheet(id)); openWorkId=id; }
+function workSheet(id){
+  const d=state.months[id]; if(!d) return '';
+  const gs=itemGroups(d), st=unitsStats(d.units||[]);
+  const isAdm=state.role==='admin';
+  const staffOpts=isAdm?state.users.filter(u=>u.active!==false).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')):[];
+  const assignSel=u=>{
+    let o=`<option value="">담당 없음</option>`;
+    if(isAdm){
+      o+=staffOpts.map(s=>`<option value="${s.uid}" ${u.assignee===s.uid?'selected':''}>${esc(s.name)}</option>`).join('');
+      if(u.assignee && !staffOpts.some(s=>s.uid===u.assignee)) o+=`<option value="${esc(u.assignee)}" selected>${esc(u.assigneeName||'(다른 계정)')}</option>`;
+    } else {
+      o+=`<option value="${state.me.uid}" ${u.assignee===state.me.uid?'selected':''}>나 (${esc(state.me.name)})</option>`;
+      if(u.assignee && u.assignee!==state.me.uid) o+=`<option value="${esc(u.assignee)}" selected>${esc(u.assigneeName||'다른 직원')}</option>`;
+    }
+    return `<select class="mini-sel" data-assign="${u.uid}" data-doc="${d.id}">${o}</select>`;
+  };
+  const shoots=d.shoots||[];
+  return `<div class="work-sheet">
+  <div class="modal-hd"><h2>${esc(d.name)} · ${mShort(d.month)} 작업</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div style="font-size:13px;font-weight:700;color:var(--muted)">${st.done}/${st.total}건 완료${d.month<nowMonth()?' · <span style="color:var(--red)">지난달 작업표</span>':''}</div>
+    <div class="pbar" style="margin-bottom:14px"><i class="${docCls(d)}" style="width:${st.total?Math.round(st.done/st.total*100):0}%"></i></div>
+    ${shoots.length?`<div class="section-label" style="margin:4px 0 10px">촬영 일정</div>${shoots.map(s=>shootRow(d,s,false)).join('')}`:''}
+    ${gs.map(g=>`<div class="section-label" style="margin:14px 0 9px">${esc(g.label)} <span>${g.done}/${g.units.length} 완료</span></div>
+      ${g.units.map(u=>`<div class="ws-unit ${isDone(u)?'done':''}">
+        <div class="ws-top"><b>${esc(u.label)}${g.units.length>1?' '+u.n:''}</b><span class="ws-meta">${u.by?`${esc(u.by)} · ${fmtAt(u.at)}`:''}</span></div>
+        <div class="stseg">${STAGE_SHORT[tKey(u.type)].map((s,i)=>`<button class="${(+u.stage||0)===i?'on':''} ${i<(+u.stage||0)?'past':''}" data-action="setstage" data-doc="${d.id}" data-uid="${u.uid}" data-s="${i}">${s}</button>`).join('')}</div>
+        <div class="ws-bot">${assignSel(u)}${tKey(u.type)==='sns'?`<input class="mini-in" type="url" inputmode="url" placeholder="게시물 링크 붙여넣기" value="${esc(u.link||'')}" data-link="${u.uid}" data-doc="${d.id}">${u.link?`<a class="mini-go" href="${esc(safeUrl(u.link))}" target="_blank" rel="noopener">열기</a>`:''}`:''}</div>
+      </div>`).join('')}`).join('')}
+    ${(!gs.length && !shoots.length)?`<div class="empty" style="padding:30px"><p>이 달에 정해진 작업이 없습니다</p></div>`:''}
+    ${isAdm?`<button class="btn btn-ghost" data-action="editclientw" data-id="${d.clientId}" style="margin-top:10px">약정 작업 수정 (거래처 정보)</button>`:''}
+  </div></div>`;
+}
+function shootRow(d,s,showName){
+  const many=(d.shoots||[]).length>1;
+  return `<div class="sh-row ${s.done?'done':''}">
+    <div class="sh-l">${showName?`<b>${esc(d.name)}</b> · `:''}${many?`${s.n}차 촬영`:'촬영'}${s.done?' <span class="badge green">완료</span>':''}</div>
+    <div class="sh-in">
+      <input type="date" value="${s.date||''}" data-shoot="date" data-doc="${d.id}" data-n="${s.n}">
+      <input type="time" value="${s.time||''}" data-shoot="time" data-doc="${d.id}" data-n="${s.n}">
+      <button class="sh-done ${s.done?'on':''}" data-action="shootdone" data-doc="${d.id}" data-n="${s.n}">${s.done?'완료 취소':'촬영 완료'}</button>
+    </div>
+  </div>`;
+}
+function linkSheet(docId,uid){
+  const u=findUnit(docId,uid); if(!u) return '';
+  return `<div class="modal-hd"><h2>게시 완료 👏</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div style="font-size:14px;margin-bottom:14px;line-height:1.55"><b>${esc(state.months[docId].name)}</b> · ${esc(unitTitle(docId,u))}<br><span style="color:var(--muted);font-size:13px">올린 게시물 링크를 붙여 두면 나중에 조회수 분석·광고주 보고서에 그대로 씁니다.</span></div>
+    <div class="field"><label>게시물 링크</label><input id="lk-url" type="url" inputmode="url" placeholder="https://www.instagram.com/reel/..."></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-action="close" style="flex:0 0 38%">나중에</button>
+      <button class="btn btn-primary" data-action="linksave" data-doc="${docId}" data-uid="${uid}">저장</button>
+    </div>
+  </div>`;
+}
+
+/* ---------- 직원 화면 ---------- */
+function viewStaff(){
+  const now=nowMonth(), prev=addMonth(now,-1), dl=daysLeftIn(now);
+  const cur=docsOf(now), old=docsOf(prev);
+  const docs=[...old,...cur];
+  const me=state.me.uid;
+  const st=unitsStats(cur.flatMap(d=>d.units||[]));
+  const pct=st.total?Math.round(st.done/st.total*100):0;
+  const oldLeft=old.reduce((a,d)=>a+(d.units||[]).filter(u=>!isDone(u)).length,0);
+  const overdueFn=(d,u)=>!isDone(u) && (d.month<now || ((+u.stage||0)===0 && dl<=URGENT_DAYS));
+  const mineFn=(d,u)=>!isDone(u) && u.assignee===me;
+  const allFn=(d,u)=>d.month===now;
+  const count=fn=>docs.reduce((a,d)=>a+(d.units||[]).filter(u=>fn(d,u)).length,0);
+  const cntOver=count(overdueFn), cntMine=count(mineFn);
+  const shoots=[...old.flatMap(d=>(d.shoots||[]).filter(s=>!s.done).map(s=>({d,s}))), ...cur.flatMap(d=>(d.shoots||[]).map(s=>({d,s})))];
+  const shootLeft=shoots.filter(x=>!x.s.done).length;
+  if(!state.staffTab) state.staffTab=cntOver>0?'overdue':'all';
+  const tab=state.staffTab;
+  const hints={
+    overdue:`지난달에 못 끝낸 작업과, 마감 ${URGENT_DAYS}일 안쪽인데 아직 시작 안 한 작업이에요.`,
+    mine:`내가 단계를 넘긴 작업은 자동으로 '내 작업'이 됩니다.`,
+    all:`버튼을 누르면 다음 단계로 넘어가요. 잘못 눌렀으면 아래 '되돌리기'를 누르세요.`,
+    shoot:`날짜·시간을 넣어 두면 모두에게 똑같이 보여요. 촬영 일정은 매달 1일 새로 비워집니다.`
+  };
+  const body = tab==='shoot' ? staffShoots(shoots)
+    : staffCards(docs, tab==='overdue'?overdueFn:tab==='mine'?mineFn:allFn, tab);
+  return `<div class="view">
+    <div class="hero">
+      <div class="hero-k">${esc(state.me.name)}님 · ${mLabel(now)} 할 일</div>
+      <div class="hero-v"><span class="num">${st.todo}</span><small>남은 작업 · 전체 ${st.total}건</small></div>
+      <div class="pbar light"><i style="width:${pct}%"></i></div>
+      <div class="hero-s">마감까지 ${dl}일${oldLeft?` · 지난달 못 끝낸 것 ${oldLeft}건`:''}</div>
+    </div>
+    <div class="stabs">
+      <button class="${tab==='overdue'?'on':''} ${cntOver?'alert':''}" data-action="stab" data-v="overdue">밀린 것<b>${cntOver}</b></button>
+      <button class="${tab==='mine'?'on':''}" data-action="stab" data-v="mine">내 작업<b>${cntMine}</b></button>
+      <button class="${tab==='all'?'on':''}" data-action="stab" data-v="all">전체<b>${st.todo}</b></button>
+      <button class="${tab==='shoot'?'on':''}" data-action="stab" data-v="shoot">촬영<b>${shootLeft}</b></button>
+    </div>
+    <div class="stab-hint">${hints[tab]}</div>
+    ${body}
+  </div>`;
+}
+function staffCards(docs,fn,tab){
+  const now=nowMonth();
+  let cards=docs.map(d=>({d, units:sortUnits(d,(d.units||[]).filter(u=>fn(d,u)))}))
+    .filter(x=>x.units.length || (tab==='all' && x.d.month===now && (x.d.units||[]).length));
+  cards.sort((a,b)=>{ const ad=a.units.every(isDone)?1:0, bd=b.units.every(isDone)?1:0; return (ad-bd)||(a.d.month<b.d.month?-1:a.d.month>b.d.month?1:0)||(a.d.name||'').localeCompare(b.d.name||'','ko'); });
+  if(!cards.length){
+    const t={overdue:['👏','밀린 작업이 없어요','이 상태 그대로 가면 됩니다'],mine:['🙌','맡은 작업을 다 끝냈어요','전체 탭에서 남은 작업을 맡아 주세요'],all:['📋','이번 달 작업이 아직 없어요','관리자가 거래처별 약정 작업을 정하면 여기에 나타나요']}[tab];
+    return `<div class="empty"><div class="ic">${t[0]}</div><h3>${t[1]}</h3><p>${t[2]}</p></div>`;
+  }
+  return cards.map(({d,units})=>{
+    const st=unitsStats(d.units||[]);
+    const todo=units.filter(u=>!isDone(u)), doneN=units.length-todo.length;
+    const allDone=todo.length===0;
+    const sh=(d.shoots||[]);
+    const shootMeta=sh.length?` · 📷 ${sh.map(s=>s.done?'완료':shootLabel(s)).join(', ')}`:'';
+    return `<div class="ucard ${allDone?'done':''}">
+      <button class="uc-hd" data-action="work" data-id="${d.id}">
+        <div class="avatar" style="background:${colorFor(d.name)}">${initial(d.name)}</div>
+        <div class="body"><div class="name">${esc(d.name)}${d.month!==now?` <span class="badge red">${mShort(d.month)}분</span>`:''}</div><div class="meta">${st.done}/${st.total} 완료${shootMeta}</div></div>
+        <span class="uc-more">자세히 ›</span>
+      </button>
+      ${allDone?`<div class="uc-done">✓ 이번 달 작업 모두 완료</div>`:todo.map(u=>unitRow(d,u)).join('')+(doneN?`<div class="uc-donecnt">✓ 완료 ${doneN}건</div>`:'')}
+    </div>`;
+  }).join('');
+}
+function unitRow(d,u){
+  const t=tKey(u.type), s=+u.stage||0, next=s+1, fin=next===lastStage(t);
+  const many=(d.units||[]).filter(x=>x.itemId===u.itemId).length>1;
+  return `<div class="urow">
+    <div class="ur-l"><div class="ur-name">${esc(u.label)}${many?' '+u.n:''}</div>
+      <div class="ur-st"><span class="stp s${s}">${stageName(t,s)}</span>${u.assigneeName?` · ${esc(u.assigneeName)}`:''}</div></div>
+    <button class="nextbtn ${fin?'fin':''}" data-action="adv" data-doc="${d.id}" data-uid="${u.uid}">${fin?'✓ ':'→ '}${stageName(t,next)}</button>
+  </div>`;
+}
+function staffShoots(list){
+  if(!list.length) return `<div class="empty"><div class="ic">📷</div><h3>이번 달 촬영 일정이 없어요</h3><p>약정에 촬영이 들어간 거래처가 생기면 여기에 나타나요</p></div>`;
+  const dated=list.filter(x=>!x.s.done && x.s.date).sort((a,b)=>(a.s.date+(a.s.time||'')).localeCompare(b.s.date+(b.s.time||'')));
+  const undated=list.filter(x=>!x.s.done && !x.s.date);
+  const done=list.filter(x=>x.s.done);
+  const sec=(title,arr)=>arr.length?`<div class="section-label" style="margin:12px 4px 9px">${title} <span>${arr.length}건</span></div>${arr.map(x=>shootRow(x.d,x.s,true)).join('')}`:'';
+  return sec('예정',dated)+sec('날짜 미정',undated)+sec('완료',done);
+}
+
+/* ---------- 약정 작업 편집 (거래처 등록·수정 폼) ---------- */
+function planEditor(c){
+  const p=(c&&state.plans[c.id])||{items:[],shootCount:0};
+  const items=p.items||[];
+  return `<div class="field"><label>매월 약정 작업 <span style="font-weight:500">(매달 1일 작업표 자동 생성)</span></label>
+    <div id="tpList">${items.map(planRow).join('')}</div>
+    <div class="tp-empty ${items.length?'hidden':''}" id="tpEmpty">아래 버튼으로 매달 할 작업을 추가하세요</div>
+    <div class="tp-presets">${TASK_PRESETS.map((x,i)=>`<button type="button" data-action="tpadd" data-i="${i}">+ ${x.label}</button>`).join('')}<button type="button" data-action="tpadd" data-i="-1">+ 직접 입력</button></div>
+    <div class="hint">‘게시물’은 예정→촬영→편집→예약→게시 5단계, ‘완료 체크’는 한 번에 끝나는 작업이에요. 숫자는 매달 개수입니다.</div>
+  </div>
+  <div class="field"><label>월 촬영 횟수</label>
+    <div class="stepper"><button type="button" data-action="tpstep" data-d="-1">−</button><input id="f-shoot" inputmode="numeric" value="${+p.shootCount||0}"><button type="button" data-action="tpstep" data-d="1">+</button><span>회 · 매달 촬영 일정 칸이 새로 생겨요</span></div>
+  </div>`;
+}
+function planRow(it){
+  return `<div class="tp-row" data-iid="${esc(it.id||uid())}">
+    <input class="tp-label" value="${esc(it.label||'')}" placeholder="작업 이름">
+    <select class="tp-type"><option value="sns" ${tKey(it.type)==='sns'?'selected':''}>게시물</option><option value="simple" ${it.type==='simple'?'selected':''}>완료 체크</option></select>
+    <div class="stepper sm"><button type="button" data-action="tpstep" data-d="-1">−</button><input class="tp-count" inputmode="numeric" value="${+it.count||1}"><button type="button" data-action="tpstep" data-d="1">+</button></div>
+    <button type="button" class="tp-del" data-action="tpdel">✕</button>
+  </div>`;
+}
+function collectPlanItems(){
+  return [...document.querySelectorAll('#tpList .tp-row')].map(r=>({
+    id:r.dataset.iid,
+    label:r.querySelector('.tp-label').value.trim(),
+    type:r.querySelector('.tp-type').value==='simple'?'simple':'sns',
+    count:Math.max(0,Math.min(50,parseInt(r.querySelector('.tp-count').value)||0))
+  })).filter(x=>x.label && x.count>0);
+}
+
+/* ---------- 계정 (관리자: 직원 관리 / 공용: 비밀번호 변경) ---------- */
+function staffSheet(){
+  const list=[...state.users].sort((a,b)=>((a.active===false)-(b.active===false))||(a.name||'').localeCompare(b.name||'','ko'));
+  return `<div class="modal-hd"><h2>직원 계정 관리</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    ${list.length?list.map(u=>`<div class="row" style="cursor:default">
+      <div class="avatar" style="background:${u.active===false?'#94a3a1':colorFor(u.name)}">${initial(u.name)}</div>
+      <div class="body"><div class="name">${esc(u.name)} ${u.active===false?'<span class="badge gray">사용 중지</span>':''}</div><div class="meta">아이디 ${esc(u.loginId)}</div></div>
+      <button class="qbtn ${u.active===false?'':'cancel'}" data-action="staffactive" data-id="${u.uid}">${u.active===false?'다시 사용':'사용 중지'}</button>
+    </div>`).join(''):`<div class="card" style="padding:18px;text-align:center;color:var(--muted);font-size:13.5px">아직 등록된 직원이 없습니다</div>`}
+    <div class="section-label">새 직원 추가</div>
+    <div class="field"><label>이름</label><input id="st-name" placeholder="예: 홍길동"></div>
+    <div class="two-col">
+      <div class="field"><label>아이디 (영문·숫자)</label><input id="st-id" autocapitalize="off" autocomplete="off" placeholder="예: gildong"></div>
+      <div class="field"><label>처음 비밀번호 (6자 이상)</label><input id="st-pw" autocomplete="off" placeholder="직원에게 알려줄 것"></div>
+    </div>
+    <button class="btn btn-primary" data-action="addstaff" id="addStaffBtn">직원 계정 만들기</button>
+    <div style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">직원은 로그인한 뒤 메뉴 → 비밀번호 변경에서 자기 비밀번호를 바꿀 수 있어요.<br>비밀번호를 잊어버리면 그 계정은 사용 중지하고 새 아이디로 다시 만들어 주세요.</div>
+  </div>`;
+}
+async function createStaffFromForm(){
+  const name=$('#st-name').value.trim(), loginId=$('#st-id').value.trim().toLowerCase(), pw=$('#st-pw').value;
+  if(!name){ toast('이름을 입력하세요'); return; }
+  if(!/^[a-z0-9._-]{3,20}$/.test(loginId)){ toast('아이디는 영문 소문자·숫자 3~20자로 입력하세요',2600); return; }
+  if(loginId===ADMIN_ID){ toast('admin은 관리자 아이디라 쓸 수 없습니다'); return; }
+  if(pw.length<6){ toast('비밀번호는 6자 이상이어야 합니다'); return; }
+  if(!USE_FB){ toast('클라우드 연결 상태에서만 직원 계정을 만들 수 있습니다'); return; }
+  const btn=$('#addStaffBtn'); if(btn){ btn.disabled=true; btn.textContent='만드는 중…'; }
+  try{
+    if(!secAuth) secAuth=getAuth(initializeApp(FIREBASE_CONFIG,'staff-creator'));
+    const cred=await createUserWithEmailAndPassword(secAuth, idToEmail(loginId), pw);
+    await signOut(secAuth);
+    const u={uid:cred.user.uid, loginId, name, active:true, role:'staff', createdAt:Date.now()};
+    await setDoc(doc(db,'ad_users',u.uid),u);
+    if(!state.users.some(x=>x.uid===u.uid)) state.users.push(u);
+    openModal(staffSheet());
+    toast(`${name}님 계정을 만들었습니다 · 아이디 ${loginId}`,2800);
+  }catch(e){
+    if(btn){ btn.disabled=false; btn.textContent='직원 계정 만들기'; }
+    toast(authErrMsg(e),3200);
+  }
+}
+async function toggleStaffActive(id){
+  const u=state.users.find(x=>x.uid===id); if(!u) return;
+  const next=u.active===false;
+  if(!next && !confirm(`${u.name}님 계정을 사용 중지할까요?\n바로 로그인이 막히고 작업 기록은 그대로 남습니다.`)) return;
+  const upd={...u, active:next};
+  state.users=state.users.map(x=>x.uid===id?upd:x);
+  try{ await setDoc(doc(db,'ad_users',id),upd); openModal(staffSheet()); toast(next?'다시 사용하도록 했습니다':'사용 중지했습니다'); }
+  catch(e){ toast('저장 실패: '+(e.code||e.message),3000); }
+}
+function pwSheet(){
+  return `<div class="modal-hd"><h2>비밀번호 변경</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div class="field"><label>새 비밀번호 (6자 이상)</label><input id="pw-1" type="password" autocomplete="new-password"></div>
+    <div class="field"><label>새 비밀번호 확인</label><input id="pw-2" type="password" autocomplete="new-password"></div>
+    <button class="btn btn-primary" data-action="pwsave">변경</button>
+  </div>`;
+}
+async function savePassword(){
+  const a=$('#pw-1').value, b=$('#pw-2').value;
+  if(a.length<6){ toast('6자 이상 입력하세요'); return; }
+  if(a!==b){ toast('두 비밀번호가 다릅니다'); return; }
+  try{ await updatePassword(auth.currentUser,a); closeModal(); toast('비밀번호를 바꿨습니다'); }
+  catch(e){ toast(e.code==='auth/requires-recent-login'?'보안을 위해 로그아웃 후 다시 로그인한 다음 바꿔 주세요':authErrMsg(e),3200); }
+}
+function changelogHtml(){
+  return `<div class="section-label" style="margin:20px 0 8px">앱 정보 <span>v${APP_VERSION}</span></div>`+
+    CHANGELOG.map((c,i)=>`<details class="clog" ${i===0?'open':''}><summary>v${c.v} <small>${c.d}</small>${i===0?' <span class="badge green">사용 중</span>':''}</summary><ul>${c.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></details>`).join('');
+}
+function staffMenuSheet(){
+  return `<div class="modal-hd"><h2>메뉴</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div class="card" style="padding:14px 16px;margin-bottom:14px;box-shadow:none;background:var(--surface-2)">
+      <div style="font-weight:700">${esc(state.me.name)}</div><div style="font-size:12.5px;color:var(--muted)">아이디 ${esc(state.me.loginId||'')}</div>
+    </div>
+    <button class="btn btn-ghost" data-action="pwchange" style="margin-bottom:10px">🔑 비밀번호 변경</button>
+    <button class="btn btn-ghost" data-action="logout">로그아웃</button>
+    ${changelogHtml()}
+  </div>`;
+}
+
+/* ---------- 되돌리기 버튼이 있는 토스트 ---------- */
+function toastAction(msg,label,fn,ms){
+  document.querySelectorAll('.toast').forEach(x=>x.remove());
+  const t=document.createElement('div'); t.className='toast act';
+  const sp=document.createElement('span'); sp.textContent=msg;
+  const b=document.createElement('button'); b.textContent=label;
+  b.addEventListener('click',ev=>{ ev.stopPropagation(); t.remove(); fn(); });
+  t.append(sp,b); document.body.appendChild(t);
+  setTimeout(()=>t.remove(),ms||5000);
+}
+
+/* ---------- 작업 화면 입력 ---------- */
+document.addEventListener('change',e=>{
+  const el=e.target;
+  if(el.dataset.shoot){ patchShoot(el.dataset.doc,+el.dataset.n,{[el.dataset.shoot]:el.value}); }
+  else if(el.dataset.assign){ setAssignee(el.dataset.doc,el.dataset.assign,el.value); el.blur(); }
+  else if(el.dataset.link){ patchUnit(el.dataset.doc,el.dataset.link,{link:el.value.trim()}); el.blur(); }
+});
+document.addEventListener('input',e=>{ if(e.target.matches('.tp-count,#f-shoot')) e.target.value=e.target.value.replace(/[^0-9]/g,'').slice(0,2); });
+
+/* ---------- 로그인 (관리자·직원별 계정) ---------- */
+let pendingLoginMsg='';
+function authErrMsg(e){
+  const c=(e&&e.code)||'';
+  if(c==='auth/invalid-credential'||c==='auth/wrong-password'||c==='auth/user-not-found'||c==='auth/invalid-email') return '아이디 또는 비밀번호가 맞지 않습니다';
+  if(c==='auth/email-already-in-use') return '이미 있는 아이디입니다';
+  if(c==='auth/weak-password') return '비밀번호는 6자 이상이어야 합니다';
+  if(c==='auth/too-many-requests') return '여러 번 틀려서 잠시 막혔습니다. 조금 뒤 다시 시도하세요';
+  if(c==='auth/network-request-failed') return '인터넷 연결을 확인하세요';
+  if(c==='auth/operation-not-allowed') return 'Firebase에서 이메일/비밀번호 로그인을 먼저 켜 주세요';
+  return '오류: '+(c||(e&&e.message)||'알 수 없음');
+}
+function showLogin(mode){
+  hideLogin();
+  const setup=mode==='setup';
+  const el=document.createElement('div'); el.className='lock'; el.id='loginScreen';
   el.innerHTML=`
     <div class="lk-mark"></div>
-    <h2>광고비 관리</h2>
-    <p>비밀번호를 입력하세요</p>
-    <div class="lk-dots" id="lkDots">${'<span></span>'.repeat(4)}</div>
-    <div class="lk-msg" id="lkMsg"></div>
-    <div class="lk-pad">
-      ${keys.map(k=>k===''?`<div class="lk-key blank"></div>`:`<button class="lk-key ${k==='⌫'?'act':''}" data-key="${k}">${k}</button>`).join('')}
-    </div>`;
+    <h2>스테이유 광고 관리</h2>
+    <p>${setup?'처음 한 번만 · 관리자 비밀번호를 정하세요':'아이디와 비밀번호로 로그인하세요'}</p>
+    ${setup?`<form class="lg-form" id="setupForm">
+      <input value="관리자 아이디: ${ADMIN_ID}" disabled style="opacity:.75">
+      <input id="su-pw" type="password" autocomplete="new-password" placeholder="관리자 비밀번호 (6자 이상)">
+      <input id="su-pw2" type="password" autocomplete="new-password" placeholder="비밀번호 확인">
+      <div class="lk-msg" id="lgMsg"></div>
+      <button class="lg-btn" type="submit">관리자 계정 만들기</button>
+    </form>
+    <button class="lg-link" data-action="adminback">로그인 화면으로</button>`
+    :`<form class="lg-form" id="loginForm">
+      <input id="lg-id" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="아이디">
+      <input id="lg-pw" type="password" autocomplete="current-password" placeholder="비밀번호">
+      <div class="lk-msg" id="lgMsg">${esc(pendingLoginMsg)}</div>
+      <button class="lg-btn" type="submit">로그인</button>
+    </form>
+    <button class="lg-link" data-action="adminsetup">처음 사용 · 관리자 계정 만들기</button>`}`;
+  pendingLoginMsg='';
   document.body.appendChild(el);
 }
-function updateDots(){
-  const dots=document.querySelectorAll('#lkDots span');
-  dots.forEach((d,i)=>d.classList.toggle('on',i<pinBuf.length));
-}
-document.addEventListener('click',e=>{
-  const k=e.target.closest('[data-key]'); if(!k) return;
-  const v=k.dataset.key;
-  const msg=$('#lkMsg'), dots=$('#lkDots');
-  if(v==='⌫'){ pinBuf=pinBuf.slice(0,-1); updateDots(); return; }
-  if(pinBuf.length>=4) return;
-  pinBuf+=v; updateDots();
-  if(pinBuf.length===4){
-    if(pinBuf===APP_PIN){
-      localStorage.setItem(UNLOCK_KEY,'1');
-      setTimeout(()=>{ const ls=$('#lockScreen'); if(ls){ls.style.transition='opacity .3s';ls.style.opacity='0';setTimeout(()=>ls.remove(),300);} boot(); },120);
-    } else {
-      dots.classList.add('err'); msg.textContent='비밀번호가 맞지 않습니다';
-      setTimeout(()=>{ pinBuf=''; updateDots(); dots.classList.remove('err'); msg.textContent=''; },700);
+function hideLogin(){ const l=$('#loginScreen'); if(l) l.remove(); }
+document.addEventListener('submit',async e=>{
+  if(e.target.id==='loginForm'){
+    e.preventDefault();
+    const id=$('#lg-id').value.trim(), pw=$('#lg-pw').value, msg=$('#lgMsg'), btn=e.target.querySelector('button');
+    if(!id||!pw){ msg.textContent='아이디와 비밀번호를 입력하세요'; return; }
+    btn.disabled=true; btn.textContent='로그인 중…'; msg.textContent='';
+    try{ await signInWithEmailAndPassword(auth, idToEmail(id), pw); }
+    catch(err){ msg.textContent=authErrMsg(err); btn.disabled=false; btn.textContent='로그인'; }
+  }
+  if(e.target.id==='setupForm'){
+    e.preventDefault();
+    const a=$('#su-pw').value, b=$('#su-pw2').value, msg=$('#lgMsg'), btn=e.target.querySelector('button');
+    if(a.length<6){ msg.textContent='비밀번호는 6자 이상이어야 합니다'; return; }
+    if(a!==b){ msg.textContent='두 비밀번호가 다릅니다'; return; }
+    btn.disabled=true; btn.textContent='만드는 중…';
+    try{ await createUserWithEmailAndPassword(auth, ADMIN_EMAIL, a); }
+    catch(err){
+      msg.textContent = err.code==='auth/email-already-in-use' ? '이미 관리자 계정이 있습니다. 로그인 화면에서 아이디 admin으로 로그인하세요' : authErrMsg(err);
+      btn.disabled=false; btn.textContent='관리자 계정 만들기';
     }
   }
 });
-// physical keyboard support (desktop)
-document.addEventListener('keydown',e=>{
-  if(!$('#lockScreen')) return;
-  if(/^[0-9]$/.test(e.key)){ const btn=document.querySelector(`[data-key="${e.key}"]`); if(btn) btn.click(); }
-  else if(e.key==='Backspace'){ const b=document.querySelector('[data-key="⌫"]'); if(b) b.click(); }
-});
+function resetSession(){
+  Store.stop(); closeModal(); ensured.clear();
+  Object.assign(state,{clients:[],payments:[],extras:[],plans:{},months:{},users:[],ready:false,plansLoaded:false,monthsLoaded:false,role:null,me:null,staffTab:null,tab:'dashboard'});
+  document.body.classList.remove('staff');
+  $('#app').innerHTML='';
+}
+async function doLogout(){
+  if(!USE_FB){ toast('이 기기 저장 모드에서는 로그아웃이 없습니다'); return; }
+  closeModal(); await signOut(auth);
+}
+function onListenError(err){
+  if(err && err.code==='permission-denied'){
+    if(state.role==='staff'){ pendingLoginMsg='접근 권한이 없습니다. 사용이 중지된 계정일 수 있어요'; signOut(auth); }
+    else toast('권한 오류 — Firestore 보안 규칙을 확인하세요',4000);
+  } else toast('동기화 오류: '+((err&&err.code)||''),3000);
+}
+function onDataChange(){ state.ready=true; ensureCurrentMonth(); render(); }
+function startSession(role,me){
+  hideLogin();
+  state.role=role; state.me=me;
+  state.tab=role==='admin'?'dashboard':'staff';
+  state.staffTab=null;
+  $('#app').innerHTML='<div class="loading"><div class="spinner"></div><span>불러오는 중…</span></div>';
+  Store.init(role,onDataChange);
+}
 
 /* ---------- Boot ---------- */
-function boot(){ Store.init(()=>{ state.ready=true; render(); }); }
-if(isUnlocked()) boot(); else showLock();
+function boot(){
+  if(!USE_FB){ startSession('admin',{uid:'local',name:'관리자',loginId:ADMIN_ID}); return; }
+  let curUid=null;
+  onAuthStateChanged(auth, async user=>{
+    if(!user){ curUid=null; resetSession(); showLogin(); return; }
+    if(user.uid===curUid) return;
+    curUid=user.uid;
+    if((user.email||'').toLowerCase()===ADMIN_EMAIL){ startSession('admin',{uid:user.uid,name:'관리자',loginId:ADMIN_ID}); return; }
+    let me=null;
+    try{ const s=await getDoc(doc(db,'ad_users',user.uid)); if(s.exists() && s.data().active!==false) me={uid:user.uid,...s.data()}; }catch(e){}
+    if(!me){ pendingLoginMsg='사용이 중지되었거나 등록되지 않은 계정입니다. 관리자에게 문의하세요'; await signOut(auth); return; }
+    startSession('staff',me);
+  });
+}
+boot();
 </script>
 </body>
 </html>
