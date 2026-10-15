@@ -512,6 +512,108 @@ body.staff .toast{bottom:calc(env(safe-area-inset-bottom) + 20px)}
 .sh-adders{display:flex;flex-wrap:wrap;gap:6px}
 .sh-adders button{padding:10px 13px;border-radius:11px;background:var(--primary-l);color:var(--primary);font-weight:700;font-size:13.5px}
 .ws-unit.moved,.sh-row.moved{opacity:.6}
+
+/* v3.0 달력 기록 */
+body.wide main{max-width:1180px}
+@media(min-width:900px){
+  .modal-bg{align-items:center}
+  .modal{border-radius:20px;max-width:560px;max-height:86vh}
+  .modal .grabber{display:none}
+}
+.wk-top{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+@media(min-width:900px){ .wk-top{flex-direction:row;align-items:center} .wk-mnav{flex:0 0 340px} .wk-prog{flex:1} }
+.wk-mnav{margin:0}
+.wk-prog{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:11px 14px}
+.wk-prog-t{font-size:13px;font-weight:600;color:var(--muted)}
+.wk-prog-t b{font-size:17px;color:var(--ink)}
+.teamseg{display:flex;gap:5px;background:var(--surface);border-radius:12px;box-shadow:var(--shadow);padding:4px}
+.teamseg button{flex:1;padding:9px 12px;border-radius:9px;font-weight:700;font-size:13.5px;color:var(--muted);white-space:nowrap}
+.teamseg button.on{background:var(--primary);color:#fff}
+.teamseg.sm{box-shadow:none;background:var(--surface-2);padding:3px;flex:0 0 auto}
+.teamseg.sm button{padding:7px 9px;font-size:12px}
+.wcal-wrap{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:10px 10px 12px}
+.wcal-hint{font-size:12px;color:var(--muted);margin:0 4px 8px;font-weight:600}
+.wcal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.wh{text-align:center;font-size:11.5px;font-weight:700;color:var(--muted);padding:2px 0 4px}
+.wh.sun,.wc.sun .wc-n{color:var(--red)} .wh.sat,.wc.sat .wc-n{color:#2f6db5}
+.wc{min-height:62px;border-radius:9px;background:var(--surface-2);border:1.5px solid transparent;padding:4px 4px 5px;display:flex;flex-direction:column;align-items:stretch;gap:2px;text-align:left;position:relative;overflow:hidden}
+.wc:hover{border-color:#b9d6d3}
+.wc.empty{background:transparent;pointer-events:none}
+.wc.today{border-color:var(--primary);background:var(--primary-l)}
+.wc-n{font-size:12px;font-weight:800;line-height:1.2;padding-left:2px}
+.wc-e{font-size:10.5px;line-height:1.35;padding:1px 4px;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#fff;color:var(--ink)}
+.wc-e b{font-weight:800}
+.wc-more{font-size:10px;color:var(--muted);font-weight:700;padding-left:3px}
+.wc-dot{display:none}
+.t-video{color:#1e5f8c} .wc-e.t-video{background:#e4eef7;color:#174a6e}
+.t-sales{color:#8c4a1e} .wc-e.t-sales{background:#f7ebe0;color:#6e3a17}
+@media(min-width:900px){ .wc{min-height:104px;padding:6px 6px 7px} .wc-n{font-size:13px} .wc-e{font-size:12px;padding:2px 6px} }
+@media(max-width:560px){
+  .wc{min-height:52px} .wc-e{display:none} .wc-more{display:none}
+  .wc-dot{display:grid;place-items:center;position:absolute;right:4px;bottom:4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--primary);color:#fff;font-size:11px;font-weight:800}
+}
+.sumseg{display:flex;gap:6px;margin-bottom:10px}
+.sumseg button{flex:1;padding:10px;border-radius:11px;background:var(--surface);box-shadow:var(--shadow);font-weight:700;font-size:13.5px;color:var(--muted)}
+.sumseg button.on{background:var(--primary);color:#fff}
+.miss{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:11px 12px;margin-bottom:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.miss.ok{color:var(--green);font-weight:700;font-size:13.5px}
+.miss-h{width:100%;font-size:12.5px;font-weight:800;color:var(--muted);margin-bottom:2px}
+.miss-i{font-size:12.5px;font-weight:600;padding:6px 9px;border-radius:8px;background:var(--gray-bg);color:var(--ink)}
+.miss-i b{font-weight:800;margin-left:3px}
+.miss-i.red{background:var(--red-bg);color:var(--red)} .miss-i.amber{background:var(--amber-bg);color:var(--amber)}
+.mtx-wrap{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mtx{border-collapse:collapse;width:100%;font-size:13px}
+.mtx th,.mtx td{padding:7px 6px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+.mtx thead th{font-size:12px;font-weight:800;color:var(--muted);background:var(--surface-2)}
+.mtx tbody th{text-align:left;font-weight:700}
+.mtx .sticky-c{position:sticky;left:0;background:var(--surface);z-index:1;min-width:120px;max-width:170px}
+.mtx thead .sticky-c{background:var(--surface-2)}
+.mtx .cn{display:block;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.mtx tbody th small{display:block;font-size:10.5px;color:var(--muted);font-weight:600}
+.mtx tr.dim th .cn{color:var(--muted)}
+.mtx .na{color:#c3cfcd}
+.mc{display:inline-block;min-width:46px;padding:6px 8px;border-radius:8px;font-weight:800;font-size:13px;background:var(--gray-bg);color:var(--muted)}
+.mc.green{background:var(--green-bg);color:var(--green)} .mc.amber{background:var(--amber-bg);color:var(--amber)} .mc.red{background:var(--red-bg);color:var(--red)}
+.mc.wk{background:var(--primary-l);color:var(--primary)}
+.wk-wnav{margin-bottom:10px}
+.wl{margin-top:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.wl-day{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);padding:10px 12px}
+.wl-d{font-size:12.5px;font-weight:800;color:var(--muted);margin-bottom:6px}
+.wl-i{display:flex;align-items:center;gap:6px;width:100%;text-align:left;padding:6px 2px;font-size:13.5px;border-bottom:1px dashed var(--line)}
+.wl-i:last-child{border-bottom:none}
+.wl-i span{font-weight:800}
+.wl-i small{margin-left:auto;color:var(--muted);font-size:11.5px}
+.wk-noplan{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.wk-noplan .row{margin:0}
+.modal-hd .back{width:34px;height:34px;border-radius:10px;background:var(--surface-2);font-size:20px;font-weight:700;color:var(--primary);flex-shrink:0}
+.lg-row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px;border-radius:12px;background:var(--surface-2);border:1.5px solid var(--line);margin-bottom:8px}
+.lg-row:hover{border-color:#b9d6d3}
+.lg-k{font-weight:800;font-size:13px;flex:0 0 auto;min-width:56px}
+.lg-c{flex:1;min-width:0;font-weight:700;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lg-by{font-size:12px;color:var(--muted);font-weight:600}
+.lg-go{font-size:12.5px;color:var(--primary);font-weight:700}
+.lg-empty{font-size:13.5px;color:var(--muted);padding:14px;text-align:center;background:var(--surface-2);border-radius:12px}
+.lg-meta{font-size:12.5px;color:var(--muted);margin:2px 0 14px;line-height:1.6}
+.task-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.task-btn{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:13px 12px;border-radius:13px;background:var(--surface-2);border:1.5px solid var(--line);text-align:left}
+.task-btn:hover{border-color:var(--primary)}
+.task-btn b{font-size:14.5px;color:var(--ink)}
+.task-btn small{font-size:12px;font-weight:700}
+.cl-row{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:11px 12px;border-radius:13px;background:var(--surface-2);border:1.5px solid var(--line);margin-bottom:8px}
+.cl-row:hover{border-color:var(--primary)}
+.cl-row .avatar{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:800;flex-shrink:0}
+.cl-row .body{flex:1;min-width:0}
+.cl-row .name{font-weight:800;font-size:15px}
+.cl-row .meta{font-size:12.5px;color:var(--muted);font-weight:600}
+.cl-add{flex-shrink:0;padding:9px 12px;border-radius:10px;background:var(--primary-l);color:var(--primary);font-weight:800;font-size:13.5px}
+.cl-row.full{opacity:.7} .cl-row.full .cl-add{background:var(--green-bg);color:var(--green)}
+.st-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:13px;background:var(--surface-2);margin-bottom:8px}
+.st-row.off{opacity:.65}
+.st-row .avatar{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:800;flex-shrink:0}
+.st-row .body{flex:1;min-width:120px}
+.st-row .name{font-weight:700}
+.st-row .meta{font-size:12px;color:var(--muted)}
+.kt-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line);font-size:14px;font-weight:600}
 </style>
 </head>
 <body>
@@ -584,8 +686,16 @@ const USE_FB = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('YOU
 const LS_KEY = 'stayu_ad_billing_v1';
 
 /* ---------- 앱 버전 ---------- */
-const APP_VERSION='2.1.0';
+const APP_VERSION='3.0.0';
 const CHANGELOG=[
+  {v:'3.0.0', d:'2026-10-15', items:[
+    '작업 관리를 달력 기록 방식으로 변경 — 날짜 → 작업 → 업체를 누르면 완료로 기록',
+    '직원별 팀(영상팀·영업팀) 지정, 직원은 자기 팀 작업만 보고 기록 · 작업별 담당 팀도 관리자가 지정',
+    '이번 달 집계(업체×작업, 못 채운 작업 빨간색)와 주간 기록 보기',
+    '기록 수정(날짜·작업·업체)과 삭제, 기록한 사람·시간 표시',
+    '5단계 진행·되돌리기·게시물 링크·이월 기능 제거, 리뷰·블로그는 한 달 한 번 완료 체크',
+    'PC에서 넓은 화면으로 표시, 기록 창은 화면 가운데에 표시'
+  ]},
   {v:'2.1.0', d:'2026-10-15', items:[
     "'매월 약정 작업'을 '월 작업 구성'으로 이름 변경",
     '계약서 제5조 패키지(STANDARD 1·2, GROWTH, PREMIUM) 선택 시 작업 자동 채움, 기존 계약 업체는 직접 설정',
@@ -664,9 +774,9 @@ const state = {
   extraFilter: 'all',
   extraCat: 'all',
   ready: false,
-  plans: {}, months: {}, users: [],
-  plansLoaded: false, monthsLoaded: false,
-  role: null, me: null, staffTab: null
+  plans: {}, users: [], logs: [], settings: {},
+  plansLoaded: false,
+  role: null, me: null, workTeam: 'all', sumMode: 'month', weekStart: null
 };
 let db=null;
 if(USE_FB){ fbApp=initializeApp(FIREBASE_CONFIG); db=getFirestore(fbApp); auth=getAuth(fbApp); }
@@ -683,41 +793,41 @@ const Store = {
         listen(collection(db,'ad_payments'),snap=>{ state.payments=snap.docs.map(d=>({id:d.id,...d.data()})); });
         listen(collection(db,'ad_extras'),snap=>{ state.extras=snap.docs.map(d=>({id:d.id,...d.data()})); });
         listen(collection(db,'ad_users'),snap=>{ state.users=snap.docs.map(d=>({...d.data(),uid:d.id})); });
-        listen(collection(db,'ad_month'),snap=>{ state.months=mapOf(snap); },'monthsLoaded');
       } else {
-        const now=nowMonth();
-        listen(query(collection(db,'ad_month'),where('month','in',[addMonth(now,-1),now])),snap=>{ state.months=mapOf(snap); },'monthsLoaded');
+        // 관리자가 팀을 바꾸거나 사용 중지하면 바로 반영
+        unsubs.push(onSnapshot(doc(db,'ad_users',state.me.uid),snap=>{
+          const d=snap.exists()?snap.data():null;
+          if(!d || d.active===false){ pendingLoginMsg='사용이 중지된 계정입니다. 관리자에게 문의하세요'; signOut(auth); return; }
+          if(d.team!==state.me.team || d.name!==state.me.name){ state.me={...state.me, team:d.team, name:d.name}; onChange(); }
+        },err=>onListenError(err)));
       }
+      listen(collection(db,'ad_logs'),snap=>{ state.logs=snap.docs.map(d=>({...d.data(),id:d.id})); });
+      listen(collection(db,'ad_settings'),snap=>{ const d=snap.docs.find(x=>x.id==='main'); state.settings=d?d.data():{}; });
       listen(collection(db,'ad_taskplans'),snap=>{ const o={}; snap.docs.forEach(d=>{ o[d.id]={...d.data(),clientId:d.id}; }); state.plans=o; },'plansLoaded');
     } else {
       const raw = localStorage.getItem(LS_KEY);
-      if(raw){ try{ const o=JSON.parse(raw); state.clients=o.clients||[]; state.payments=o.payments||[]; state.extras=o.extras||[]; state.plans=o.plans||{}; state.months=o.months||{}; }catch(e){} }
-      state.plansLoaded=true; state.monthsLoaded=true;
+      if(raw){ try{ const o=JSON.parse(raw); state.clients=o.clients||[]; state.payments=o.payments||[]; state.extras=o.extras||[]; state.plans=o.plans||{}; state.logs=o.logs||[]; state.settings=o.settings||{}; }catch(e){} }
+      state.plansLoaded=true;
       onChange();
     }
   },
   stop(){ unsubs.splice(0).forEach(f=>{ try{f();}catch(e){} }); },
-  _save(){ if(!USE_FB) localStorage.setItem(LS_KEY, JSON.stringify({clients:state.clients,payments:state.payments,extras:state.extras,plans:state.plans,months:state.months})); },
+  _save(){ if(!USE_FB) localStorage.setItem(LS_KEY, JSON.stringify({clients:state.clients,payments:state.payments,extras:state.extras,plans:state.plans,logs:state.logs,settings:state.settings})); },
+  async saveLog(l){ if(USE_FB) await setDoc(doc(db,'ad_logs',l.id),l); else this._save(); },
+  async delLog(id){ if(USE_FB) await deleteDoc(doc(db,'ad_logs',id)); else this._save(); },
+  async saveSettings(o){ if(USE_FB) await setDoc(doc(db,'ad_settings','main'),o); else this._save(); },
   async savePlan(p){
     if(USE_FB){ await setDoc(doc(db,'ad_taskplans',p.clientId), p); }
     else { state.plans[p.clientId]=p; this._save(); render(); }
-  },
-  async createMonthIfMissing(d){
-    if(USE_FB){ const ref=doc(db,'ad_month',d.id); return await runTransaction(db, async tx=>{ const snap=await tx.get(ref); if(snap.exists()) return false; tx.set(ref,d); return true; }); }
-    else { this._save(); return true; }
-  },
-  async updateMonth(id,fn){
-    if(USE_FB){ const ref=doc(db,'ad_month',id); await runTransaction(db, async tx=>{ const snap=await tx.get(ref); if(!snap.exists()) return; tx.set(ref, fn({...snap.data(),id:snap.id})); }); }
-    else { const d=state.months[id]; if(!d) return; state.months[id]=fn(JSON.parse(JSON.stringify(d))); this._save(); render(); }
   },
   async saveClient(c){
     if(USE_FB){ await setDoc(doc(db,'ad_clients',c.id), c); }
     else { const i=state.clients.findIndex(x=>x.id===c.id); if(i<0)state.clients.push(c); else state.clients[i]=c; this._save(); render(); }
   },
   async delClient(id){
-    const mids=Object.values(state.months).filter(d=>d.clientId===id).map(d=>d.id);
-    if(USE_FB){ await deleteDoc(doc(db,'ad_clients',id)); for(const p of state.payments.filter(p=>p.clientId===id)) await deleteDoc(doc(db,'ad_payments',p.id)); for(const e of state.extras.filter(e=>e.clientId===id)) await deleteDoc(doc(db,'ad_extras',e.id)); await deleteDoc(doc(db,'ad_taskplans',id)); for(const m of mids) await deleteDoc(doc(db,'ad_month',m)); }
-    else { state.clients=state.clients.filter(x=>x.id!==id); state.payments=state.payments.filter(p=>p.clientId!==id); state.extras=state.extras.filter(e=>e.clientId!==id); delete state.plans[id]; mids.forEach(m=>delete state.months[m]); this._save(); render(); }
+    const lids=state.logs.filter(l=>l.clientId===id).map(l=>l.id);
+    if(USE_FB){ await deleteDoc(doc(db,'ad_clients',id)); for(const p of state.payments.filter(p=>p.clientId===id)) await deleteDoc(doc(db,'ad_payments',p.id)); for(const e of state.extras.filter(e=>e.clientId===id)) await deleteDoc(doc(db,'ad_extras',e.id)); await deleteDoc(doc(db,'ad_taskplans',id)); for(const l of lids) await deleteDoc(doc(db,'ad_logs',l)); }
+    else { state.clients=state.clients.filter(x=>x.id!==id); state.payments=state.payments.filter(p=>p.clientId!==id); state.extras=state.extras.filter(e=>e.clientId!==id); delete state.plans[id]; state.logs=state.logs.filter(l=>l.clientId!==id); this._save(); render(); }
   },
   async savePayment(p){
     if(USE_FB){ await setDoc(doc(db,'ad_payments',p.id), p); }
@@ -738,8 +848,9 @@ const Store = {
   importData(o){
     state.clients=o.clients||[]; state.payments=o.payments||[]; state.extras=o.extras||[];
     if(o.plans){ state.plans={}; o.plans.forEach(p=>{ if(p&&p.clientId) state.plans[p.clientId]=p; }); }
-    if(o.months){ state.months={}; o.months.forEach(d=>{ if(d&&d.id) state.months[d.id]=d; }); }
-    if(USE_FB){ for(const c of state.clients) setDoc(doc(db,'ad_clients',c.id),c); for(const p of state.payments) setDoc(doc(db,'ad_payments',p.id),p); for(const e of state.extras) setDoc(doc(db,'ad_extras',e.id),e); if(o.plans) for(const p of o.plans) setDoc(doc(db,'ad_taskplans',p.clientId),p); if(o.months) for(const d of o.months) setDoc(doc(db,'ad_month',d.id),d); }
+    if(o.logs){ state.logs=o.logs.filter(l=>l&&l.id); }
+    if(o.settings){ state.settings=o.settings; }
+    if(USE_FB){ for(const c of state.clients) setDoc(doc(db,'ad_clients',c.id),c); for(const p of state.payments) setDoc(doc(db,'ad_payments',p.id),p); for(const e of state.extras) setDoc(doc(db,'ad_extras',e.id),e); if(o.plans) for(const p of o.plans) setDoc(doc(db,'ad_taskplans',p.clientId),p); if(o.logs) for(const l of o.logs) if(l&&l.id) setDoc(doc(db,'ad_logs',l.id),l); if(o.settings) setDoc(doc(db,'ad_settings','main'),o.settings); }
     else { this._save(); render(); }
   }
 };
@@ -880,10 +991,12 @@ function render(){
   if(isStaff){
     const sd=$('#syncDot'); sd.classList.remove('local'); $('#syncText').textContent=`${state.me.name}님 · 직원`;
     $('#fab').classList.add('hidden');
-    $('#app').innerHTML=viewStaff();
+    document.body.classList.add('wide');
+    $('#app').innerHTML=viewWorkBoard();
     afterRender();
     return;
   }
+  document.body.classList.toggle('wide',state.tab==='work');
   // sync indicator
   const sd=$('#syncDot'), st=$('#syncText');
   if(USE_FB){ sd.classList.remove('local'); st.textContent='클라우드 동기화'; }
@@ -901,11 +1014,11 @@ function render(){
   else if(state.tab==='clients') el.innerHTML=viewClients();
   else if(state.tab==='extras') el.innerHTML=viewExtras();
   else if(state.tab==='stats') el.innerHTML=viewStats();
-  else if(state.tab==='work') el.innerHTML=viewWork();
+  else if(state.tab==='work') el.innerHTML=viewWorkBoard();
   afterRender();
 }
 function afterRender(){
-  const vk=state.role+':'+state.tab+':'+(state.staffTab||'');
+  const vk=state.role+':'+state.tab;
   if(vk!==lastViewKey){ window.scrollTo({top:0}); lastViewKey=vk; }
   // 열려있는 거래처 상세는 데이터 변경 시 자동 갱신 (Firebase 동기화 대응)
   if(openDetailId){
@@ -921,16 +1034,8 @@ function afterRender(){
     if(c && modal && modal.querySelector('.cal-grid')){ modal.innerHTML='<div class="grabber"></div>'+paymentCalendar(c, openCalMonth); }
     else if(!c) openCalId=null;
   }
-  // 열려있는 작업 상세 시트 자동 갱신 (입력 중일 때는 건드리지 않음)
-  if(openWorkId){
-    const modal=document.querySelector('#modalBg .modal');
-    if(modal && modal.querySelector('.work-sheet')){
-      const ae=document.activeElement;
-      const typing=ae && modal.contains(ae) && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName);
-      if(!state.months[openWorkId]) closeModal();
-      else if(!typing){ const sc=modal.scrollTop; modal.innerHTML='<div class="grabber"></div>'+workSheet(openWorkId); modal.scrollTop=sc; }
-    }
-  }
+  // 열려있는 작업 기록 창 자동 갱신 (입력 중일 때는 건드리지 않음)
+  refreshWorkModal();
 }
 
 /* ============================================================
@@ -1058,8 +1163,8 @@ function viewDashboard(){
     ${(()=>{ const et=extraTotals(); const uc=state.extras.filter(e=>e.status!=='paid').length;
       return uc>0 ? `<button class="btn btn-ghost" data-action="goextras" style="margin-top:9px;color:var(--amber)">🧾 부수작업 미수 ${won(et.unpaid)}원 · ${uc}건 — 확인하기 ›</button>` : ''; })()}
 
-    ${(()=>{ const ds=docsOf(m); if(!ds.length) return ''; const st=unitsStats(ds.flatMap(d=>d.units||[])); const red=ds.filter(d=>docCls(d)==='red').length;
-      return `<button class="btn btn-ghost" data-action="gowork" style="margin-top:9px;${red?'color:var(--red)':''}">🎬 이번 달 작업 ${st.done}/${st.total} 완료${red?` · 확인 필요 ${red}곳`:''} ›</button>`; })()}
+    ${(()=>{ if(!activePlans(m).length) return ''; const sm=monthSummary(m,'all');
+      return `<button class="btn btn-ghost" data-action="gowork" style="margin-top:9px;${sm.missing.length&&daysLeftIn(m)<=URGENT_DAYS?'color:var(--red)':''}">🎬 이번 달 작업 ${sm.got}/${sm.need} 완료${sm.missing.length?` · 남은 ${sm.missing.length}건`:''} ›</button>`; })()}
 
     <div class="section-label">이번 달 미입금 · 부분입금<span>${unpaidList.length}곳</span></div>
     ${unpaidList.length===0
@@ -1457,7 +1562,7 @@ function openModal(html){
   bg.addEventListener('click',e=>{ if(e.target===bg) closeModal(); });
   document.body.appendChild(bg);
 }
-function closeModal(){ const m=$('#modalBg'); if(m) m.remove(); openDetailId=null; openCalId=null; openWorkId=null; }
+function closeModal(){ const m=$('#modalBg'); if(m) m.remove(); openDetailId=null; openCalId=null; workUI={day:null,step:'day',key:null,editId:null,cell:null}; }
 let openDetailId=null; // 현재 열려있는 거래처 상세 (데이터 변경 시 자동 갱신용)
 function showClientDetail(c){ if(!c) return; openModal(clientDetail(c)); openDetailId=c.id; }
 
@@ -1521,10 +1626,11 @@ function clientDetail(c){
       <button class="btn btn-primary" data-action="paydetail" data-id="${c.id}">+ 입금 등록</button>
       <button class="btn btn-ghost" data-action="editclient" data-id="${c.id}" style="flex:0 0 96px">정보 수정</button>
     </div>
-    <div class="btn-row" style="margin:-6px 0 16px;${state.months[monthDocId(nowMonth(),c.id)]?'':'display:none'}">
-      <button class="btn btn-ghost" data-action="work" data-id="${monthDocId(nowMonth(),c.id)}">🎬 이번 달 작업 보기</button>
-      ${state.plans[c.id]&&state.plans[c.id].pkg!=='S1'?`<button class="btn btn-ghost" data-action="wkaddset" data-id="${c.id}">+ 추가 항목</button>`:''}
+    ${hasPlan(c.id)?`<div class="btn-row" style="margin:-6px 0 16px">
+      <button class="btn btn-ghost" data-action="gowork">🎬 작업 달력 보기</button>
+      ${state.plans[c.id].pkg!=='S1'?`<button class="btn btn-ghost" data-action="wkaddset" data-id="${c.id}">+ 이번 달 추가 항목</button>`:''}
     </div>
+    ${+((state.plans[c.id].extra||{})[nowMonth()])?`<div class="card" style="padding:11px 14px;margin:-6px 0 16px;display:flex;align-items:center;gap:10px;font-size:13.5px"><span style="flex:1">${mLabel(nowMonth())} 추가 항목 <b>${state.plans[c.id].extra[nowMonth()]}회</b> (숏폼 +${4*state.plans[c.id].extra[nowMonth()]}, 롱폼 +${state.plans[c.id].extra[nowMonth()]})</span><button class="qbtn cancel" data-action="wkdelset" data-id="${c.id}">1회 빼기</button></div>`:''}`:''}
     ${(()=>{
       const board=clientMonthBoard(c);
       const unpaid=board.filter(x=>x.remain>0);
@@ -1904,22 +2010,33 @@ document.addEventListener('click',e=>{
     case 'adminsetup': showLogin('setup'); break;
     case 'adminback': showLogin(); break;
     case 'gowork': state.tab='work'; render(); break;
-    case 'work': openWork(id); break;
     case 'editclientw': openModal(clientForm(state.clients.find(c=>c.id===id))); break;
-    case 'adv': advanceUnit(t.dataset.doc,t.dataset.uid); break;
-    case 'setstage': setStage(t.dataset.doc,t.dataset.uid,+t.dataset.s); break;
-    case 'shootdone': { const d=state.months[t.dataset.doc]; const sh=d&&(d.shoots||[]).find(x=>x.n===+t.dataset.n); if(sh) patchShoot(t.dataset.doc,sh.n,{done:!sh.done,by:state.me.name,at:Date.now()}); } break;
-    case 'stab': state.staffTab=t.dataset.v; render(); break;
-    case 'linksave': { const v=($('#lk-url')?.value||'').trim(); if(v) patchUnit(t.dataset.doc,t.dataset.uid,{link:v}); closeModal(); if(v) toast('링크를 저장했습니다'); } break;
     case 'tpadd': { const i=+t.dataset.i; const pr=i>=0?TASK_PRESETS[i]:{label:'',type:'sns',count:1}; const used=[...document.querySelectorAll('#tpList .tp-row')].map(r=>r.dataset.iid); $('#tpList').insertAdjacentHTML('beforeend',planRow({...pr,id:(pr.id&&!used.includes(pr.id))?pr.id:uid()})); if(!$('#f-pkg').value) pickPackage('custom'); $('#tpEmpty')?.classList.add('hidden'); if(i<0){ const ins=document.querySelectorAll('#tpList .tp-label'); ins[ins.length-1].focus(); } } break;
     case 'tpdel': t.closest('.tp-row')?.remove(); if(!document.querySelector('#tpList .tp-row')) $('#tpEmpty')?.classList.remove('hidden'); break;
     case 'tpstep': { const inp=t.parentElement.querySelector('input'); const min=inp.id==='f-shoot'?0:1; inp.value=Math.max(min,Math.min(inp.id==='f-shoot'?20:50,(parseInt(inp.value)||0)+(+t.dataset.d))); } break;
     case 'staffmgr': openModal(staffSheet()); break;
     case 'pkgpick': pickPackage(t.dataset.v); break;
-    case 'shootadd': addShoot(t.dataset.doc); break;
-    case 'shootdel': delShoot(t.dataset.doc,+t.dataset.n); break;
-    case 'wkaddset': addExtraSet(id); break;
-    case 'wkdelset': removeExtraSet(t.dataset.doc,+t.dataset.k); break;
+    case 'wkaddset': changeExtra(id,1); break;
+    case 'wkdelset': changeExtra(id,-1); break;
+    case 'wkday': openDay(t.dataset.d); break;
+    case 'wktask': workUI.key=t.dataset.k; workUI.step='client'; refreshWorkModal(); document.querySelector('#modalBg .modal')?.scrollTo(0,0); break;
+    case 'wkpick': { const p=state.plans[t.dataset.c], m=workUI.day.slice(0,7), tg=p&&targetsOf(p,m)[workUI.key];
+      if(tg && tg.kind!=='shoot' && doneOf(p.clientId,workUI.key,m)>=tg.target && !confirm(`${p.name} · ${keyLabel(workUI.key)}는 이번 달 목표를 이미 채웠습니다.\n그래도 기록할까요?`)) break;
+      addLog(workUI.day,workUI.key,t.dataset.c); } break;
+    case 'wkback': if(workUI.editId){ workUI.editId=null; } else if(workUI.step==='client'){ workUI.step='day'; workUI.key=null; } refreshWorkModal(); break;
+    case 'wkedit': if(!$('#modalBg')||!document.querySelector('#modalBg .wk-sheet')){ openWorkModal({editId:t.dataset.id}); } else { workUI.editId=t.dataset.id; refreshWorkModal(); } break;
+    case 'wksave': { const nd=$('#le-date').value, nk=$('#le-key').value, nc=$('#le-client').value; if(!nd){ toast('날짜를 넣어 주세요'); break; }
+      const p=state.plans[nc]; if(p && !targetsOf(p,nd.slice(0,7))[nk] && !confirm(`${p.name}의 ${mLabel(nd.slice(0,7))} 월 작업 구성에 '${keyLabel(nk)}'가 없습니다.\n그래도 저장할까요?`)) break;
+      document.activeElement&&document.activeElement.blur(); workUI.editId=null; updateLog(id,{date:nd,key:nk,clientId:nc}); } break;
+    case 'wkdel': removeLog(id); break;
+    case 'wkcell': openWorkModal({cell:{c:t.dataset.c,k:t.dataset.k}}); break;
+    case 'wkteam': state.workTeam=t.dataset.v; render(); break;
+    case 'summode': state.sumMode=t.dataset.v; render(); break;
+    case 'wkprev': state.weekStart=addDays(state.weekStart||weekStartOf(todayISO()),-7); state.month=addDays(state.weekStart,3).slice(0,7); render(); break;
+    case 'wknext': state.weekStart=addDays(state.weekStart||weekStartOf(todayISO()),7); state.month=addDays(state.weekStart,3).slice(0,7); render(); break;
+    case 'staffteam': setStaffTeam(id,t.dataset.v); break;
+    case 'keyteam': setKeyTeam(t.dataset.k,t.dataset.v); break;
+    case 'newteam': $('#st-team').value=t.dataset.v; t.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===t)); break;
     case 'addstaff': createStaffFromForm(); break;
     case 'staffactive': toggleStaffActive(id); break;
     case 'pwchange': openModal(pwSheet()); break;
@@ -1963,10 +2080,9 @@ function saveClientForm(){
   const keywords=($('#f-kw')?.value||'').trim();
   Store.saveClient(c);
   if(items.length || keywords || state.plans[id]){
-    const plan={clientId:id, name:c.name, status:c.status, contractDate:c.contractDate, endDate:c.endDate, pkg:items.length?(pkg||'custom'):'', items, keywords, updatedAt:Date.now()};
+    const plan={clientId:id, name:c.name, status:c.status, contractDate:c.contractDate, endDate:c.endDate, pkg:items.length?(pkg||'custom'):'', items, keywords, extra:(state.plans[id]||{}).extra||{}, updatedAt:Date.now()};
     state.plans[id]=plan;
     Store.savePlan(plan).catch(e=>toast('월 작업 구성 저장 실패: '+(e.code||e.message),3000));
-    syncPlanToMonth(plan);
   }
   closeModal(); render(); toast(existing?'저장되었습니다':'거래처가 등록되었습니다');
 }
@@ -2064,7 +2180,7 @@ function undoBatchSettle(clientId){
 }
 
 function exportData(){
-  const data={clients:state.clients,payments:state.payments,extras:state.extras,plans:Object.values(state.plans),months:Object.values(state.months),appVersion:APP_VERSION,exportedAt:new Date().toISOString()};
+  const data={clients:state.clients,payments:state.payments,extras:state.extras,plans:Object.values(state.plans),logs:state.logs,settings:state.settings,appVersion:APP_VERSION,exportedAt:new Date().toISOString()};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a'); a.href=url;
@@ -2080,24 +2196,13 @@ function importData(file){
 
 
 /* ============================================================
-   월간 작업 관리 (v2.1.0)
-   - 거래처별 '월 작업 구성'(ad_taskplans) → 매달 1일 기준 작업표(ad_month) 자동 생성
-   - 작업표 문서 id = 'YYYY-MM__거래처id'
-   - 작업 종류: sns(영상·게시물 5단계) / simple(완료 체크) / count(횟수만 기록)
-   - 지난달 못 끝낸 영상·촬영은 새 달 작업표로 옮겨 붙임 (계약서 제5조 제2항 2호)
+   작업 관리 (v3.0.0) — 팀별 달력 기록 방식
+   - 거래처별 '월 작업 구성'(ad_taskplans)이 매달 목표가 됨
+   - 직원은 달력 날짜 → 작업 → 업체를 눌러 '완료한 날'을 기록 (ad_logs)
+   - 기록이 업체·작업별로 자동 집계 (이번 달 목표 대비 / 이번 주 기록)
+   - 팀: 영상팀(video) / 영업팀(sales) — 직원 팀, 작업별 담당 팀은 관리자가 지정
    ============================================================ */
-const STAGES={ sns:['예정','촬영 완료','편집 중','업로드 예약','게시 완료'], simple:['할 일','완료'], count:['기록'] };
-const STAGE_SHORT={ sns:['예정','촬영','편집','예약','게시'], simple:['할 일','완료'], count:['기록'] };
-const tKey=t=>t==='simple'?'simple':t==='count'?'count':'sns';
-const lastStage=t=>STAGES[tKey(t)].length-1;
-const stageName=(t,s)=>STAGES[tKey(t)][s]||'';
-const isCount=u=>tKey(u.type)==='count';
-const isProg=u=>!isCount(u) && !u.carriedTo;          // 진행률·완료 판단에 들어가는 작업
-const isDone=u=>(+u.stage||0)>=lastStage(u.type);
-const URGENT_DAYS=7;   // 마감 며칠 전부터 '시작 안 한 작업'을 빨간색/밀린 것으로 볼지
-
-/* 계약서 제5조 제1항 패키지 구성 (숏폼·롱폼은 5단계, 리뷰·블로그는 횟수 기록, 나머지는 완료 체크)
-   보고서는 제6조 제2항(매월 1회 이상 보고)에 따라 모든 패키지에 포함 */
+const TEAMS={video:'영상팀', sales:'영업팀'};
 const I={
   short:{id:'short', label:'숏폼 영상', type:'sns', count:4},
   long:{id:'long', label:'롱폼 영상', type:'sns', count:1},
@@ -2108,425 +2213,332 @@ const I={
   brand:{id:'brand', label:'브랜드 콘텐츠 광고', type:'simple', count:1},
   report:{id:'report', label:'보고서', type:'simple', count:1},
 };
+// 계약서 제5조 제1항 패키지 구성 + 제6조 제2항 월간 보고서
 const PACKAGES=[
   {id:'S1', name:'STANDARD 1', items:['review','blog','report']},
   {id:'S2', name:'STANDARD 2', items:['short','long','travel','seo','report']},
   {id:'G',  name:'GROWTH',     items:['short','long','travel','seo','review','blog','report']},
   {id:'P',  name:'PREMIUM',    items:['short','long','travel','seo','review','blog','brand','report']},
 ];
+const DEFAULT_TEAM={shoot:'video', short:'video', long:'video', travel:'video', seo:'sales', review:'sales', blog:'sales', report:'sales', brand:'sales'};
+const SHORT_NAME={shoot:'촬영', short:'숏폼', long:'롱폼', travel:'여행콘텐츠', seo:'SEO', review:'리뷰', blog:'블로그', report:'보고서', brand:'브랜드광고'};
+const KEY_ORDER=['shoot','short','long','travel','seo','review','blog','brand','report'];
+const URGENT_DAYS=7;   // 이번 달 마감 며칠 전부터 못 채운 작업을 빨간색으로 보일지
+const WD=['일','월','화','수','목','금','토'];
 const pkgName=id=>(PACKAGES.find(p=>p.id===id)||{}).name||'직접 설정';
 const pkgItems=id=>((PACKAGES.find(p=>p.id===id)||{}).items||[]).map(k=>({...I[k]}));
 const TASK_PRESETS=['short','long','travel','seo','review','blog','brand','report'].map(k=>I[k]);
-// 추가 항목 (제5조 제3항): 추가 촬영 + 숏폼 4편 + 롱폼 1편 — 1회성, 누른 달에만 붙음
-const EXTRA_SET=[{key:'short',label:'숏폼 영상',count:4},{key:'long',label:'롱폼 영상',count:1}];
-
-const monthDocId=(m,cid)=>`${m}__${cid}`;
-const mNum=m=>+String(m).slice(5,7);
-const ensured=new Set();
-let openWorkId=null;
-
-function newUnit(it,n,extra){ return {uid:`${it.id}-${n}`, itemId:it.id, label:it.label, type:tKey(it.type), n, stage:0, value:null, assignee:'', assigneeName:'', link:'', by:'', at:0, ...(extra||{})}; }
-function newShoot(n){ return {n, date:'', time:'', done:false}; }
-function unitsForItem(it){ const t=tKey(it.type); const c=t==='count'?1:(+it.count||0); return Array.from({length:c},(_,i)=>newUnit(it,i+1)); }
-function buildMonthDoc(plan,m){
-  const items=(plan.items||[]).map(x=>({...x}));
-  return {id:monthDocId(m,plan.clientId), month:m, clientId:plan.clientId, name:plan.name||'', items, units:items.flatMap(unitsForItem), shoots:[], extraSets:0, createdAt:Date.now()};
-}
-// 지난달 못 끝낸 영상·날짜 잡힌 촬영을 새 달로 옮겨 붙임
-function carryFrom(prev,m){
-  const units=(prev.units||[]).filter(u=>tKey(u.type)==='sns' && !isDone(u) && !u.carriedTo).map(u=>{
-    const from=u.carriedFrom||prev.month;
-    const base=u.carriedFrom?u.itemId:`${u.itemId}@${prev.month}`;
-    return {...u, uid:`${u.uid}~${m}`, itemId:base, label:u.carriedFrom?u.label:`${u.label} · ${mNum(prev.month)}월분`, carriedFrom:from, extra:false};
-  });
-  const shoots=(prev.shoots||[]).filter(s=>!s.done && s.date && !s.carriedTo);
-  return {units, shoots, unitIds:units.map(u=>u.uid.replace(`~${m}`,'')), shootNs:shoots.map(s=>s.n)};
-}
-// 월 작업 구성이 바뀌었을 때 이번 달 작업표에 반영 — 이미 손댄 작업, 이월·추가 작업은 지우지 않음 (여러 번 적용해도 결과가 같음)
-function mergePlan(d,plan){
-  const fixed=(d.units||[]).filter(u=>u.carriedFrom||u.extra);
-  const byItem={};
-  (d.units||[]).filter(u=>!u.carriedFrom&&!u.extra).forEach(u=>{ (byItem[u.itemId]=byItem[u.itemId]||[]).push(u); });
-  const keep=[];
-  (plan.items||[]).forEach(it=>{
-    const t=tKey(it.type), want=t==='count'?1:(+it.count||0);
-    const list=(byItem[it.id]||[]).sort((a,b)=>a.n-b.n).map(u=>({...u,label:it.label,type:t,stage:t==='count'?0:Math.min(+u.stage||0,lastStage(t))}));
-    while(list.length>want){
-      let idx=-1; for(let i=list.length-1;i>=0;i--){ if(!(+list[i].stage) && list[i].value==null){ idx=i; break; } }
-      if(idx<0) break; list.splice(idx,1);
-    }
-    let n=list.reduce((a,u)=>Math.max(a,u.n),0);
-    while(list.length<want){ n++; list.push(newUnit(it,n)); }
-    keep.push(...list); delete byItem[it.id];
-  });
-  Object.values(byItem).flat().forEach(u=>{ if(+u.stage>0 || u.value!=null) keep.push(u); });
-  return {...d, name:plan.name||d.name, items:(plan.items||[]).map(x=>({...x})), units:[...keep,...fixed]};
-}
+const tKey=t=>t==='simple'?'simple':t==='count'?'count':'sns';
+const taskKeyOf=it=>I[it.id]?it.id:'c:'+String(it.label||'').trim();
+const keyLabel=k=>k==='shoot'?'촬영':I[k]?I[k].label:String(k).replace(/^c:/,'');
+const keyShort=k=>SHORT_NAME[k]||String(k).replace(/^c:/,'');
+const keyRank=k=>{ const i=KEY_ORDER.indexOf(k); return i<0?100:i; };
+const sortKeys=ks=>[...new Set(ks)].sort((a,b)=>keyRank(a)-keyRank(b)||a.localeCompare(b,'ko'));
 const hasPlan=id=>{ const p=state.plans[id]; return !!(p && (p.items||[]).length); };
-// 이번 달 작업표가 없으면 만들어 둠 (매달 1일 이후 누가 앱을 처음 열든 자동 생성)
-function ensureCurrentMonth(){
-  if(!state.plansLoaded || !state.monthsLoaded) return;
-  const m=nowMonth(), pm=addMonth(m,-1);
-  Object.values(state.plans).forEach(p=>{
-    if(!p.clientId || !hasPlan(p.clientId) || !isActiveInMonth(p,m)) return;
-    const id=monthDocId(m,p.clientId);
-    if(state.months[id] || ensured.has(id)) return;
-    ensured.add(id);
-    const d=buildMonthDoc(p,m);
-    const prev=state.months[monthDocId(pm,p.clientId)];
-    const cr=prev?carryFrom(prev,m):null;
-    if(cr){ d.units.push(...cr.units); d.shoots=cr.shoots.map((s,i)=>({...s, n:i+1, carriedFrom:s.carriedFrom||pm})); }
-    state.months[id]=d;
-    Store.createMonthIfMissing(d).then(created=>{
-      if(created && cr && (cr.unitIds.length||cr.shootNs.length)){
-        Store.updateMonth(prev.id, x=>({...x,
-          units:(x.units||[]).map(u=>cr.unitIds.includes(u.uid)?{...u,carriedTo:m}:u),
-          shoots:(x.shoots||[]).map(s=>cr.shootNs.includes(s.n)?{...s,carriedTo:m}:s)})).catch(()=>{});
-      }
-    }).catch(()=>{ ensured.delete(id); });
-  });
-}
-function syncPlanToMonth(plan){
-  const id=monthDocId(nowMonth(),plan.clientId);
-  if(state.months[id]){
-    const apply=d=>mergePlan(d,plan);
-    state.months[id]=apply(state.months[id]);
-    Store.updateMonth(id,apply).catch(e=>toast('작업표 반영 실패: '+(e.code||e.message)));
-  } else ensureCurrentMonth();
-}
+let workUI={day:null, step:'day', key:null, editId:null, cell:null};
 
-/* ---------- 집계 ---------- */
-function docsOf(m){ return Object.values(state.months).filter(d=>d.month===m).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')); }
-function unitsStats(units){ const p=units.filter(isProg); const total=p.length, done=p.filter(isDone).length, started=p.filter(u=>+u.stage>0&&!isDone(u)).length; return {total,done,started,todo:total-done}; }
+/* ---------- 팀 ---------- */
+function teamOfKey(k){
+  const s=(state.settings&&state.settings.taskTeams)||{};
+  if(s[k]) return s[k];
+  if(DEFAULT_TEAM[k]) return DEFAULT_TEAM[k];
+  const it=Object.values(state.plans).flatMap(p=>p.items||[]).find(x=>taskKeyOf(x)===k);
+  return it && tKey(it.type)==='sns' ? 'video' : 'sales';
+}
+function viewTeam(){ // 지금 보고 있는 팀 ('all' | 'video' | 'sales')
+  if(state.role==='staff') return TEAMS[state.me.team]?state.me.team:'all';
+  return state.workTeam||'all';
+}
+const inTeam=(k,team)=>team==='all'||teamOfKey(k)===team;
+
+/* ---------- 목표·기록 집계 ---------- */
+function activePlans(m){
+  return Object.values(state.plans).filter(p=>p.clientId && hasPlan(p.clientId) && isActiveInMonth(p,m))
+    .sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
+}
+// 업체의 그 달 목표: key → {label, target, kind}  (kind: multi=여러 편, once=한 번 완료, shoot=횟수만)
+function targetsOf(p,m){
+  const out={};
+  (p.items||[]).forEach(it=>{
+    const k=taskKeyOf(it), t=tKey(it.type);
+    const n=t==='sns'?(+it.count||0):1;
+    if(!out[k]) out[k]={label:it.label||keyLabel(k), target:0, kind:t==='sns'?'multi':'once'};
+    out[k].target+=n;
+    if(t==='sns') out[k].kind='multi';
+  });
+  const ex=+((p.extra||{})[m])||0;
+  if(ex){
+    [['short',4],['long',1]].forEach(([k,n])=>{ if(!out[k]) out[k]={label:I[k].label,target:0,kind:'multi'}; out[k].target+=n*ex; out[k].kind='multi'; });
+  }
+  Object.keys(out).forEach(k=>{ if(out[k].kind==='once') out[k].target=1; });
+  if(Object.keys(out).some(k=>teamOfKey(k)==='video')) out.shoot={label:'촬영', target:0, kind:'shoot'};
+  return out;
+}
+const logsIn=(m)=>state.logs.filter(l=>l.month===m);
+function doneOf(cid,k,m){ return state.logs.filter(l=>l.month===m && l.clientId===cid && l.key===k).length; }
+function cellState(done,t,m){
+  if(t.kind==='shoot') return done?'green':'gray';
+  if(done>=t.target) return 'green';
+  const dl=daysLeftIn(m);
+  if(dl<0 || dl<=URGENT_DAYS) return 'red';
+  return done>0?'amber':'gray';
+}
 function daysLeftIn(m){
   const now=nowMonth(); if(m<now) return -1; if(m>now) return 99;
   const d=new Date(); return new Date(d.getFullYear(),d.getMonth()+1,0).getDate()-d.getDate();
 }
-function itemOrder(d){ const o={}; (d.items||[]).forEach((it,i)=>o[it.id]=i); return o; }
-const orderOf=(o,u)=>u.carriedFrom?((o[String(u.itemId).split('@')[0]]??(String(u.itemId).startsWith('add')?50:60))-0.5):u.extra?50:(o[u.itemId]??60);
-function sortUnits(d,units){ const o=itemOrder(d); return [...units].sort((a,b)=>(orderOf(o,a)-orderOf(o,b))||String(a.itemId).localeCompare(String(b.itemId))||(a.n-b.n)); }
-function itemGroups(d){
-  const map=new Map();
-  sortUnits(d,(d.units||[]).filter(u=>!isCount(u))).forEach(u=>{ if(!map.has(u.itemId)) map.set(u.itemId,{itemId:u.itemId,label:u.label,type:u.type,units:[],carriedFrom:u.carriedFrom,extra:u.extra,extraSet:u.extraSet}); map.get(u.itemId).units.push(u); });
-  return [...map.values()].map(g=>{ const p=g.units.filter(x=>!x.carriedTo); return {...g, live:p, moved:g.units.length-p.length, done:p.filter(isDone).length, started:p.filter(u=>+u.stage>0&&!isDone(u)).length}; });
+function monthSummary(m,team){
+  let need=0, got=0; const missing=[];
+  activePlans(m).forEach(p=>{
+    const ts=targetsOf(p,m);
+    Object.entries(ts).forEach(([k,t])=>{
+      if(t.kind==='shoot' || !inTeam(k,team)) return;
+      const d=doneOf(p.clientId,k,m);
+      need+=t.target; got+=Math.min(d,t.target);
+      if(d<t.target) missing.push({p,k,t,d});
+    });
+  });
+  return {need,got,missing};
 }
-function countUnits(d){ return sortUnits(d,(d.units||[]).filter(isCount)); }
-function groupCls(g,m){
-  const n=g.live.length; if(!n) return 'gray';
-  if(g.done===n) return 'green';
-  const dl=daysLeftIn(m); if(dl<0) return 'red';
-  if(g.done+g.started===0) return dl<=URGENT_DAYS?'red':'gray';
-  return 'amber';
+function teamKeysFor(m,team){
+  const ks=[];
+  activePlans(m).forEach(p=>Object.keys(targetsOf(p,m)).forEach(k=>{ if(inTeam(k,team)) ks.push(k); }));
+  return sortKeys(ks);
 }
-function docCls(d){
-  const cs=itemGroups(d).filter(g=>g.live.length).map(g=>groupCls(g,d.month));
-  if(!cs.length) return 'gray';
-  if(cs.includes('red')) return 'red';
-  if(cs.every(c=>c==='green')) return 'green';
-  return cs.some(c=>c==='amber'||c==='green')?'amber':'gray';
-}
-function shootInfo(d){ const s=(d.shoots||[]).filter(x=>!x.carriedTo); return {done:s.filter(x=>x.done).length, plan:s.filter(x=>!x.done).length}; }
-function shootChip(d){
-  const s=shootInfo(d);
-  if(!s.done && !s.plan) return `<span class="ichip gray">📷 촬영 없음</span>`;
-  return `<span class="ichip ${s.plan?'amber':'green'}">📷 촬영 ${s.done}회${s.plan?` · 예정 ${s.plan}`:''}</span>`;
-}
-function countText(u){ return u.value==null?`${u.label} 미입력`:`${u.label} ${u.value}${u.itemId==='review'||/리뷰/.test(u.label)?'건':'회'}`; }
-function shootLabel(s){ return s.date?`${mmdd(s.date)}${s.time?' '+s.time:''}`:'날짜 미정'; }
+
+/* ---------- 날짜 도우미 ---------- */
+const isoOf=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseIso=s=>{ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); };
+const dayTitle=iso=>{ const d=parseIso(iso); return `${d.getMonth()+1}월 ${d.getDate()}일 (${WD[d.getDay()]})`; };
+function weekStartOf(iso){ const d=parseIso(iso); const w=(d.getDay()+6)%7; d.setDate(d.getDate()-w); return isoOf(d); } // 월요일 시작
+function addDays(iso,n){ const d=parseIso(iso); d.setDate(d.getDate()+n); return isoOf(d); }
 function fmtAt(ts){ if(!ts) return ''; const d=new Date(ts); return `${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`; }
-function safeUrl(u){ u=String(u||'').trim(); if(!u) return ''; return /^https?:\/\//i.test(u)?u:'https://'+u.replace(/^[a-z]+:/i,''); }
+
+/* ---------- 저장 ---------- */
+async function addLog(date,key,cid){
+  const p=state.plans[cid]; if(!p) return;
+  const l={id:uid(), date, month:date.slice(0,7), clientId:cid, clientName:p.name||'', key, label:keyLabel(key)==='촬영'?'촬영':(targetsOf(p,date.slice(0,7))[key]||{}).label||keyLabel(key), team:teamOfKey(key), by:state.me.name, byUid:state.me.uid, at:Date.now()};
+  state.logs.push(l); render();
+  try{ await Store.saveLog(l); toast(`${p.name} · ${keyShort(key)} 기록했습니다`); }
+  catch(e){ state.logs=state.logs.filter(x=>x.id!==l.id); render(); toast('저장 실패: '+(e.code||e.message),3000); }
+}
+async function updateLog(id,patch){
+  const old=state.logs.find(l=>l.id===id); if(!old) return;
+  const p=state.plans[patch.clientId||old.clientId];
+  const nl={...old,...patch, month:(patch.date||old.date).slice(0,7), clientName:p?p.name:old.clientName, editedBy:state.me.name, editedAt:Date.now()};
+  if(patch.key) { nl.label=keyLabel(patch.key); nl.team=teamOfKey(patch.key); if(p){ const t=targetsOf(p,nl.month)[patch.key]; if(t) nl.label=t.label; } }
+  state.logs=state.logs.map(l=>l.id===id?nl:l); render();
+  try{ await Store.saveLog(nl); toast('수정했습니다'); }
+  catch(e){ state.logs=state.logs.map(l=>l.id===id?old:l); render(); toast('저장 실패: '+(e.code||e.message),3000); }
+}
+async function removeLog(id){
+  const old=state.logs.find(l=>l.id===id); if(!old) return;
+  if(!confirm(`${dayTitle(old.date)} · ${old.clientName} · ${keyShort(old.key)}\n이 기록을 지울까요?`)) return;
+  state.logs=state.logs.filter(l=>l.id!==id);
+  workUI.editId=null; workUI.step=workUI.day?'day':workUI.step;
+  render();
+  try{ await Store.delLog(id); toast('지웠습니다'); }
+  catch(e){ state.logs.push(old); render(); toast('삭제 실패: '+(e.code||e.message),3000); }
+}
+const canEditLog=l=>state.role==='admin' || !TEAMS[state.me.team] || l.team===state.me.team;
+
+/* ---------- 작업 화면 (관리자 '작업' 탭 · 직원 첫 화면 공용) ---------- */
+function viewWorkBoard(){
+  const m=state.month, team=viewTeam(), isAdm=state.role==='admin';
+  const sum=monthSummary(m,team);
+  const pct=sum.need?Math.round(sum.got/sum.need*100):0;
+  const noPlan=isAdm?state.clients.filter(c=>c.status!=='ended' && isActiveInMonth(c,m) && !hasPlan(c.id)).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')):[];
+  return `<div class="view wk">
+    <div class="wk-top">
+      <div class="month-nav wk-mnav">
+        <button data-action="mprev">‹</button>
+        <div class="mlabel">${mLabel(m)}<small>${isAdm?'작업 달력':`${esc(state.me.name)}님 · ${TEAMS[team]||'전체 작업'}`}</small></div>
+        <button data-action="mnext">›</button>
+      </div>
+      ${isAdm?`<div class="teamseg">${[['all','전체'],['video','영상팀'],['sales','영업팀']].map(([v,t])=>`<button data-action="wkteam" data-v="${v}" class="${team===v?'on':''}">${t}</button>`).join('')}</div>`:''}
+      <div class="wk-prog"><div class="wk-prog-t"><b class="num">${sum.got}</b> / ${sum.need} 완료${m===nowMonth()?` · 마감까지 ${daysLeftIn(m)}일`:''}${sum.missing.length?` · <span style="color:var(--red)">남은 ${sum.missing.length}건</span>`:''}</div><div class="pbar"><i class="${sum.missing.length?'':'green'}" style="width:${pct}%"></i></div></div>
+    </div>
+    ${calendarHtml(m,team)}
+    ${summaryHtml(m,team)}
+    ${noPlan.length?`<div class="section-label">월 작업 구성 미설정 <span>${noPlan.length}곳</span></div>
+      <div style="font-size:12.5px;color:var(--muted);margin:0 4px 10px;line-height:1.55">매달 할 작업이 정해져 있지 않아 달력에 업체가 나오지 않는 거래처예요. 눌러서 월 작업 구성을 정해 주세요.</div>
+      <div class="wk-noplan">${noPlan.map(c=>`<button class="row" data-action="editclient" data-id="${c.id}">
+        <div class="avatar" style="background:${colorFor(c.name)}">${initial(c.name)}</div>
+        <div class="body"><div class="name">${esc(c.name)}</div><div class="meta">월 작업 구성 정하기 ›</div></div></button>`).join('')}</div>`:''}
+  </div>`;
+}
+function calendarHtml(m,team){
+  const [y,mo]=m.split('-').map(Number);
+  const first=new Date(y,mo-1,1), days=new Date(y,mo,0).getDate();
+  const lead=first.getDay(), today=todayISO();
+  const byDay={};
+  logsIn(m).filter(l=>inTeam(l.key,team)).forEach(l=>{ (byDay[l.date]=byDay[l.date]||[]).push(l); });
+  let cells='';
+  for(let i=0;i<lead;i++) cells+=`<div class="wc empty"></div>`;
+  for(let d=1; d<=days; d++){
+    const iso=`${m}-${pad(d)}`, wd=(lead+d-1)%7;
+    const ls=(byDay[iso]||[]).sort((a,b)=>keyRank(a.key)-keyRank(b.key)||(a.clientName||'').localeCompare(b.clientName||'','ko')||a.at-b.at);
+    const MAX=4;
+    cells+=`<button class="wc ${iso===today?'today':''} ${wd===0?'sun':wd===6?'sat':''}" data-action="wkday" data-d="${iso}">
+      <span class="wc-n">${d}</span>
+      ${ls.slice(0,MAX).map(l=>`<span class="wc-e t-${teamOfKey(l.key)}"><b>${esc(keyShort(l.key))}</b> · ${esc(l.clientName)}</span>`).join('')}
+      ${ls.length>MAX?`<span class="wc-more">+${ls.length-MAX}건 더</span>`:''}
+      ${ls.length?`<span class="wc-dot">${ls.length}</span>`:''}
+    </button>`;
+  }
+  return `<div class="wcal-wrap"><div class="wcal-hint">날짜를 눌러 그날 한 작업을 기록하세요</div>
+    <div class="wcal">${WD.map((w,i)=>`<div class="wh ${i===0?'sun':i===6?'sat':''}">${w}</div>`).join('')}${cells}</div></div>`;
+}
+function summaryHtml(m,team){
+  const mode=state.sumMode||'month';
+  const plans=activePlans(m);
+  const keys=teamKeysFor(m,team);
+  const tabs=`<div class="sumseg"><button data-action="summode" data-v="month" class="${mode==='month'?'on':''}">이번 달 집계</button><button data-action="summode" data-v="week" class="${mode==='week'?'on':''}">주간 기록</button></div>`;
+  if(!plans.length) return `<div class="section-label" style="margin-top:20px">집계</div>${tabs}<div class="card" style="padding:22px;text-align:center;color:var(--muted);font-size:13.5px">${mLabel(m)}에 월 작업 구성이 있는 거래처가 없습니다</div>`;
+  if(mode==='week') return weekHtml(m,team,keys,plans,tabs);
+  const sum=monthSummary(m,team);
+  const rows=plans.map(p=>{
+    const ts=targetsOf(p,m);
+    if(!Object.keys(ts).some(k=>inTeam(k,team))) return '';
+    return `<tr><th class="sticky-c"><span class="cn">${esc(p.name)}</span><small>${p.pkg&&p.pkg!=='custom'?pkgName(p.pkg):'직접 설정'}${+((p.extra||{})[m])?` · 추가 ${p.extra[m]}`:''}</small></th>${keys.map(k=>{
+      const t=ts[k]; if(!t) return `<td class="na">·</td>`;
+      const d=doneOf(p.clientId,k,m), cls=cellState(d,t,m);
+      const txt=t.kind==='shoot'?`${d}회`:t.kind==='once'?(d?'✓':'–'):`${d}/${t.target}`;
+      return `<td><button class="mc ${cls}" data-action="wkcell" data-c="${p.clientId}" data-k="${esc(k)}">${txt}</button></td>`;
+    }).join('')}</tr>`;
+  }).join('');
+  return `<div class="section-label" style="margin-top:20px">집계 <span>${mLabel(m)}</span></div>${tabs}
+    ${sum.missing.length?`<div class="miss"><div class="miss-h">${daysLeftIn(m)<0?'못 채운 작업':'아직 남은 작업'} ${sum.missing.length}건</div>${sum.missing.map(x=>`<button class="miss-i ${cellState(x.d,x.t,m)}" data-action="wkcell" data-c="${x.p.clientId}" data-k="${esc(x.k)}">${esc(x.p.name)} · ${esc(keyShort(x.k))} <b>${x.t.kind==='once'?'미완료':`${x.d}/${x.t.target}`}</b></button>`).join('')}</div>`
+      :`<div class="miss ok">✓ ${mLabel(m)} 작업을 모두 채웠습니다</div>`}
+    <div class="mtx-wrap"><table class="mtx"><thead><tr><th class="sticky-c">업체</th>${keys.map(k=>`<th><span class="t-${teamOfKey(k)}">${esc(keyShort(k))}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="legend-row"><span><i style="background:var(--green)"></i>채움</span><span><i style="background:#d08a2c"></i>진행 중</span><span><i style="background:var(--gray)"></i>아직 없음</span><span><i style="background:var(--red)"></i>마감 임박·못 채움</span></div>
+    <div class="wcal-hint" style="text-align:center">숫자를 누르면 그 작업의 기록을 보고 고칠 수 있어요</div>`;
+}
+function weekHtml(m,team,keys,plans,tabs){
+  let ws=state.weekStart;
+  const today=todayISO();
+  if(!ws || (ws.slice(0,7)!==m && addDays(ws,6).slice(0,7)!==m)) ws=weekStartOf(m===nowMonth()?today:`${m}-01`);
+  state.weekStart=ws;
+  const we=addDays(ws,6);
+  const wl=state.logs.filter(l=>l.date>=ws && l.date<=we && inTeam(l.key,team));
+  const cnt=(cid,k)=>wl.filter(l=>l.clientId===cid && l.key===k).length;
+  const wkKeys=sortKeys([...keys,...wl.map(l=>l.key)]);
+  const rows=plans.filter(p=>Object.keys(targetsOf(p,m)).some(k=>inTeam(k,team)) || wl.some(l=>l.clientId===p.clientId)).map(p=>{
+    const has=wkKeys.some(k=>cnt(p.clientId,k));
+    return `<tr class="${has?'':'dim'}"><th class="sticky-c"><span class="cn">${esc(p.name)}</span></th>${wkKeys.map(k=>{ const n=cnt(p.clientId,k); return `<td>${n?`<span class="mc wk">${n}</span>`:'<span class="na">·</span>'}</td>`; }).join('')}</tr>`;
+  }).join('');
+  const byDay={}; wl.forEach(l=>{ (byDay[l.date]=byDay[l.date]||[]).push(l); });
+  const list=Object.keys(byDay).sort().map(d=>`<div class="wl-day"><div class="wl-d">${dayTitle(d)}</div>${byDay[d].sort((a,b)=>keyRank(a.key)-keyRank(b.key)).map(l=>`<button class="wl-i" data-action="wkedit" data-id="${l.id}"><span class="t-${teamOfKey(l.key)}">${esc(keyShort(l.key))}</span> ${esc(l.clientName)}<small>${esc(l.by||'')}</small></button>`).join('')}</div>`).join('');
+  return `<div class="section-label" style="margin-top:20px">집계 <span>주간</span></div>${tabs}
+    <div class="month-nav wk-wnav"><button data-action="wkprev">‹</button><div class="mlabel">${mmdd(ws)} ~ ${mmdd(we)}<small>이번 주 기록 ${wl.length}건</small></div><button data-action="wknext">›</button></div>
+    ${wl.length?`<div class="mtx-wrap"><table class="mtx"><thead><tr><th class="sticky-c">업체</th>${wkKeys.map(k=>`<th><span class="t-${teamOfKey(k)}">${esc(keyShort(k))}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="wl">${list}</div>`
+    :`<div class="card" style="padding:22px;text-align:center;color:var(--muted);font-size:13.5px">이 주에는 기록이 없습니다</div>`}`;
+}
+
+/* ---------- 날짜 창: 그날 기록 / 작업 고르기 / 업체 고르기 ---------- */
+// openModal()이 이전 창 상태를 지우므로, 창을 연 뒤에 상태를 넣고 내용을 그림
+function openWorkModal(ui){ openModal('<div class="wk-sheet"></div>'); workUI={day:null,step:'day',key:null,editId:null,cell:null,...ui}; refreshWorkModal(); }
+function openDay(iso){ openWorkModal({day:iso}); }
+function workModalHtml(){
+  if(workUI.editId) return editLogHtml(workUI.editId);
+  if(workUI.cell) return cellLogsHtml(workUI.cell.c, workUI.cell.k);
+  if(workUI.step==='client') return pickClientHtml(workUI.day, workUI.key);
+  return dayHtml(workUI.day);
+}
+function refreshWorkModal(){
+  const modal=document.querySelector('#modalBg .modal');
+  if(!modal || !modal.querySelector('.wk-sheet')) return;
+  const ae=document.activeElement;
+  if(ae && modal.contains(ae) && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName)) return;
+  const sc=modal.scrollTop; modal.innerHTML='<div class="grabber"></div>'+workModalHtml(); modal.scrollTop=sc;
+}
+function dayHtml(iso){
+  const m=iso.slice(0,7), team=viewTeam();
+  const ls=state.logs.filter(l=>l.date===iso && inTeam(l.key,team)).sort((a,b)=>keyRank(a.key)-keyRank(b.key)||a.at-b.at);
+  const keys=teamKeysFor(m,team);
+  const left=k=>activePlans(m).reduce((a,p)=>{ const t=targetsOf(p,m)[k]; if(!t||t.kind==='shoot') return a; return a+Math.max(0,t.target-doneOf(p.clientId,k,m)); },0);
+  return `<div class="wk-sheet">
+  <div class="modal-hd"><h2>${dayTitle(iso)}</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div class="section-label" style="margin:2px 0 10px">이날 기록 <span>${ls.length}건</span></div>
+    ${ls.length?ls.map(l=>`<button class="lg-row" data-action="wkedit" data-id="${l.id}">
+        <span class="lg-k t-${teamOfKey(l.key)}">${esc(keyShort(l.key))}</span>
+        <span class="lg-c">${esc(l.clientName)}</span>
+        <span class="lg-by">${esc(l.by||'')}</span><span class="lg-go">고치기 ›</span></button>`).join('')
+      :`<div class="lg-empty">아직 기록이 없습니다</div>`}
+    <div class="section-label" style="margin:18px 0 10px">기록 추가 <span>작업을 고르세요</span></div>
+    ${keys.length?`<div class="task-grid">${keys.map(k=>{ const n=left(k); return `<button class="task-btn t-${teamOfKey(k)}" data-action="wktask" data-k="${esc(k)}"><b>${esc(keyLabel(k))}</b><small>${k==='shoot'?'횟수만 기록':n?`남은 ${n}건`:'모두 채움'}</small></button>`; }).join('')}</div>`
+      :`<div class="lg-empty">이 달에 ${TEAMS[team]||''} 작업이 있는 거래처가 없습니다</div>`}
+  </div></div>`;
+}
+function pickClientHtml(iso,k){
+  const m=iso.slice(0,7);
+  const list=activePlans(m).map(p=>({p,t:targetsOf(p,m)[k]})).filter(x=>x.t);
+  return `<div class="wk-sheet">
+  <div class="modal-hd"><button class="back" data-action="wkback">‹</button><h2 style="flex:1;margin-left:6px">${dayTitle(iso)} · ${esc(keyLabel(k))}</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div class="wcal-hint" style="margin:0 0 10px">업체를 누르면 완료로 기록됩니다. 여러 곳을 이어서 눌러도 돼요.</div>
+    ${list.map(({p,t})=>{
+      const d=doneOf(p.clientId,k,m), today=state.logs.filter(l=>l.date===iso && l.clientId===p.clientId && l.key===k).length;
+      const full=t.kind!=='shoot' && d>=t.target;
+      return `<button class="cl-row ${full?'full':''}" data-action="wkpick" data-c="${p.clientId}">
+        <div class="avatar" style="background:${colorFor(p.name)}">${initial(p.name)}</div>
+        <div class="body"><div class="name">${esc(p.name)}</div><div class="meta">${t.kind==='shoot'?`이번 달 ${d}회`:t.kind==='once'?(d?'이번 달 완료':'이번 달 미완료'):`이번 달 ${d}/${t.target}`}${today?` · <b style="color:var(--primary)">이날 ${today}건 기록됨</b>`:''}</div></div>
+        <span class="cl-add">${full?'✓ 채움':'+ 기록'}</span></button>`;
+    }).join('')}
+    <button class="btn btn-ghost" data-action="wkback" style="margin-top:8px">다 했어요 (날짜로 돌아가기)</button>
+  </div></div>`;
+}
+function editLogHtml(id){
+  const l=state.logs.find(x=>x.id===id);
+  if(!l) return `<div class="wk-sheet"><div class="modal-hd"><h2>기록</h2><button class="x" data-action="close">✕</button></div><div class="modal-body"><div class="lg-empty">지워진 기록입니다</div></div></div>`;
+  const m=l.month, team=viewTeam(), editable=canEditLog(l);
+  const keys=sortKeys([...teamKeysFor(m,team), l.key]);
+  const plans=activePlans(m).filter(p=>targetsOf(p,m)[l.key]);
+  if(!plans.some(p=>p.clientId===l.clientId)) plans.push({clientId:l.clientId, name:l.clientName});
+  return `<div class="wk-sheet">
+  <div class="modal-hd">${workUI.day||workUI.cell?`<button class="back" data-action="wkback">‹</button>`:''}<h2 style="flex:1;margin-left:6px">기록 고치기</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div class="field"><label>날짜</label><input type="date" id="le-date" value="${l.date}" ${editable?'':'disabled'}></div>
+    <div class="field"><label>작업</label><select id="le-key" ${editable?'':'disabled'}>${keys.map(k=>`<option value="${esc(k)}" ${k===l.key?'selected':''}>${esc(keyLabel(k))}</option>`).join('')}</select></div>
+    <div class="field"><label>업체</label><select id="le-client" ${editable?'':'disabled'}>${plans.map(p=>`<option value="${p.clientId}" ${p.clientId===l.clientId?'selected':''}>${esc(p.name)}</option>`).join('')}</select></div>
+    <div class="lg-meta">기록 ${esc(l.by||'')} · ${fmtAt(l.at)}${l.editedBy?`<br>수정 ${esc(l.editedBy)} · ${fmtAt(l.editedAt)}`:''}</div>
+    ${editable?`<div class="btn-row">
+      <button class="btn btn-danger" data-action="wkdel" data-id="${l.id}" style="flex:0 0 34%">삭제</button>
+      <button class="btn btn-primary" data-action="wksave" data-id="${l.id}">저장</button>
+    </div>`:`<div class="lg-empty">다른 팀 기록이라 고칠 수 없습니다</div>`}
+  </div></div>`;
+}
+function cellLogsHtml(cid,k){
+  const m=state.month, p=state.plans[cid];
+  const t=p?targetsOf(p,m)[k]:null;
+  const ls=state.logs.filter(l=>l.month===m && l.clientId===cid && l.key===k).sort((a,b)=>a.date.localeCompare(b.date)||a.at-b.at);
+  return `<div class="wk-sheet">
+  <div class="modal-hd"><h2>${esc(p?p.name:'')} · ${esc(keyLabel(k))}</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px">${mLabel(m)} · ${t?(t.kind==='shoot'?`${ls.length}회`:t.kind==='once'?(ls.length?'완료':'미완료'):`${ls.length}/${t.target}`):`${ls.length}건`}</div>
+    ${ls.length?ls.map(l=>`<button class="lg-row" data-action="wkedit" data-id="${l.id}"><span class="lg-k">${mmdd(l.date)}</span><span class="lg-c">${esc(dayTitle(l.date))}</span><span class="lg-by">${esc(l.by||'')}</span><span class="lg-go">고치기 ›</span></button>`).join('')
+      :`<div class="lg-empty">아직 기록이 없습니다</div>`}
+    <div class="wcal-hint" style="margin-top:12px">새 기록은 달력에서 날짜를 눌러 넣어 주세요.</div>
+  </div></div>`;
+}
+
+/* ---------- 추가 항목 (제5조 제3항: 추가 촬영 + 숏폼 4편 + 롱폼 1편, 1회성) ---------- */
+async function changeExtra(cid,delta){
+  const p=state.plans[cid]; if(!p){ toast('먼저 월 작업 구성을 정해 주세요'); return; }
+  const m=nowMonth(), cur=+((p.extra||{})[m])||0;
+  if(delta>0 && !confirm(`${p.name} · ${mLabel(m)}에 추가 항목(숏폼 4편 + 롱폼 1편)을 넣을까요?\n이번 달 목표에만 더해집니다.`)) return;
+  if(delta<0 && !confirm(`${p.name} · ${mLabel(m)} 추가 항목 1회를 뺄까요?`)) return;
+  const np={...p, extra:{...(p.extra||{}), [m]:Math.max(0,cur+delta)}};
+  state.plans[cid]=np; render();
+  try{ await Store.savePlan(np); toast(delta>0?'추가 항목을 넣었습니다':'추가 항목을 뺐습니다'); }
+  catch(e){ state.plans[cid]=p; render(); toast('저장 실패: '+(e.code||e.message),3000); }
+}
 function planSummary(id){
   const p=state.plans[id]; if(!hasPlan(id)) return '';
   const parts=(p.items||[]).map(it=>tKey(it.type)==='sns'?`${it.label} ${it.count}편`:it.label);
   return `${pkgName(p.pkg)} · ${parts.join(', ')}`;
-}
-
-/* ---------- 저장 (항상 '값을 정해서' 덮어쓰기 → 두 번 적용돼도 안전) ---------- */
-function patchDoc(docId,apply){
-  if(state.months[docId]) state.months[docId]=apply(state.months[docId]);
-  render();
-  Store.updateMonth(docId,apply).catch(e=>toast('저장 실패: '+(e.code||e.message),3000));
-}
-function patchUnit(docId,uid,patch){ patchDoc(docId,d=>({...d, units:(d.units||[]).map(u=>u.uid===uid?{...u,...patch}:u)})); }
-function patchShoot(docId,n,patch){ patchDoc(docId,d=>({...d, shoots:(d.shoots||[]).map(s=>s.n===n?{...s,...patch}:s)})); }
-function addShoot(docId){
-  const d=state.months[docId]; if(!d) return;
-  const n=(d.shoots||[]).reduce((a,s)=>Math.max(a,s.n),0)+1;
-  patchDoc(docId,x=>(x.shoots||[]).some(s=>s.n===n)?x:({...x, shoots:[...(x.shoots||[]), {...newShoot(n), by:state.me.name, at:Date.now()}]}));
-  toast('촬영을 추가했습니다 · 날짜를 넣어 주세요');
-}
-function delShoot(docId,n){
-  if(!confirm('이 촬영을 지울까요?')) return;
-  patchDoc(docId,x=>({...x, shoots:(x.shoots||[]).filter(s=>s.n!==n)}));
-}
-function addExtraSet(clientId){
-  const id=monthDocId(nowMonth(),clientId), d=state.months[id];
-  if(!d){ toast('이번 달 작업표가 없어 추가할 수 없습니다'); return; }
-  const k=(d.extraSets||0)+1;
-  if(!confirm(`${mLabel(nowMonth())} 작업표에 추가 항목(숏폼 4편 + 롱폼 1편)을 넣을까요?\n추가 촬영은 촬영 일정에서 따로 추가하세요.`)) return;
-  patchDoc(id,x=>{
-    if((x.extraSets||0)>=k) return x;
-    const add=EXTRA_SET.flatMap(e=>{ const it={id:`add${k}-${e.key}`, label:`${e.label} (추가${k>1?' '+k:''})`, type:'sns'}; return Array.from({length:e.count},(_,i)=>newUnit(it,i+1,{extra:true, extraSet:k})); });
-    return {...x, extraSets:k, units:[...(x.units||[]),...add]};
-  });
-  toast('이번 달 작업표에 추가 항목을 넣었습니다');
-}
-function removeExtraSet(docId,k){
-  const d=state.months[docId]; if(!d) return;
-  const us=(d.units||[]).filter(u=>u.extraSet===k);
-  if(us.some(u=>+u.stage>0)){ toast('이미 진행한 작업이 있어서 뺄 수 없습니다',2600); return; }
-  if(!confirm('이 추가 항목을 작업표에서 뺄까요?')) return;
-  patchDoc(docId,x=>({...x, units:(x.units||[]).filter(u=>u.extraSet!==k || +u.stage>0)}));
-}
-function findUnit(docId,uid){ const d=state.months[docId]; return d && (d.units||[]).find(u=>u.uid===uid); }
-function unitTitle(docId,u){ const d=state.months[docId]; const many=d&&(d.units||[]).filter(x=>x.itemId===u.itemId).length>1; return `${u.label}${many?' '+u.n:''}`; }
-function advanceUnit(docId,uid){
-  const u=findUnit(docId,uid); if(!u || isCount(u)) return;
-  const s=+u.stage||0, last=lastStage(u.type); if(s>=last) return;
-  const prev={stage:s, by:u.by||'', at:u.at||0, assignee:u.assignee||'', assigneeName:u.assigneeName||''};
-  const patch={stage:s+1, by:state.me.name, at:Date.now()};
-  if(state.role==='staff' && !u.assignee){ patch.assignee=state.me.uid; patch.assigneeName=state.me.name; }
-  const title=unitTitle(docId,u);
-  patchUnit(docId,uid,patch);
-  toastAction(`${title} → ${stageName(u.type,s+1)}`,'되돌리기',()=>{ patchUnit(docId,uid,prev); toast('되돌렸습니다'); });
-  if(s+1===last && tKey(u.type)==='sns' && !u.link) setTimeout(()=>{ if(!$('#modalBg')) openModal(linkSheet(docId,uid)); },350);
-}
-function setStage(docId,uid,stage){
-  const u=findUnit(docId,uid); if(!u || (+u.stage||0)===stage) return;
-  const patch={stage, by:state.me.name, at:Date.now()};
-  if(state.role==='staff' && !u.assignee && stage>0){ patch.assignee=state.me.uid; patch.assigneeName=state.me.name; }
-  patchUnit(docId,uid,patch);
-}
-function setCount(docId,uid,raw){
-  const v=String(raw).trim()===''?null:Math.max(0,Math.min(99999,parseInt(String(raw).replace(/[^0-9]/g,''))||0));
-  patchUnit(docId,uid,{value:v, by:state.me.name, at:Date.now()});
-  if(v!=null) toast('저장했습니다');
-}
-function setAssignee(docId,uid,val){
-  let name='';
-  if(val){ if(val===state.me.uid) name=state.me.name; else { const s=state.users.find(x=>x.uid===val); name=s?s.name:(findUnit(docId,uid)||{}).assigneeName||''; } }
-  patchUnit(docId,uid,{assignee:val, assigneeName:name});
-}
-
-/* ---------- 관리자: 작업 현황판 ---------- */
-function viewWork(){
-  const m=state.month, now=nowMonth();
-  const order={red:0,amber:1,gray:2,green:3};
-  const docs=docsOf(m).sort((a,b)=>(order[docCls(a)]-order[docCls(b)])||(a.name||'').localeCompare(b.name||'','ko'));
-  const st=unitsStats(docs.flatMap(d=>d.units||[]));
-  const pct=st.total?Math.round(st.done/st.total*100):0;
-  const reds=docs.filter(d=>docCls(d)==='red').length;
-  const noPlan=state.clients.filter(c=>c.status!=='ended' && isActiveInMonth(c,m) && !hasPlan(c.id))
-    .sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
-  let list;
-  if(docs.length) list=docs.map(boardRow).join('');
-  else if(m>now) list=`<div class="card" style="padding:22px;text-align:center;color:var(--muted);font-size:13.5px;line-height:1.6">${mLabel(m)} 작업표는 그 달 1일에 자동으로 만들어집니다</div>`;
-  else list=`<div class="card" style="padding:22px;text-align:center;color:var(--muted);font-size:13.5px;line-height:1.6">${mLabel(m)} 작업표가 없습니다${m===now?'<br>거래처 수정에서 월 작업 구성을 정하면 바로 만들어져요':''}</div>`;
-  return `<div class="view">
-    <div class="month-nav">
-      <button data-action="mprev">‹</button>
-      <div class="mlabel">${mLabel(m)}<small>월간 작업</small></div>
-      <button data-action="mnext">›</button>
-    </div>
-    <div class="stat accent" style="margin-top:12px">
-      <div class="k">${mLabel(m)} 작업 진행</div>
-      <div class="v num">${st.done}<small style="color:rgba(255,255,255,.75)"> / ${st.total}건 완료</small></div>
-      <div class="pbar light"><i style="width:${pct}%"></i></div>
-      <div class="sub">${m===now?`마감까지 ${daysLeftIn(m)}일 · `:''}남은 작업 ${st.todo}건${reds?` · 확인 필요 ${reds}곳`:''}</div>
-    </div>
-    <div class="legend-row">
-      <span><i style="background:var(--green)"></i>완료</span><span><i style="background:#d08a2c"></i>진행 중</span>
-      <span><i style="background:var(--gray)"></i>시작 전</span><span><i style="background:var(--red)"></i>확인 필요</span>
-    </div>
-    ${list}
-    ${noPlan.length?`<div class="section-label">월 작업 구성 미설정 <span>${noPlan.length}곳</span></div>
-      <div style="font-size:12.5px;color:var(--muted);margin:0 4px 10px;line-height:1.55">매달 할 작업이 정해져 있지 않아 작업표가 만들어지지 않는 거래처예요. 눌러서 월 작업 구성을 정해 주세요.</div>
-      ${noPlan.map(c=>`<button class="row" data-action="editclient" data-id="${c.id}">
-        <div class="avatar" style="background:${colorFor(c.name)}">${initial(c.name)}</div>
-        <div class="body"><div class="name">${esc(c.name)}</div><div class="meta">월 작업 구성 정하기 ›</div></div></button>`).join('')}`:''}
-  </div>`;
-}
-function boardRow(d){
-  const gs=itemGroups(d), st=unitsStats(d.units||[]), cls=docCls(d);
-  const pct=st.total?Math.round(st.done/st.total*100):(cls==='green'?100:0);
-  const c=state.clients.find(x=>x.id===d.clientId);
-  const pay=c&&isActiveInMonth(c,d.month)?statusOf(c,d.month):null;
-  const plan=state.plans[d.clientId];
-  const moved=gs.reduce((a,g)=>a+g.moved,0);
-  return `<button class="row wk-row ${cls}" data-action="work" data-id="${d.id}">
-    <div class="avatar" style="background:${colorFor(d.name)}">${initial(d.name)}</div>
-    <div class="body">
-      <div class="name">${esc(d.name)}${pay?` <span class="badge ${pay.cls}" style="margin-left:2px">입금 ${pay.s}</span>`:''}</div>
-      ${plan&&plan.pkg&&plan.pkg!=='custom'?`<div class="meta" style="margin-top:1px">${pkgName(plan.pkg)}</div>`:''}
-      <div class="pbar"><i class="${cls}" style="width:${pct}%"></i></div>
-      <div class="ichips">${gs.filter(g=>g.live.length).map(g=>`<span class="ichip ${groupCls(g,d.month)}">${esc(g.label)} ${g.done}/${g.live.length}</span>`).join('')}${countUnits(d).map(u=>`<span class="ichip ${u.value==null?'gray':'green'}">${esc(countText(u))}</span>`).join('')}${shootChip(d)}${moved?`<span class="ichip gray">→ 다음 달로 이월 ${moved}</span>`:''}</div>
-    </div>
-    <div class="right"><div class="amt num">${st.done}/${st.total}</div></div>
-  </button>`;
-}
-
-/* ---------- 작업 상세 시트 (관리자·직원 공용) ---------- */
-function openWork(id){ if(!state.months[id]) return; openModal(workSheet(id)); openWorkId=id; }
-function workSheet(id){
-  const d=state.months[id]; if(!d) return '';
-  const gs=itemGroups(d), st=unitsStats(d.units||[]), cu=countUnits(d);
-  const isAdm=state.role==='admin';
-  const staffOpts=isAdm?state.users.filter(u=>u.active!==false).sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko')):[];
-  const assignSel=u=>{
-    let o=`<option value="">담당 없음</option>`;
-    if(isAdm){
-      o+=staffOpts.map(s=>`<option value="${s.uid}" ${u.assignee===s.uid?'selected':''}>${esc(s.name)}</option>`).join('');
-      if(u.assignee && !staffOpts.some(s=>s.uid===u.assignee)) o+=`<option value="${esc(u.assignee)}" selected>${esc(u.assigneeName||'(다른 계정)')}</option>`;
-    } else {
-      o+=`<option value="${state.me.uid}" ${u.assignee===state.me.uid?'selected':''}>나 (${esc(state.me.name)})</option>`;
-      if(u.assignee && u.assignee!==state.me.uid) o+=`<option value="${esc(u.assignee)}" selected>${esc(u.assigneeName||'다른 직원')}</option>`;
-    }
-    return `<select class="mini-sel" data-assign="${u.uid}" data-doc="${d.id}">${o}</select>`;
-  };
-  const shoots=[...(d.shoots||[])].sort((a,b)=>((a.date||'9')+(a.time||'')).localeCompare((b.date||'9')+(b.time||''))||a.n-b.n);
-  const si=shootInfo(d);
-  const plan=state.plans[d.clientId];
-  return `<div class="work-sheet">
-  <div class="modal-hd"><h2>${esc(d.name)} · ${mShort(d.month)} 작업</h2><button class="x" data-action="close">✕</button></div>
-  <div class="modal-body">
-    <div style="font-size:13px;font-weight:700;color:var(--muted)">${plan&&plan.pkg?`${pkgName(plan.pkg)} · `:''}${st.done}/${st.total}건 완료${d.month<nowMonth()?' · <span style="color:var(--red)">지난달 작업표</span>':''}</div>
-    <div class="pbar" style="margin-bottom:14px"><i class="${docCls(d)}" style="width:${st.total?Math.round(st.done/st.total*100):0}%"></i></div>
-
-    <div class="section-label" style="margin:4px 0 10px">촬영 <span>${si.done}회 완료${si.plan?` · 예정 ${si.plan}`:''}</span></div>
-    ${shoots.map(s=>shootRow(d,s,false)).join('')}
-    <button class="addline" data-action="shootadd" data-doc="${d.id}">+ 촬영 추가</button>
-
-    ${cu.length?`<div class="section-label" style="margin:16px 0 9px">횟수 기록 <span>이번 달 한 총 횟수</span></div>
-      ${cu.map(u=>countRow(d,u,true)).join('')}`:''}
-
-    ${gs.map(g=>`<div class="section-label" style="margin:16px 0 9px">${esc(g.label)} <span>${g.live.length?`${g.done}/${g.live.length} 완료`:''}${g.moved?` · ${mNum(addMonth(d.month,1))}월로 이월 ${g.moved}`:''}</span></div>
-      ${g.units.map(u=>`<div class="ws-unit ${isDone(u)?'done':''} ${u.carriedTo?'moved':''}">
-        <div class="ws-top"><b>${esc(u.label)}${g.units.length>1?' '+u.n:''}</b><span class="ws-meta">${u.carriedTo?`<span class="badge gray">→ ${mNum(u.carriedTo)}월로 이월</span>`:u.by?`${esc(u.by)} · ${fmtAt(u.at)}`:''}</span></div>
-        ${u.carriedTo?'':`<div class="stseg">${STAGE_SHORT[tKey(u.type)].map((s,i)=>`<button class="${(+u.stage||0)===i?'on':''} ${i<(+u.stage||0)?'past':''}" data-action="setstage" data-doc="${d.id}" data-uid="${u.uid}" data-s="${i}">${s}</button>`).join('')}</div>
-        <div class="ws-bot">${assignSel(u)}${tKey(u.type)==='sns'?`<input class="mini-in" type="url" inputmode="url" placeholder="게시물 링크 붙여넣기" value="${esc(u.link||'')}" data-link="${u.uid}" data-doc="${d.id}">${u.link?`<a class="mini-go" href="${esc(safeUrl(u.link))}" target="_blank" rel="noopener">열기</a>`:''}`:''}</div>`}
-      </div>`).join('')}
-      ${isAdm&&g.extra&&g.units[0].itemId.endsWith('-short')?`<button class="addline danger" data-action="wkdelset" data-doc="${d.id}" data-k="${g.extraSet}">이 추가 항목 빼기</button>`:''}`).join('')}
-    ${isAdm&&d.month===nowMonth()?`<button class="btn btn-ghost" data-action="wkaddset" data-id="${d.clientId}" style="margin-top:14px">+ 이번 달 추가 항목 넣기 (숏폼 4편 + 롱폼 1편)</button>`:''}
-    ${isAdm?`<button class="btn btn-ghost" data-action="editclientw" data-id="${d.clientId}" style="margin-top:10px">월 작업 구성 수정 (거래처 정보)</button>`:''}
-  </div></div>`;
-}
-function countRow(d,u,big){
-  return `<div class="cnt-row ${u.value==null?'':'filled'}">
-    <div class="cnt-l"><b>${esc(u.label)}</b><span>${u.value==null?'미입력':(u.by?`${esc(u.by)} · ${fmtAt(u.at)}`:'')}</span></div>
-    <div class="cnt-in"><input type="text" inputmode="numeric" placeholder="0" value="${u.value==null?'':u.value}" data-count="${u.uid}" data-doc="${d.id}"><span>${/리뷰/.test(u.label)?'건':'회'}</span></div>
-  </div>`;
-}
-function shootRow(d,s,showName){
-  const many=(d.shoots||[]).length>1;
-  return `<div class="sh-row ${s.done?'done':''} ${s.carriedTo?'moved':''}">
-    <div class="sh-l">${showName?`<b>${esc(d.name)}</b> · `:''}${many?`${s.n}차 촬영`:'촬영'}${s.carriedFrom?` <span class="badge red">${mNum(s.carriedFrom)}월 이월</span>`:''}${s.done?' <span class="badge green">완료</span>':''}${s.carriedTo?` <span class="badge gray">→ ${mNum(s.carriedTo)}월로 이월</span>`:''}
-      ${!s.done&&!s.carriedTo?`<button class="sh-del" data-action="shootdel" data-doc="${d.id}" data-n="${s.n}" aria-label="촬영 지우기">✕</button>`:''}</div>
-    ${s.carriedTo?'':`<div class="sh-in">
-      <input type="date" value="${s.date||''}" data-shoot="date" data-doc="${d.id}" data-n="${s.n}">
-      <input type="time" value="${s.time||''}" data-shoot="time" data-doc="${d.id}" data-n="${s.n}">
-      <button class="sh-done ${s.done?'on':''}" data-action="shootdone" data-doc="${d.id}" data-n="${s.n}">${s.done?'완료 취소':'촬영 완료'}</button>
-    </div>`}
-  </div>`;
-}
-function linkSheet(docId,uid){
-  const u=findUnit(docId,uid); if(!u) return '';
-  return `<div class="modal-hd"><h2>게시 완료 👏</h2><button class="x" data-action="close">✕</button></div>
-  <div class="modal-body">
-    <div style="font-size:14px;margin-bottom:14px;line-height:1.55"><b>${esc(state.months[docId].name)}</b> · ${esc(unitTitle(docId,u))}<br><span style="color:var(--muted);font-size:13px">올린 게시물 링크를 붙여 두면 나중에 조회수 분석·광고주 보고서에 그대로 씁니다.</span></div>
-    <div class="field"><label>게시물 링크</label><input id="lk-url" type="url" inputmode="url" placeholder="https://www.instagram.com/reel/..."></div>
-    <div class="btn-row">
-      <button class="btn btn-ghost" data-action="close" style="flex:0 0 38%">나중에</button>
-      <button class="btn btn-primary" data-action="linksave" data-doc="${docId}" data-uid="${uid}">저장</button>
-    </div>
-  </div>`;
-}
-
-/* ---------- 직원 화면 ---------- */
-function viewStaff(){
-  const now=nowMonth(), prev=addMonth(now,-1), dl=daysLeftIn(now);
-  const cur=docsOf(now), old=docsOf(prev);
-  const docs=[...old,...cur];
-  const me=state.me.uid;
-  const st=unitsStats(cur.flatMap(d=>d.units||[]));
-  const pct=st.total?Math.round(st.done/st.total*100):0;
-  const oldLeft=old.reduce((a,d)=>a+(d.units||[]).filter(u=>isProg(u)&&!isDone(u)).length,0);
-  const overdueFn=(d,u)=>isProg(u) && !isDone(u) && (d.month<now || !!u.carriedFrom || ((+u.stage||0)===0 && dl<=URGENT_DAYS));
-  const mineFn=(d,u)=>isProg(u) && !isDone(u) && u.assignee===me;
-  const allFn=(d,u)=>d.month===now && !isCount(u) && !u.carriedTo;
-  const count=fn=>docs.reduce((a,d)=>a+(d.units||[]).filter(u=>fn(d,u)).length,0);
-  const cntOver=count(overdueFn), cntMine=count(mineFn);
-  const shoots=[...old.flatMap(d=>(d.shoots||[]).filter(s=>!s.done && !s.carriedTo).map(s=>({d,s}))), ...cur.flatMap(d=>(d.shoots||[]).map(s=>({d,s})))];
-  const shootLeft=shoots.filter(x=>!x.s.done).length;
-  if(!state.staffTab) state.staffTab=cntOver>0?'overdue':'all';
-  const tab=state.staffTab;
-  const hints={
-    overdue:`지난달에서 넘어온 작업과, 마감 ${URGENT_DAYS}일 안쪽인데 아직 시작 안 한 작업이에요.`,
-    mine:`내가 단계를 넘긴 작업은 자동으로 '내 작업'이 됩니다.`,
-    all:`버튼을 누르면 다음 단계로 넘어가요. 잘못 눌렀으면 아래 '되돌리기'를 누르세요. 리뷰·블로그는 이번 달 총 횟수를 적어 주세요.`,
-    shoot:`촬영할 때마다 업체 이름 버튼으로 추가하고 날짜·시간을 넣어 주세요. 촬영 일정은 매달 1일 새로 시작합니다.`
-  };
-  const body = tab==='shoot' ? staffShoots(shoots,cur)
-    : staffCards(docs, tab==='overdue'?overdueFn:tab==='mine'?mineFn:allFn, tab);
-  return `<div class="view">
-    <div class="hero">
-      <div class="hero-k">${esc(state.me.name)}님 · ${mLabel(now)} 할 일</div>
-      <div class="hero-v"><span class="num">${st.todo}</span><small>남은 작업 · 전체 ${st.total}건</small></div>
-      <div class="pbar light"><i style="width:${pct}%"></i></div>
-      <div class="hero-s">마감까지 ${dl}일${oldLeft?` · 지난달 못 끝낸 것 ${oldLeft}건`:''}</div>
-    </div>
-    <div class="stabs">
-      <button class="${tab==='overdue'?'on':''} ${cntOver?'alert':''}" data-action="stab" data-v="overdue">밀린 것<b>${cntOver}</b></button>
-      <button class="${tab==='mine'?'on':''}" data-action="stab" data-v="mine">내 작업<b>${cntMine}</b></button>
-      <button class="${tab==='all'?'on':''}" data-action="stab" data-v="all">전체<b>${st.todo}</b></button>
-      <button class="${tab==='shoot'?'on':''}" data-action="stab" data-v="shoot">촬영<b>${shootLeft}</b></button>
-    </div>
-    <div class="stab-hint">${hints[tab]}</div>
-    ${body}
-  </div>`;
-}
-function staffCards(docs,fn,tab){
-  const now=nowMonth();
-  let cards=docs.map(d=>({d, units:sortUnits(d,(d.units||[]).filter(u=>fn(d,u))), counts:tab==='all'&&d.month===now?countUnits(d):[]}))
-    .filter(x=>x.units.length || x.counts.length);
-  cards.sort((a,b)=>{ const ad=a.units.every(isDone)?1:0, bd=b.units.every(isDone)?1:0; return (ad-bd)||(a.d.month<b.d.month?-1:a.d.month>b.d.month?1:0)||(a.d.name||'').localeCompare(b.d.name||'','ko'); });
-  if(!cards.length){
-    const t={overdue:['👏','밀린 작업이 없어요','이 상태 그대로 가면 됩니다'],mine:['🙌','맡은 작업을 다 끝냈어요','전체 탭에서 남은 작업을 맡아 주세요'],all:['📋','이번 달 작업이 아직 없어요','관리자가 거래처별 월 작업 구성을 정하면 여기에 나타나요']}[tab];
-    return `<div class="empty"><div class="ic">${t[0]}</div><h3>${t[1]}</h3><p>${t[2]}</p></div>`;
-  }
-  return cards.map(({d,units,counts})=>{
-    const st=unitsStats(d.units||[]);
-    const todo=units.filter(u=>!isDone(u)), doneN=units.length-todo.length;
-    const allDone=units.length>0 && todo.length===0;
-    const si=shootInfo(d);
-    return `<div class="ucard ${allDone&&!counts.length?'done':''}">
-      <button class="uc-hd" data-action="work" data-id="${d.id}">
-        <div class="avatar" style="background:${colorFor(d.name)}">${initial(d.name)}</div>
-        <div class="body"><div class="name">${esc(d.name)}${d.month!==now?` <span class="badge red">${mShort(d.month)}분</span>`:''}</div><div class="meta">${st.done}/${st.total} 완료 · 📷 촬영 ${si.done}회${si.plan?` · 예정 ${si.plan}`:''}</div></div>
-        <span class="uc-more">자세히 ›</span>
-      </button>
-      ${allDone?`<div class="uc-done">✓ 이번 달 작업 모두 완료</div>`:todo.map(u=>unitRow(d,u)).join('')+(doneN?`<div class="uc-donecnt">✓ 완료 ${doneN}건</div>`:'')}
-      ${counts.length?`<div class="uc-counts">${counts.map(u=>countRow(d,u,false)).join('')}</div>`:''}
-    </div>`;
-  }).join('');
-}
-function unitRow(d,u){
-  const t=tKey(u.type), s=+u.stage||0, next=s+1, fin=next===lastStage(t);
-  const many=(d.units||[]).filter(x=>x.itemId===u.itemId).length>1;
-  return `<div class="urow">
-    <div class="ur-l"><div class="ur-name">${esc(u.label)}${many?' '+u.n:''}</div>
-      <div class="ur-st"><span class="stp s${s}">${stageName(t,s)}</span>${u.assigneeName?` · ${esc(u.assigneeName)}`:''}</div></div>
-    <button class="nextbtn ${fin?'fin':''}" data-action="adv" data-doc="${d.id}" data-uid="${u.uid}">${fin?'✓ ':'→ '}${stageName(t,next)}</button>
-  </div>`;
-}
-function staffShoots(list,cur){
-  const dated=list.filter(x=>!x.s.done && x.s.date).sort((a,b)=>(a.s.date+(a.s.time||'')).localeCompare(b.s.date+(b.s.time||'')));
-  const undated=list.filter(x=>!x.s.done && !x.s.date);
-  const done=list.filter(x=>x.s.done);
-  const sec=(title,arr)=>arr.length?`<div class="section-label" style="margin:12px 4px 9px">${title} <span>${arr.length}건</span></div>${arr.map(x=>shootRow(x.d,x.s,true)).join('')}`:'';
-  const adders=cur.length?`<div class="section-label" style="margin:16px 4px 9px">촬영 추가</div>
-    <div class="sh-adders">${cur.map(d=>`<button data-action="shootadd" data-doc="${d.id}">+ ${esc(d.name)}</button>`).join('')}</div>`:'';
-  if(!list.length) return `<div class="empty" style="padding:28px 20px 12px"><div class="ic">📷</div><h3>이번 달 촬영이 아직 없어요</h3><p>촬영할 업체를 아래에서 눌러 추가하세요</p></div>`+adders;
-  return sec('예정',dated)+sec('날짜 미정',undated)+sec('완료',done)+adders;
 }
 
 /* ---------- 월 작업 구성 편집 (거래처 등록·수정 폼) ---------- */
@@ -2534,21 +2546,21 @@ function planEditor(c){
   const p=(c&&state.plans[c.id])||{items:[],pkg:''};
   const items=p.items||[];
   const cur=p.pkg||(items.length?'custom':'');
-  return `<div class="field"><label>월 작업 구성 <span style="font-weight:500">(매달 1일 작업표 자동 생성)</span></label>
+  return `<div class="field"><label>월 작업 구성 <span style="font-weight:500">(매달 목표가 되는 작업)</span></label>
     <input type="hidden" id="f-pkg" value="${esc(cur)}">
     <div class="pkgseg">${PACKAGES.map(x=>`<button type="button" data-action="pkgpick" data-v="${x.id}" class="${cur===x.id?'on':''}">${x.name}</button>`).join('')}<button type="button" data-action="pkgpick" data-v="custom" class="${cur==='custom'?'on':''}">직접 설정</button></div>
     <div id="tpList">${items.map(planRow).join('')}</div>
     <div class="tp-empty ${items.length?'hidden':''}" id="tpEmpty">패키지를 고르면 계약서 제5조의 작업이 채워집니다. 기존 계약서 업체는 '직접 설정'으로 작업을 하나씩 넣으세요.</div>
     <div class="tp-presets">${TASK_PRESETS.map((x,i)=>`<button type="button" data-action="tpadd" data-i="${i}">+ ${x.label}</button>`).join('')}<button type="button" data-action="tpadd" data-i="-1">+ 직접 입력</button></div>
-    <div class="hint">‘영상’은 예정→촬영→편집→예약→게시 5단계, ‘완료 체크’는 한 번에 끝나는 작업, ‘횟수 기록’은 이번 달 한 횟수만 적는 작업이에요(리뷰·블로그). 촬영은 횟수를 정하지 않고 할 때마다 추가합니다.</div>
+    <div class="hint">‘여러 편’은 숫자만큼 기록해야 채워지는 작업(숏폼·롱폼), ‘한 번 완료’는 한 달에 한 번 기록하면 되는 작업이에요. 촬영은 목표 없이 할 때마다 기록합니다.</div>
   </div>
   <div class="field"><label>관리 키워드 <span style="font-weight:500">(선택)</span></label><input id="f-kw" value="${esc(p.keywords||'')}" placeholder="예: 여수 풀빌라, 돌산 펜션"></div>`;
 }
 function planRow(it){
-  const t=tKey(it.type);
-  return `<div class="tp-row" data-iid="${esc(it.id||uid())}" data-t="${t}">
+  const t=tKey(it.type)==='sns'?'sns':'simple';
+  return `<div class="tp-row" data-iid="${esc(it.id||uid())}" data-t="${t}" data-orig="${tKey(it.type)}">
     <input class="tp-label" value="${esc(it.label||'')}" placeholder="작업 이름">
-    <select class="tp-type"><option value="sns" ${t==='sns'?'selected':''}>영상</option><option value="simple" ${t==='simple'?'selected':''}>완료 체크</option><option value="count" ${t==='count'?'selected':''}>횟수 기록</option></select>
+    <select class="tp-type"><option value="sns" ${t==='sns'?'selected':''}>여러 편</option><option value="simple" ${t==='simple'?'selected':''}>한 번 완료</option></select>
     <div class="stepper sm"><button type="button" data-action="tpstep" data-d="-1">−</button><input class="tp-count" inputmode="numeric" value="${+it.count||1}"><button type="button" data-action="tpstep" data-d="1">+</button></div>
     <button type="button" class="tp-del" data-action="tpdel">✕</button>
   </div>`;
@@ -2566,20 +2578,24 @@ function pickPackage(id){
 }
 function collectPlanItems(){
   return [...document.querySelectorAll('#tpList .tp-row')].map(r=>{
-    const type=r.querySelector('.tp-type').value;
-    return { id:r.dataset.iid, label:r.querySelector('.tp-label').value.trim(), type:tKey(type),
-      count:type==='count'?1:Math.max(0,Math.min(50,parseInt(r.querySelector('.tp-count').value)||0)) };
+    const sel=r.querySelector('.tp-type').value;
+    // '한 번 완료'로 둔 리뷰·블로그는 원래 종류(count)를 유지 — 집계상 둘 다 한 번 완료
+    const type=sel==='sns'?'sns':(r.dataset.orig==='count'?'count':'simple');
+    return { id:r.dataset.iid, label:r.querySelector('.tp-label').value.trim(), type,
+      count:type==='sns'?Math.max(0,Math.min(50,parseInt(r.querySelector('.tp-count').value)||0)):1 };
   }).filter(x=>x.label && x.count>0);
 }
 
-/* ---------- 계정 (관리자: 직원 관리 / 공용: 비밀번호 변경) ---------- */
+/* ---------- 계정 (관리자: 직원·팀 관리) ---------- */
 function staffSheet(){
   const list=[...state.users].sort((a,b)=>((a.active===false)-(b.active===false))||(a.name||'').localeCompare(b.name||'','ko'));
-  return `<div class="modal-hd"><h2>직원 계정 관리</h2><button class="x" data-action="close">✕</button></div>
+  const allKeys=sortKeys([...Object.keys(DEFAULT_TEAM), ...Object.values(state.plans).flatMap(p=>(p.items||[]).map(taskKeyOf))]);
+  return `<div class="modal-hd"><h2>직원·팀 관리</h2><button class="x" data-action="close">✕</button></div>
   <div class="modal-body">
-    ${list.length?list.map(u=>`<div class="row" style="cursor:default">
+    ${list.length?list.map(u=>`<div class="st-row ${u.active===false?'off':''}">
       <div class="avatar" style="background:${u.active===false?'#94a3a1':colorFor(u.name)}">${initial(u.name)}</div>
-      <div class="body"><div class="name">${esc(u.name)} ${u.active===false?'<span class="badge gray">사용 중지</span>':''}</div><div class="meta">아이디 ${esc(u.loginId)}</div></div>
+      <div class="body"><div class="name">${esc(u.name)} ${u.active===false?'<span class="badge gray">사용 중지</span>':''}</div><div class="meta">아이디 ${esc(u.loginId)}${TEAMS[u.team]?'':' · <b style="color:var(--red)">팀 미지정</b>'}</div></div>
+      <div class="teamseg sm">${Object.entries(TEAMS).map(([v,t])=>`<button data-action="staffteam" data-id="${u.uid}" data-v="${v}" class="${u.team===v?'on':''}">${t}</button>`).join('')}</div>
       <button class="qbtn ${u.active===false?'':'cancel'}" data-action="staffactive" data-id="${u.uid}">${u.active===false?'다시 사용':'사용 중지'}</button>
     </div>`).join(''):`<div class="card" style="padding:18px;text-align:center;color:var(--muted);font-size:13.5px">아직 등록된 직원이 없습니다</div>`}
     <div class="section-label">새 직원 추가</div>
@@ -2588,10 +2604,25 @@ function staffSheet(){
       <div class="field"><label>아이디 (영문·숫자)</label><input id="st-id" autocapitalize="off" autocomplete="off" placeholder="예: gildong"></div>
       <div class="field"><label>처음 비밀번호 (6자 이상)</label><input id="st-pw" autocomplete="off" placeholder="직원에게 알려줄 것"></div>
     </div>
+    <div class="field"><label>팀</label><input type="hidden" id="st-team" value="video"><div class="teamseg">${Object.entries(TEAMS).map(([v,t])=>`<button data-action="newteam" data-v="${v}" class="${v==='video'?'on':''}">${t}</button>`).join('')}</div></div>
     <button class="btn btn-primary" data-action="addstaff" id="addStaffBtn">직원 계정 만들기</button>
-    <div style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">직원은 로그인한 뒤 메뉴 → 비밀번호 변경에서 자기 비밀번호를 바꿀 수 있어요.<br>비밀번호를 잊어버리면 그 계정은 사용 중지하고 새 아이디로 다시 만들어 주세요.</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">직원은 자기 팀 작업만 보고 기록합니다. 팀을 바꾸면 바로 반영돼요.<br>비밀번호를 잊어버리면 그 계정은 사용 중지하고 새 아이디로 다시 만들어 주세요.</div>
+    <div class="section-label">작업별 담당 팀</div>
+    ${allKeys.map(k=>`<div class="kt-row"><span>${esc(keyLabel(k))}</span><div class="teamseg sm">${Object.entries(TEAMS).map(([v,t])=>`<button data-action="keyteam" data-k="${esc(k)}" data-v="${v}" class="${teamOfKey(k)===v?'on':''}">${t}</button>`).join('')}</div></div>`).join('')}
   </div>`;
 }
+async function setStaffTeam(id,team){
+  const u=state.users.find(x=>x.uid===id); if(!u || u.team===team) return;
+  const upd={...u, team}; state.users=state.users.map(x=>x.uid===id?upd:x);
+  openModal(staffSheet());
+  try{ await setDoc(doc(db,'ad_users',id),upd); toast(`${u.name}님을 ${TEAMS[team]}으로 지정했습니다`); }catch(e){ toast('저장 실패: '+(e.code||e.message),3000); }
+}
+async function setKeyTeam(k,team){
+  const s={...(state.settings||{}), taskTeams:{...((state.settings||{}).taskTeams||{}), [k]:team}};
+  state.settings=s; openModal(staffSheet()); render();
+  try{ await Store.saveSettings(s); }catch(e){ toast('저장 실패: '+(e.code||e.message),3000); }
+}
+
 async function createStaffFromForm(){
   const name=$('#st-name').value.trim(), loginId=$('#st-id').value.trim().toLowerCase(), pw=$('#st-pw').value;
   if(!name){ toast('이름을 입력하세요'); return; }
@@ -2604,7 +2635,7 @@ async function createStaffFromForm(){
     if(!secAuth) secAuth=getAuth(initializeApp(FIREBASE_CONFIG,'staff-creator'));
     const cred=await createUserWithEmailAndPassword(secAuth, idToEmail(loginId), pw);
     await signOut(secAuth);
-    const u={uid:cred.user.uid, loginId, name, active:true, role:'staff', createdAt:Date.now()};
+    const u={uid:cred.user.uid, loginId, name, active:true, role:'staff', team:($('#st-team')?.value)||'video', createdAt:Date.now()};
     await setDoc(doc(db,'ad_users',u.uid),u);
     if(!state.users.some(x=>x.uid===u.uid)) state.users.push(u);
     openModal(staffSheet());
@@ -2668,11 +2699,7 @@ function toastAction(msg,label,fn,ms){
 /* ---------- 작업 화면 입력 ---------- */
 document.addEventListener('change',e=>{
   const el=e.target;
-  if(el.dataset.shoot){ patchShoot(el.dataset.doc,+el.dataset.n,{[el.dataset.shoot]:el.value}); }
-  else if(el.dataset.assign){ setAssignee(el.dataset.doc,el.dataset.assign,el.value); el.blur(); }
-  else if(el.dataset.link){ patchUnit(el.dataset.doc,el.dataset.link,{link:el.value.trim()}); el.blur(); }
-  else if(el.dataset.count){ setCount(el.dataset.doc,el.dataset.count,el.value); }
-  else if(el.classList.contains('tp-type')){ el.closest('.tp-row').dataset.t=el.value; }
+  if(el.classList.contains('tp-type')){ el.closest('.tp-row').dataset.t=el.value; }
 });
 document.addEventListener('keydown',e=>{ if(e.key==='Enter' && e.target.dataset && e.target.dataset.count) e.target.blur(); });
 document.addEventListener('input',e=>{ if(e.target.matches('[data-count]')) e.target.value=e.target.value.replace(/[^0-9]/g,'').slice(0,5);
@@ -2741,9 +2768,9 @@ document.addEventListener('submit',async e=>{
   }
 });
 function resetSession(){
-  Store.stop(); closeModal(); ensured.clear();
-  Object.assign(state,{clients:[],payments:[],extras:[],plans:{},months:{},users:[],ready:false,plansLoaded:false,monthsLoaded:false,role:null,me:null,staffTab:null,tab:'dashboard'});
-  document.body.classList.remove('staff');
+  Store.stop(); closeModal();
+  Object.assign(state,{clients:[],payments:[],extras:[],plans:{},users:[],logs:[],settings:{},ready:false,plansLoaded:false,role:null,me:null,workTeam:'all',sumMode:'month',weekStart:null,month:nowMonth(),tab:'dashboard'});
+  document.body.classList.remove('staff','wide');
   $('#app').innerHTML='';
 }
 async function doLogout(){
@@ -2756,12 +2783,12 @@ function onListenError(err){
     else toast('권한 오류 — Firestore 보안 규칙을 확인하세요',4000);
   } else toast('동기화 오류: '+((err&&err.code)||''),3000);
 }
-function onDataChange(){ state.ready=true; ensureCurrentMonth(); render(); }
+function onDataChange(){ state.ready=true; render(); }
 function startSession(role,me){
   hideLogin();
   state.role=role; state.me=me;
   state.tab=role==='admin'?'dashboard':'staff';
-  state.staffTab=null;
+  state.month=nowMonth();
   $('#app').innerHTML='<div class="loading"><div class="spinner"></div><span>불러오는 중…</span></div>';
   Store.init(role,onDataChange);
 }
