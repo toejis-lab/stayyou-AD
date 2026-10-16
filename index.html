@@ -724,8 +724,9 @@ const USE_FB = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('YOU
 const LS_KEY = 'stayu_ad_billing_v1';
 
 /* ---------- 앱 버전 ---------- */
-const APP_VERSION='3.2.6';
+const APP_VERSION='3.2.7';
 const CHANGELOG=[
+  {v:'3.2.7', d:'2026-10-16', items:["'새소식' 추가 (영상팀, 노랑, 목표 없이 올릴 때마다 기록) — 달력 순서는 숏폼 → 기타 → 새소식 → 클립 …"]},
   {v:'3.2.6', d:'2026-10-16', items:['달력 칸 표시를 "숏폼 · 업체명" 줄 전체 연한 작업 색 띠 + 검정 글씨로 변경']},
   {v:'3.2.5', d:'2026-10-16', items:['달력 칸 표시를 "숏폼 · 업체명" 한 줄 전체 작업 색 글씨로 변경']},
   {v:'3.2.4', d:'2026-10-16', items:['달력 칸 기록 줄의 테두리·흰 바탕 제거 (색 표시와 업체 이름만 표시)']},
@@ -2299,15 +2300,15 @@ const PACKAGES=[
   {id:'G',  name:'GROWTH',     items:['short','long','seo','report'], travel:true},
   {id:'P',  name:'PREMIUM',    items:['short','long','seo','brand','report'], travel:true},
 ];
-const DEFAULT_TEAM={shoot:'video', clip:'video', short:'video', long:'video', tv:'video', travel:'video', seo:'sales', review:'sales', blog:'sales', report:'sales', brand:'sales'};
-const LABEL={shoot:'촬영', clip:'클립', tv:'여행 연관 영상', travel:'여수 여행 연관 콘텐츠', etc:'기타'};
-const SHORT_NAME={shoot:'촬영', clip:'클립', short:'숏폼', long:'롱폼', tv:'여행연관', travel:'여행콘텐츠', seo:'SEO', review:'리뷰', blog:'블로그', report:'보고서', brand:'브랜드광고', etc:'기타'};
+const DEFAULT_TEAM={shoot:'video', clip:'video', news:'video', short:'video', long:'video', tv:'video', travel:'video', seo:'sales', review:'sales', blog:'sales', report:'sales', brand:'sales'};
+const LABEL={shoot:'촬영', clip:'클립', news:'새소식', tv:'여행 연관 영상', travel:'여수 여행 연관 콘텐츠', etc:'기타'};
+const SHORT_NAME={shoot:'촬영', clip:'클립', news:'새소식', short:'숏폼', long:'롱폼', tv:'여행연관', travel:'여행콘텐츠', seo:'SEO', review:'리뷰', blog:'블로그', report:'보고서', brand:'브랜드광고', etc:'기타'};
 // 작업별 색 — 진한 색 바탕에 흰 글씨 표(태그)로 표시해 달력에서 바로 구분되게 함
-const KEY_COLOR={short:'#E53935', etc:'#8E24AA', clip:'#1E88E5', long:'#2E7D32', shoot:'#F57C00', seo:'#00897B', brand:'#5D4037', report:'#C2185B', tv:'#BF360C', travel:'#BF360C', review:'#757575', blog:'#757575'};
+const KEY_COLOR={short:'#E53935', etc:'#8E24AA', news:'#F9A825', clip:'#1E88E5', long:'#2E7D32', shoot:'#F57C00', seo:'#00897B', brand:'#5D4037', report:'#C2185B', tv:'#BF360C', travel:'#BF360C', review:'#757575', blog:'#757575'};
 const EXTRA_COLORS=['#ad1457','#00695c','#4527a0','#9e6b00','#0277bd','#558b2f','#6d4c41','#5e35b1'];
-// 달력·목록 표시 순서 — 숏폼 1순위, 기타 2순위 (기록 시간과 무관)
-const KEY_ORDER=['short','etc','clip','long','shoot','tv','seo','brand','report','review','blog','travel'];
-const FREE_KEYS=['shoot','clip'];   // 목표 없이 횟수만 기록
+// 달력·목록 표시 순서 — 숏폼 1순위, 기타 2순위, 새소식 3순위 (기록 시간과 무관)
+const KEY_ORDER=['short','etc','news','clip','long','shoot','tv','seo','brand','report','review','blog','travel'];
+const FREE_KEYS=['shoot','clip','news'];   // 목표 없이 횟수만 기록
 const VIDEO_KEYS=['short','long'];  // 여행 연관 체크 가능
 const URGENT_DAYS=7;   // 이번 달 마감 며칠 전부터 못 채운 작업을 빨간색으로 보일지
 const WD=['일','월','화','수','목','금','토'];
@@ -2319,7 +2320,7 @@ const HIDDEN_KEYS=['review','blog'];  // 작업 관리에서 제외 (체크하�
 const isHidden=k=>HIDDEN_KEYS.includes(k);
 const tKey=t=>t==='simple'?'simple':t==='count'?'count':'sns';
 const normLabel=s=>String(s||'').replace(/\s+/g,'').toLowerCase();
-const ALIAS={'숏폼영상':'short','숏폼':'short','숏츠':'short','롱폼영상':'long','롱폼':'long','seo+aeo+geo최적화':'seo','seo':'seo','리뷰':'review','블로그':'blog','브랜드콘텐츠광고':'brand','보고서':'report','월간보고서':'report','여수여행연관콘텐츠':'travel','여행연관콘텐츠':'travel','클립':'clip','촬영':'shoot'};
+const ALIAS={'숏폼영상':'short','숏폼':'short','숏츠':'short','롱폼영상':'long','롱폼':'long','seo+aeo+geo최적화':'seo','seo':'seo','리뷰':'review','블로그':'blog','브랜드콘텐츠광고':'brand','보고서':'report','월간보고서':'report','여수여행연관콘텐츠':'travel','여행연관콘텐츠':'travel','클립':'clip','촬영':'shoot','새소식':'news'};
 // 작업의 고유 키 — 기본 작업은 이름(띄어쓰기 무시)으로도 알아봄, 직접 만든 작업은 이름 기준
 const taskKeyOf=it=>I[it.id]?it.id:(ALIAS[normLabel(it.label)]||'c:'+normLabel(it.label));
 const canonLogKey=k=>{ if(!k || I[k] || LABEL[k] || k==='etc') return k; if(String(k).startsWith('c:')){ const n=normLabel(k.slice(2)); return ALIAS[n]||'c:'+n; } return k; };
@@ -2378,6 +2379,7 @@ function targetsOf(p,m){
   VIDEO_KEYS.forEach(k=>{ if(!out[k]) out[k]={label:I[k].label, target:0, kind:'free'}; });
   out.shoot={label:'촬영', target:0, kind:'free'};   // 사진 촬영 포함 — 계약 중인 업체 전부
   out.clip={label:'클립', target:0, kind:'free'};
+  out.news={label:'새소식', target:0, kind:'free'};   // 비정기 — 올릴 때마다 기록
   return out;
 }
 const logsIn=(m)=>state.logs.filter(l=>l.month===m);
