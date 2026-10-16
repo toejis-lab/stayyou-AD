@@ -614,6 +614,28 @@ body.wide main{max-width:1180px}
 .st-row .name{font-weight:700}
 .st-row .meta{font-size:12px;color:var(--muted)}
 .kt-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 2px;border-bottom:1px solid var(--line);font-size:14px;font-weight:600}
+
+/* v3.1 */
+.klegend{display:flex;flex-wrap:wrap;gap:6px 12px;justify-content:center;font-size:11.5px;font-weight:700;color:var(--muted);margin-top:10px}
+.klegend span{display:inline-flex;align-items:center;gap:5px}
+.klegend i{width:9px;height:9px;border-radius:3px}
+.tv-check{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:12px;border:1.5px dashed #f0b27a;background:#fff8f1;margin-bottom:12px;cursor:pointer}
+.tv-check.on{border-style:solid;border-color:#e65100;background:#fff0e3}
+.tv-check input{width:22px;height:22px;margin:1px 0 0;accent-color:#e65100;flex-shrink:0}
+.tv-check span{display:flex;flex-direction:column;gap:2px}
+.tv-check b{font-size:14.5px;color:#a33d00}
+.tv-check small{font-size:12px;color:var(--muted);line-height:1.45}
+.tv-check.sm{padding:10px 12px;margin:-4px 0 12px}
+.tv-note{font-size:12.5px;line-height:1.5;padding:9px 11px;border-radius:10px;background:#fff4ea;color:#8a3b00;margin-bottom:10px}
+.cn-btn{display:block;text-align:left;width:100%;padding:0;font:inherit;color:inherit}
+.cn-btn:hover .cn{color:var(--primary);text-decoration:underline}
+.mc small{font-size:11px;font-weight:700;color:#e65100}
+.wl-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;font-weight:500}
+.tp-row .stepper span{font-size:12.5px;font-weight:700;color:var(--muted);white-space:nowrap}
+.tp-row .stepper input{width:56px;font-size:17px}
+.tp-row[data-t=simple] .stepper{display:none}
+.tp-row.flash{animation:flash 1s ease}
+@keyframes flash{0%{background:#fff3c4}100%{background:#fff}}
 </style>
 </head>
 <body>
@@ -686,8 +708,17 @@ const USE_FB = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('YOU
 const LS_KEY = 'stayu_ad_billing_v1';
 
 /* ---------- 앱 버전 ---------- */
-const APP_VERSION='3.0.0';
+const APP_VERSION='3.1.0';
 const CHANGELOG=[
+  {v:'3.1.0', d:'2026-10-16', items:[
+    '같은 작업이 두 번 들어가 날짜 창에 숏폼·롱폼이 두 번 나오던 문제 수정 — 기존 중복은 큰 편수로 합치고 기록도 옮김',
+    '같은 작업 버튼을 다시 누르면 새 줄 대신 편수 +1, 직접 설정에서 영상 작업은 1편부터 시작, 편수 칸 크게',
+    '거래처 상세·집계 표에서 바로 월 작업 구성 수정',
+    "'클립' 추가 (영상팀, 목표 없이 올릴 때마다 기록)",
+    "'여수 여행 연관 콘텐츠' 항목을 없애고 숏폼·롱폼 기록 때 🧳 여행 연관 체크로 변경 — STANDARD 2·GROWTH·PREMIUM은 월 1편 이상 없으면 미완료 표시",
+    '달력·집계에서 작업별로 글씨 색을 다르게, 색 안내 추가',
+    "날짜 창에 '기타' 추가 — 한 일을 직접 입력해 기록"
+  ]},
   {v:'3.0.0', d:'2026-10-15', items:[
     '작업 관리를 달력 기록 방식으로 변경 — 날짜 → 작업 → 업체를 누르면 완료로 기록',
     '직원별 팀(영상팀·영업팀) 지정, 직원은 자기 팀 작업만 보고 기록 · 작업별 담당 팀도 관리자가 지정',
@@ -801,13 +832,13 @@ const Store = {
           if(d.team!==state.me.team || d.name!==state.me.name){ state.me={...state.me, team:d.team, name:d.name}; onChange(); }
         },err=>onListenError(err)));
       }
-      listen(collection(db,'ad_logs'),snap=>{ state.logs=snap.docs.map(d=>({...d.data(),id:d.id})); });
+      listen(collection(db,'ad_logs'),snap=>{ state.logs=snap.docs.map(d=>{ const x={...d.data(),id:d.id}; const k=canonLogKey(x.key); return k!==x.key?{...x,key:k,rawKey:x.key}:x; }); },'logsLoaded');
       listen(collection(db,'ad_settings'),snap=>{ const d=snap.docs.find(x=>x.id==='main'); state.settings=d?d.data():{}; });
       listen(collection(db,'ad_taskplans'),snap=>{ const o={}; snap.docs.forEach(d=>{ o[d.id]={...d.data(),clientId:d.id}; }); state.plans=o; },'plansLoaded');
     } else {
       const raw = localStorage.getItem(LS_KEY);
       if(raw){ try{ const o=JSON.parse(raw); state.clients=o.clients||[]; state.payments=o.payments||[]; state.extras=o.extras||[]; state.plans=o.plans||{}; state.logs=o.logs||[]; state.settings=o.settings||{}; }catch(e){} }
-      state.plansLoaded=true;
+      state.plansLoaded=true; state.logsLoaded=true;
       onChange();
     }
   },
@@ -1628,6 +1659,7 @@ function clientDetail(c){
     </div>
     ${hasPlan(c.id)?`<div class="btn-row" style="margin:-6px 0 16px">
       <button class="btn btn-ghost" data-action="gowork">🎬 작업 달력 보기</button>
+      <button class="btn btn-ghost" data-action="editplan" data-id="${c.id}">✏️ 작업 구성 수정</button>
       ${state.plans[c.id].pkg!=='S1'?`<button class="btn btn-ghost" data-action="wkaddset" data-id="${c.id}">+ 이번 달 추가 항목</button>`:''}
     </div>
     ${+((state.plans[c.id].extra||{})[nowMonth()])?`<div class="card" style="padding:11px 14px;margin:-6px 0 16px;display:flex;align-items:center;gap:10px;font-size:13.5px"><span style="flex:1">${mLabel(nowMonth())} 추가 항목 <b>${state.plans[c.id].extra[nowMonth()]}회</b> (숏폼 +${4*state.plans[c.id].extra[nowMonth()]}, 롱폼 +${state.plans[c.id].extra[nowMonth()]})</span><button class="qbtn cancel" data-action="wkdelset" data-id="${c.id}">1회 빼기</button></div>`:''}`:''}
@@ -2011,7 +2043,9 @@ document.addEventListener('click',e=>{
     case 'adminback': showLogin(); break;
     case 'gowork': state.tab='work'; render(); break;
     case 'editclientw': openModal(clientForm(state.clients.find(c=>c.id===id))); break;
-    case 'tpadd': { const i=+t.dataset.i; const pr=i>=0?TASK_PRESETS[i]:{label:'',type:'sns',count:1}; const used=[...document.querySelectorAll('#tpList .tp-row')].map(r=>r.dataset.iid); $('#tpList').insertAdjacentHTML('beforeend',planRow({...pr,id:(pr.id&&!used.includes(pr.id))?pr.id:uid()})); if(!$('#f-pkg').value) pickPackage('custom'); $('#tpEmpty')?.classList.add('hidden'); if(i<0){ const ins=document.querySelectorAll('#tpList .tp-label'); ins[ins.length-1].focus(); } } break;
+    case 'tpadd': { const i=+t.dataset.i; if(!$('#f-pkg').value) pickPackage('custom');
+      if(i>=0) addPlanRow(TASK_PRESETS[i]);
+      else { $('#tpList').insertAdjacentHTML('beforeend',planRow({label:'',type:'sns',count:1,id:uid()})); $('#tpEmpty')?.classList.add('hidden'); const ins=document.querySelectorAll('#tpList .tp-label'); ins[ins.length-1].focus(); } } break;
     case 'tpdel': t.closest('.tp-row')?.remove(); if(!document.querySelector('#tpList .tp-row')) $('#tpEmpty')?.classList.remove('hidden'); break;
     case 'tpstep': { const inp=t.parentElement.querySelector('input'); const min=inp.id==='f-shoot'?0:1; inp.value=Math.max(min,Math.min(inp.id==='f-shoot'?20:50,(parseInt(inp.value)||0)+(+t.dataset.d))); } break;
     case 'staffmgr': openModal(staffSheet()); break;
@@ -2019,15 +2053,20 @@ document.addEventListener('click',e=>{
     case 'wkaddset': changeExtra(id,1); break;
     case 'wkdelset': changeExtra(id,-1); break;
     case 'wkday': openDay(t.dataset.d); break;
-    case 'wktask': workUI.key=t.dataset.k; workUI.step='client'; refreshWorkModal(); document.querySelector('#modalBg .modal')?.scrollTo(0,0); break;
+    case 'wktask': workUI.key=t.dataset.k; workUI.step='client'; workUI.travel=false; refreshWorkModal(); document.querySelector('#modalBg .modal')?.scrollTo(0,0); break;
     case 'wkpick': { const p=state.plans[t.dataset.c], m=workUI.day.slice(0,7), tg=p&&targetsOf(p,m)[workUI.key];
-      if(tg && tg.kind!=='shoot' && doneOf(p.clientId,workUI.key,m)>=tg.target && !confirm(`${p.name} · ${keyLabel(workUI.key)}는 이번 달 목표를 이미 채웠습니다.\n그래도 기록할까요?`)) break;
-      addLog(workUI.day,workUI.key,t.dataset.c); } break;
-    case 'wkback': if(workUI.editId){ workUI.editId=null; } else if(workUI.step==='client'){ workUI.step='day'; workUI.key=null; } refreshWorkModal(); break;
+      if(tg && tg.kind!=='free' && doneOf(p.clientId,workUI.key,m)>=tg.target && !confirm(`${p.name} · ${keyLabel(workUI.key)}는 이번 달 목표를 이미 채웠습니다.\n그래도 기록할까요?`)) break;
+      addLog(workUI.day,workUI.key,t.dataset.c, VIDEO_KEYS.includes(workUI.key)?{travel:!!workUI.travel}:null); } break;
+    case 'wketc': workUI.step='etc'; refreshWorkModal(); setTimeout(()=>$('#etc-text')?.focus(),50); break;
+    case 'etcsave': { const v=($('#etc-text')?.value||'').trim(); if(!v){ toast('한 일을 적어 주세요'); break; } document.activeElement&&document.activeElement.blur(); workUI.step='day'; addLog(workUI.day,'etc','',{text:v}); } break;
+    case 'editplan': { const c=state.clients.find(x=>x.id===id); if(!c){ toast('거래처를 찾을 수 없습니다'); break; } openModal(clientForm(c)); setTimeout(()=>{ const f=$('#planField'); if(f) f.scrollIntoView({block:'start',behavior:'smooth'}); },120); } break;
+    case 'wkback': if(workUI.editId){ workUI.editId=null; } else if(workUI.step==='client'||workUI.step==='etc'){ workUI.step='day'; workUI.key=null; } refreshWorkModal(); break;
     case 'wkedit': if(!$('#modalBg')||!document.querySelector('#modalBg .wk-sheet')){ openWorkModal({editId:t.dataset.id}); } else { workUI.editId=t.dataset.id; refreshWorkModal(); } break;
-    case 'wksave': { const nd=$('#le-date').value, nk=$('#le-key').value, nc=$('#le-client').value; if(!nd){ toast('날짜를 넣어 주세요'); break; }
+    case 'wksave': { const l0=state.logs.find(x=>x.id===id); if(!l0) break; const nd=$('#le-date').value; if(!nd){ toast('날짜를 넣어 주세요'); break; }
+      if(l0.key==='etc'){ const v=($('#le-text')?.value||'').trim(); if(!v){ toast('한 일을 적어 주세요'); break; } document.activeElement&&document.activeElement.blur(); workUI.editId=null; updateLog(id,{date:nd,text:v}); break; }
+      const nk=$('#le-key').value, nc=$('#le-client').value, tv=!!($('#le-travel')?.checked);
       const p=state.plans[nc]; if(p && !targetsOf(p,nd.slice(0,7))[nk] && !confirm(`${p.name}의 ${mLabel(nd.slice(0,7))} 월 작업 구성에 '${keyLabel(nk)}'가 없습니다.\n그래도 저장할까요?`)) break;
-      document.activeElement&&document.activeElement.blur(); workUI.editId=null; updateLog(id,{date:nd,key:nk,clientId:nc}); } break;
+      document.activeElement&&document.activeElement.blur(); workUI.editId=null; updateLog(id,{date:nd,key:nk,clientId:nc,travel:VIDEO_KEYS.includes(nk)?tv:false}); } break;
     case 'wkdel': removeLog(id); break;
     case 'wkcell': openWorkModal({cell:{c:t.dataset.c,k:t.dataset.k}}); break;
     case 'wkteam': state.workTeam=t.dataset.v; render(); break;
@@ -2196,17 +2235,17 @@ function importData(file){
 
 
 /* ============================================================
-   작업 관리 (v3.0.0) — 팀별 달력 기록 방식
+   작업 관리 (v3.1.0) — 팀별 달력 기록 방식
    - 거래처별 '월 작업 구성'(ad_taskplans)이 매달 목표가 됨
    - 직원은 달력 날짜 → 작업 → 업체를 눌러 '완료한 날'을 기록 (ad_logs)
-   - 기록이 업체·작업별로 자동 집계 (이번 달 목표 대비 / 이번 주 기록)
+   - 촬영·클립은 목표 없이 횟수만, 기타는 내용만 직접 입력
+   - 숏폼·롱폼은 '여수 여행 연관' 체크 → STANDARD 2·GROWTH·PREMIUM은 월 1편 이상 필요
    - 팀: 영상팀(video) / 영업팀(sales) — 직원 팀, 작업별 담당 팀은 관리자가 지정
    ============================================================ */
 const TEAMS={video:'영상팀', sales:'영업팀'};
 const I={
   short:{id:'short', label:'숏폼 영상', type:'sns', count:4},
   long:{id:'long', label:'롱폼 영상', type:'sns', count:1},
-  travel:{id:'travel', label:'여수 여행 연관 콘텐츠', type:'simple', count:1},
   seo:{id:'seo', label:'SEO+AEO+GEO 최적화', type:'simple', count:1},
   review:{id:'review', label:'리뷰', type:'count', count:1},
   blog:{id:'blog', label:'블로그', type:'count', count:1},
@@ -2214,28 +2253,42 @@ const I={
   report:{id:'report', label:'보고서', type:'simple', count:1},
 };
 // 계약서 제5조 제1항 패키지 구성 + 제6조 제2항 월간 보고서
+// '여수 여행 연관 콘텐츠'는 항목이 아니라 숏폼·롱폼 기록 시 체크 (travel: 월 1편 이상 필요)
 const PACKAGES=[
   {id:'S1', name:'STANDARD 1', items:['review','blog','report']},
-  {id:'S2', name:'STANDARD 2', items:['short','long','travel','seo','report']},
-  {id:'G',  name:'GROWTH',     items:['short','long','travel','seo','review','blog','report']},
-  {id:'P',  name:'PREMIUM',    items:['short','long','travel','seo','review','blog','brand','report']},
+  {id:'S2', name:'STANDARD 2', items:['short','long','seo','report'], travel:true},
+  {id:'G',  name:'GROWTH',     items:['short','long','seo','review','blog','report'], travel:true},
+  {id:'P',  name:'PREMIUM',    items:['short','long','seo','review','blog','brand','report'], travel:true},
 ];
-const DEFAULT_TEAM={shoot:'video', short:'video', long:'video', travel:'video', seo:'sales', review:'sales', blog:'sales', report:'sales', brand:'sales'};
-const SHORT_NAME={shoot:'촬영', short:'숏폼', long:'롱폼', travel:'여행콘텐츠', seo:'SEO', review:'리뷰', blog:'블로그', report:'보고서', brand:'브랜드광고'};
-const KEY_ORDER=['shoot','short','long','travel','seo','review','blog','brand','report'];
+const DEFAULT_TEAM={shoot:'video', clip:'video', short:'video', long:'video', tv:'video', travel:'video', seo:'sales', review:'sales', blog:'sales', report:'sales', brand:'sales'};
+const LABEL={shoot:'촬영', clip:'클립', tv:'여행 연관 영상', travel:'여수 여행 연관 콘텐츠', etc:'기타'};
+const SHORT_NAME={shoot:'촬영', clip:'클립', short:'숏폼', long:'롱폼', tv:'여행연관', travel:'여행콘텐츠', seo:'SEO', review:'리뷰', blog:'블로그', report:'보고서', brand:'브랜드광고', etc:'기타'};
+const KEY_COLOR={shoot:'#2e7d32', clip:'#00838f', short:'#1565c0', long:'#6a1b9a', tv:'#e65100', travel:'#e65100', seo:'#283593', review:'#c2185b', blog:'#8d5524', report:'#546e7a', brand:'#c62828', etc:'#37474f'};
+const EXTRA_COLORS=['#ad1457','#00695c','#4527a0','#9e6b00','#0277bd','#558b2f','#6d4c41','#5e35b1'];
+const KEY_ORDER=['shoot','clip','short','long','tv','seo','review','blog','brand','report','travel'];
+const FREE_KEYS=['shoot','clip'];   // 목표 없이 횟수만 기록
+const VIDEO_KEYS=['short','long'];  // 여행 연관 체크 가능
 const URGENT_DAYS=7;   // 이번 달 마감 며칠 전부터 못 채운 작업을 빨간색으로 보일지
 const WD=['일','월','화','수','목','금','토'];
-const pkgName=id=>(PACKAGES.find(p=>p.id===id)||{}).name||'직접 설정';
-const pkgItems=id=>((PACKAGES.find(p=>p.id===id)||{}).items||[]).map(k=>({...I[k]}));
-const TASK_PRESETS=['short','long','travel','seo','review','blog','brand','report'].map(k=>I[k]);
+const pkgOf=id=>PACKAGES.find(p=>p.id===id);
+const pkgName=id=>(pkgOf(id)||{}).name||'직접 설정';
+const pkgItems=id=>((pkgOf(id)||{}).items||[]).map(k=>({...I[k]}));
+const TASK_PRESETS=['short','long','seo','review','blog','brand','report'].map(k=>I[k]);
 const tKey=t=>t==='simple'?'simple':t==='count'?'count':'sns';
-const taskKeyOf=it=>I[it.id]?it.id:'c:'+String(it.label||'').trim();
-const keyLabel=k=>k==='shoot'?'촬영':I[k]?I[k].label:String(k).replace(/^c:/,'');
-const keyShort=k=>SHORT_NAME[k]||String(k).replace(/^c:/,'');
+const normLabel=s=>String(s||'').replace(/\s+/g,'').toLowerCase();
+const ALIAS={'숏폼영상':'short','숏폼':'short','숏츠':'short','롱폼영상':'long','롱폼':'long','seo+aeo+geo최적화':'seo','seo':'seo','리뷰':'review','블로그':'blog','브랜드콘텐츠광고':'brand','보고서':'report','월간보고서':'report','여수여행연관콘텐츠':'travel','여행연관콘텐츠':'travel','클립':'clip','촬영':'shoot'};
+// 작업의 고유 키 — 기본 작업은 이름(띄어쓰기 무시)으로도 알아봄, 직접 만든 작업은 이름 기준
+const taskKeyOf=it=>I[it.id]?it.id:(ALIAS[normLabel(it.label)]||'c:'+normLabel(it.label));
+const canonLogKey=k=>{ if(!k || I[k] || LABEL[k] || k==='etc') return k; if(String(k).startsWith('c:')){ const n=normLabel(k.slice(2)); return ALIAS[n]||'c:'+n; } return k; };
+function customLabel(k){ for(const p of Object.values(state.plans)) for(const it of (p.items||[])) if(taskKeyOf(it)===k) return it.label; return String(k).replace(/^c:/,''); }
+const keyLabel=k=>LABEL[k]||(I[k]?I[k].label:customLabel(k));
+const keyShort=k=>SHORT_NAME[k]||customLabel(k);
+function keyColor(k){ if(KEY_COLOR[k]) return KEY_COLOR[k]; const s=String(k); let h=0; for(const ch of s) h=(h*31+ch.charCodeAt(0))>>>0; return EXTRA_COLORS[h%EXTRA_COLORS.length]; }
 const keyRank=k=>{ const i=KEY_ORDER.indexOf(k); return i<0?100:i; };
 const sortKeys=ks=>[...new Set(ks)].sort((a,b)=>keyRank(a)-keyRank(b)||a.localeCompare(b,'ko'));
 const hasPlan=id=>{ const p=state.plans[id]; return !!(p && (p.items||[]).length); };
-let workUI={day:null, step:'day', key:null, editId:null, cell:null};
+const travelRequired=p=>!!(pkgOf(p.pkg)||{}).travel;
+let workUI={day:null, step:'day', key:null, editId:null, cell:null, travel:false};
 
 /* ---------- 팀 ---------- */
 function teamOfKey(k){
@@ -2250,34 +2303,42 @@ function viewTeam(){ // 지금 보고 있는 팀 ('all' | 'video' | 'sales')
   return state.workTeam||'all';
 }
 const inTeam=(k,team)=>team==='all'||teamOfKey(k)===team;
+// 기록이 이 팀 화면에 보이는지 — 기타는 쓴 사람의 팀(팀 없이 쓴 관리자 기록은 양쪽)
+const logInTeam=(l,team)=>team==='all' || (l.key==='etc' ? (!l.team || l.team===team) : teamOfKey(l.key)===team);
 
 /* ---------- 목표·기록 집계 ---------- */
 function activePlans(m){
   return Object.values(state.plans).filter(p=>p.clientId && hasPlan(p.clientId) && isActiveInMonth(p,m))
     .sort((a,b)=>(a.name||'').localeCompare(b.name||'','ko'));
 }
-// 업체의 그 달 목표: key → {label, target, kind}  (kind: multi=여러 편, once=한 번 완료, shoot=횟수만)
+// 업체의 그 달 목표: key → {label, target, kind}  (kind: multi=여러 편, once=한 번 완료, free=횟수만)
 function targetsOf(p,m){
   const out={};
   (p.items||[]).forEach(it=>{
     const k=taskKeyOf(it), t=tKey(it.type);
+    if(k==='travel') return;                                   // 여행 연관은 항목이 아니라 영상 체크로 확인
     const n=t==='sns'?(+it.count||0):1;
     if(!out[k]) out[k]={label:it.label||keyLabel(k), target:0, kind:t==='sns'?'multi':'once'};
-    out[k].target+=n;
-    if(t==='sns') out[k].kind='multi';
+    if(t==='sns'){ out[k].kind='multi'; out[k].target=Math.max(out[k].target,n); }  // 같은 작업이 겹치면 큰 쪽
+    else out[k].target=1;
   });
   const ex=+((p.extra||{})[m])||0;
   if(ex){
     [['short',4],['long',1]].forEach(([k,n])=>{ if(!out[k]) out[k]={label:I[k].label,target:0,kind:'multi'}; out[k].target+=n*ex; out[k].kind='multi'; });
   }
-  Object.keys(out).forEach(k=>{ if(out[k].kind==='once') out[k].target=1; });
-  if(Object.keys(out).some(k=>teamOfKey(k)==='video')) out.shoot={label:'촬영', target:0, kind:'shoot'};
+  if(travelRequired(p)) out.tv={label:'여행 연관 영상', target:1, kind:'once'};
+  if(Object.keys(out).some(k=>teamOfKey(k)==='video')) out.shoot={label:'촬영', target:0, kind:'free'};
+  out.clip={label:'클립', target:0, kind:'free'};
   return out;
 }
 const logsIn=(m)=>state.logs.filter(l=>l.month===m);
-function doneOf(cid,k,m){ return state.logs.filter(l=>l.month===m && l.clientId===cid && l.key===k).length; }
+function doneOf(cid,k,m){
+  if(k==='tv') return state.logs.filter(l=>l.month===m && l.clientId===cid && VIDEO_KEYS.includes(l.key) && l.travel).length;
+  return state.logs.filter(l=>l.month===m && l.clientId===cid && l.key===k).length;
+}
+function travelOf(cid,k,m){ return state.logs.filter(l=>l.month===m && l.clientId===cid && l.key===k && l.travel).length; }
 function cellState(done,t,m){
-  if(t.kind==='shoot') return done?'green':'gray';
+  if(t.kind==='free') return done?'green':'gray';
   if(done>=t.target) return 'green';
   const dl=daysLeftIn(m);
   if(dl<0 || dl<=URGENT_DAYS) return 'red';
@@ -2292,7 +2353,7 @@ function monthSummary(m,team){
   activePlans(m).forEach(p=>{
     const ts=targetsOf(p,m);
     Object.entries(ts).forEach(([k,t])=>{
-      if(t.kind==='shoot' || !inTeam(k,team)) return;
+      if(t.kind==='free' || !inTeam(k,team)) return;
       const d=doneOf(p.clientId,k,m);
       need+=t.target; got+=Math.min(d,t.target);
       if(d<t.target) missing.push({p,k,t,d});
@@ -2314,33 +2375,96 @@ function weekStartOf(iso){ const d=parseIso(iso); const w=(d.getDay()+6)%7; d.se
 function addDays(iso,n){ const d=parseIso(iso); d.setDate(d.getDate()+n); return isoOf(d); }
 function fmtAt(ts){ if(!ts) return ''; const d=new Date(ts); return `${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`; }
 
+/* ---------- 표시 도우미 ---------- */
+const tvMark=l=>l.travel?' 🧳':'';
+const kTag=(k,txt)=>`<b style="color:${keyColor(k)}">${esc(txt)}</b>`;
+function logText(l){ return l.key==='etc' ? (l.text||'') : (l.clientName||''); }
+
 /* ---------- 저장 ---------- */
-async function addLog(date,key,cid){
-  const p=state.plans[cid]; if(!p) return;
-  const l={id:uid(), date, month:date.slice(0,7), clientId:cid, clientName:p.name||'', key, label:keyLabel(key)==='촬영'?'촬영':(targetsOf(p,date.slice(0,7))[key]||{}).label||keyLabel(key), team:teamOfKey(key), by:state.me.name, byUid:state.me.uid, at:Date.now()};
+async function addLog(date,key,cid,extra){
+  const p=cid?state.plans[cid]:null; if(cid && !p) return;
+  const m=date.slice(0,7);
+  const l={id:uid(), date, month:m, clientId:cid||'', clientName:p?p.name||'':'', key,
+    label:key==='etc'?'기타':(p&&(targetsOf(p,m)[key]||{}).label)||keyLabel(key),
+    team:key==='etc'?(state.role==='staff'?(state.me.team||''):(viewTeam()==='all'?'':viewTeam())):teamOfKey(key),
+    by:state.me.name, byUid:state.me.uid, at:Date.now(), ...(extra||{})};
   state.logs.push(l); render();
-  try{ await Store.saveLog(l); toast(`${p.name} · ${keyShort(key)} 기록했습니다`); }
+  try{ await Store.saveLog(l); toast(key==='etc'?'기타 기록을 저장했습니다':`${p.name} · ${keyShort(key)}${l.travel?' (여행 연관)':''} 기록했습니다`); }
   catch(e){ state.logs=state.logs.filter(x=>x.id!==l.id); render(); toast('저장 실패: '+(e.code||e.message),3000); }
 }
 async function updateLog(id,patch){
   const old=state.logs.find(l=>l.id===id); if(!old) return;
-  const p=state.plans[patch.clientId||old.clientId];
-  const nl={...old,...patch, month:(patch.date||old.date).slice(0,7), clientName:p?p.name:old.clientName, editedBy:state.me.name, editedAt:Date.now()};
-  if(patch.key) { nl.label=keyLabel(patch.key); nl.team=teamOfKey(patch.key); if(p){ const t=targetsOf(p,nl.month)[patch.key]; if(t) nl.label=t.label; } }
+  const nl={...old,...patch, month:(patch.date||old.date).slice(0,7), editedBy:state.me.name, editedAt:Date.now()};
+  if(nl.key!=='etc'){
+    const p=state.plans[nl.clientId];
+    nl.clientName=p?p.name:old.clientName;
+    nl.label=(p&&(targetsOf(p,nl.month)[nl.key]||{}).label)||keyLabel(nl.key);
+    nl.team=teamOfKey(nl.key);
+    if(!VIDEO_KEYS.includes(nl.key)) nl.travel=false;
+  }
   state.logs=state.logs.map(l=>l.id===id?nl:l); render();
   try{ await Store.saveLog(nl); toast('수정했습니다'); }
   catch(e){ state.logs=state.logs.map(l=>l.id===id?old:l); render(); toast('저장 실패: '+(e.code||e.message),3000); }
 }
 async function removeLog(id){
   const old=state.logs.find(l=>l.id===id); if(!old) return;
-  if(!confirm(`${dayTitle(old.date)} · ${old.clientName} · ${keyShort(old.key)}\n이 기록을 지울까요?`)) return;
+  if(!confirm(`${dayTitle(old.date)} · ${keyShort(old.key)} · ${logText(old)}\n이 기록을 지울까요?`)) return;
   state.logs=state.logs.filter(l=>l.id!==id);
-  workUI.editId=null; workUI.step=workUI.day?'day':workUI.step;
+  workUI.editId=null;
   render();
   try{ await Store.delLog(id); toast('지웠습니다'); }
   catch(e){ state.logs.push(old); render(); toast('삭제 실패: '+(e.code||e.message),3000); }
 }
-const canEditLog=l=>state.role==='admin' || !TEAMS[state.me.team] || l.team===state.me.team;
+const canEditLog=l=>state.role==='admin' || !TEAMS[state.me.team] || (l.key==='etc' ? (!l.team || l.team===state.me.team || l.byUid===state.me.uid) : l.team===state.me.team);
+
+/* ---------- 중복 작업 정리 (관리자 접속 시 1회) ----------
+   같은 작업이 이름만 같은 별도 작업으로 나뉜 경우 하나로 합침 — 편수는 큰 쪽,
+   '여수 여행 연관 콘텐츠' 항목은 숏폼·롱폼 체크로 바뀌었으므로 뺌, 기록도 합친 작업으로 옮김 */
+let cleanupDone=false;
+async function cleanupPlans(){
+  if(cleanupDone || state.role!=='admin' || !state.plansLoaded || !state.logsLoaded) return;
+  cleanupDone=true;
+  const changes=[], planWrites=[];
+  Object.values(state.plans).forEach(p=>{
+    const groups=new Map(); let travelRemoved=false;
+    (p.items||[]).forEach(it=>{
+      const k=taskKeyOf(it);
+      if(k==='travel'){ travelRemoved=true; return; }
+      if(!groups.has(k)) groups.set(k,[]);
+      groups.get(k).push(it);
+    });
+    let changed=travelRemoved;
+    const items=[...groups.entries()].map(([k,arr])=>{
+      const base=arr[0];
+      const type=arr.some(x=>tKey(x.type)==='sns')?'sns':tKey(base.type);
+      const count=type==='sns'?Math.max(...arr.map(x=>+x.count||0)):1;
+      const id=I[k]?k:base.id;
+      const label=I[k]?I[k].label:base.label;
+      if(arr.length>1){ changed=true; changes.push({p, label, from:arr.map(x=>type==='sns'?(+x.count||0):1).join('+'), to:type==='sns'?`${count}편`:'1개', merged:true}); }
+      if(id!==base.id || label!==base.label) changed=true;
+      return {...base, id, label, type, count};
+    });
+    if(travelRemoved) changes.push({p, label:'여수 여행 연관 콘텐츠', from:'항목', to:'숏폼·롱폼 체크로 변경', merged:false});
+    if(changed){ const np={...p, items}; state.plans[p.clientId]=np; planWrites.push(np); }
+  });
+  const logWrites=[];
+  state.logs.forEach(l=>{ if(l.rawKey && l.rawKey!==l.key){ const {rawKey,...rest}=l; logWrites.push(rest); } });
+  if(!planWrites.length && !logWrites.length) return;
+  try{
+    for(const np of planWrites) await Store.savePlan(np);
+    for(const l of logWrites) await Store.saveLog(l);
+  }catch(e){ toast('작업 정리 저장 실패: '+(e.code||e.message),3000); return; }
+  render();
+  if(changes.length) setTimeout(()=>{ if(!$('#modalBg')) openModal(cleanupSheet(changes,logWrites.length)); },300);
+}
+function cleanupSheet(changes,movedLogs){
+  return `<div class="modal-hd"><h2>중복 작업을 정리했습니다</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div style="font-size:13.5px;line-height:1.6;margin-bottom:12px">이름만 같은 작업이 둘로 나뉘어 있던 업체를 하나로 합쳤습니다. 숏폼·롱폼 편수는 <b>큰 쪽</b>으로 맞췄으니, 계약과 다른 곳이 있으면 눌러서 고쳐 주세요.${movedLogs?`<br>그동안의 기록 ${movedLogs}건도 합친 작업으로 옮겼습니다.`:''}</div>
+    ${changes.map(c=>`<button class="lg-row" data-action="editplan" data-id="${c.p.clientId}"><span class="lg-c">${esc(c.p.name)}</span><span class="lg-by">${esc(c.label)} ${esc(c.from)} → <b style="color:var(--ink)">${esc(c.to)}</b></span><span class="lg-go">고치기 ›</span></button>`).join('')}
+    <button class="btn btn-primary" data-action="close" style="margin-top:8px">확인</button>
+  </div>`;
+}
 
 /* ---------- 작업 화면 (관리자 '작업' 탭 · 직원 첫 화면 공용) ---------- */
 function viewWorkBoard(){
@@ -2362,7 +2486,7 @@ function viewWorkBoard(){
     ${summaryHtml(m,team)}
     ${noPlan.length?`<div class="section-label">월 작업 구성 미설정 <span>${noPlan.length}곳</span></div>
       <div style="font-size:12.5px;color:var(--muted);margin:0 4px 10px;line-height:1.55">매달 할 작업이 정해져 있지 않아 달력에 업체가 나오지 않는 거래처예요. 눌러서 월 작업 구성을 정해 주세요.</div>
-      <div class="wk-noplan">${noPlan.map(c=>`<button class="row" data-action="editclient" data-id="${c.id}">
+      <div class="wk-noplan">${noPlan.map(c=>`<button class="row" data-action="editplan" data-id="${c.id}">
         <div class="avatar" style="background:${colorFor(c.name)}">${initial(c.name)}</div>
         <div class="body"><div class="name">${esc(c.name)}</div><div class="meta">월 작업 구성 정하기 ›</div></div></button>`).join('')}</div>`:''}
   </div>`;
@@ -2372,47 +2496,58 @@ function calendarHtml(m,team){
   const first=new Date(y,mo-1,1), days=new Date(y,mo,0).getDate();
   const lead=first.getDay(), today=todayISO();
   const byDay={};
-  logsIn(m).filter(l=>inTeam(l.key,team)).forEach(l=>{ (byDay[l.date]=byDay[l.date]||[]).push(l); });
+  const ml=logsIn(m).filter(l=>logInTeam(l,team));
+  ml.forEach(l=>{ (byDay[l.date]=byDay[l.date]||[]).push(l); });
   let cells='';
   for(let i=0;i<lead;i++) cells+=`<div class="wc empty"></div>`;
   for(let d=1; d<=days; d++){
     const iso=`${m}-${pad(d)}`, wd=(lead+d-1)%7;
-    const ls=(byDay[iso]||[]).sort((a,b)=>keyRank(a.key)-keyRank(b.key)||(a.clientName||'').localeCompare(b.clientName||'','ko')||a.at-b.at);
+    const ls=(byDay[iso]||[]).sort((a,b)=>keyRank(a.key)-keyRank(b.key)||logText(a).localeCompare(logText(b),'ko')||a.at-b.at);
     const MAX=4;
     cells+=`<button class="wc ${iso===today?'today':''} ${wd===0?'sun':wd===6?'sat':''}" data-action="wkday" data-d="${iso}">
       <span class="wc-n">${d}</span>
-      ${ls.slice(0,MAX).map(l=>`<span class="wc-e t-${teamOfKey(l.key)}"><b>${esc(keyShort(l.key))}</b> · ${esc(l.clientName)}</span>`).join('')}
+      ${ls.slice(0,MAX).map(l=>`<span class="wc-e" style="color:${keyColor(l.key)};background:${keyColor(l.key)}14"><b>${esc(keyShort(l.key))}${tvMark(l)}</b> · ${esc(logText(l))}</span>`).join('')}
       ${ls.length>MAX?`<span class="wc-more">+${ls.length-MAX}건 더</span>`:''}
       ${ls.length?`<span class="wc-dot">${ls.length}</span>`:''}
     </button>`;
   }
+  const legendKeys=sortKeys([...teamKeysFor(m,team).filter(k=>k!=='tv'), ...ml.map(l=>l.key)]).filter(k=>k!=='etc');
   return `<div class="wcal-wrap"><div class="wcal-hint">날짜를 눌러 그날 한 작업을 기록하세요</div>
-    <div class="wcal">${WD.map((w,i)=>`<div class="wh ${i===0?'sun':i===6?'sat':''}">${w}</div>`).join('')}${cells}</div></div>`;
+    <div class="wcal">${WD.map((w,i)=>`<div class="wh ${i===0?'sun':i===6?'sat':''}">${w}</div>`).join('')}${cells}</div>
+    <div class="klegend">${legendKeys.map(k=>`<span><i style="background:${keyColor(k)}"></i>${esc(keyShort(k))}</span>`).join('')}<span><i style="background:${keyColor('etc')}"></i>기타</span><span>🧳 여행 연관</span></div></div>`;
+}
+function cellText(p,k,t,m){
+  const d=doneOf(p.clientId,k,m);
+  if(t.kind==='free') return `${d}회`;
+  if(t.kind==='once') return d?'✓':'–';
+  const tv=VIDEO_KEYS.includes(k)?travelOf(p.clientId,k,m):0;
+  return `${d}/${t.target}${tv?`<small> 🧳${tv}</small>`:''}`;
 }
 function summaryHtml(m,team){
   const mode=state.sumMode||'month';
   const plans=activePlans(m);
   const keys=teamKeysFor(m,team);
+  const isAdm=state.role==='admin';
   const tabs=`<div class="sumseg"><button data-action="summode" data-v="month" class="${mode==='month'?'on':''}">이번 달 집계</button><button data-action="summode" data-v="week" class="${mode==='week'?'on':''}">주간 기록</button></div>`;
   if(!plans.length) return `<div class="section-label" style="margin-top:20px">집계</div>${tabs}<div class="card" style="padding:22px;text-align:center;color:var(--muted);font-size:13.5px">${mLabel(m)}에 월 작업 구성이 있는 거래처가 없습니다</div>`;
   if(mode==='week') return weekHtml(m,team,keys,plans,tabs);
   const sum=monthSummary(m,team);
   const rows=plans.map(p=>{
     const ts=targetsOf(p,m);
-    if(!Object.keys(ts).some(k=>inTeam(k,team))) return '';
-    return `<tr><th class="sticky-c"><span class="cn">${esc(p.name)}</span><small>${p.pkg&&p.pkg!=='custom'?pkgName(p.pkg):'직접 설정'}${+((p.extra||{})[m])?` · 추가 ${p.extra[m]}`:''}</small></th>${keys.map(k=>{
+    if(!Object.keys(ts).some(k=>inTeam(k,team) && !FREE_KEYS.includes(k)) && !state.logs.some(l=>l.month===m && l.clientId===p.clientId && l.key!=='etc' && inTeam(l.key,team))) return '';
+    const name=`<span class="cn">${esc(p.name)}</span><small>${p.pkg&&p.pkg!=='custom'?pkgName(p.pkg):'직접 설정'}${+((p.extra||{})[m])?` · 추가 ${p.extra[m]}`:''}</small>`;
+    return `<tr><th class="sticky-c">${isAdm?`<button class="cn-btn" data-action="editplan" data-id="${p.clientId}">${name}</button>`:name}</th>${keys.map(k=>{
       const t=ts[k]; if(!t) return `<td class="na">·</td>`;
-      const d=doneOf(p.clientId,k,m), cls=cellState(d,t,m);
-      const txt=t.kind==='shoot'?`${d}회`:t.kind==='once'?(d?'✓':'–'):`${d}/${t.target}`;
-      return `<td><button class="mc ${cls}" data-action="wkcell" data-c="${p.clientId}" data-k="${esc(k)}">${txt}</button></td>`;
+      const cls=cellState(doneOf(p.clientId,k,m),t,m);
+      return `<td><button class="mc ${cls}" data-action="wkcell" data-c="${p.clientId}" data-k="${esc(k)}">${cellText(p,k,t,m)}</button></td>`;
     }).join('')}</tr>`;
   }).join('');
   return `<div class="section-label" style="margin-top:20px">집계 <span>${mLabel(m)}</span></div>${tabs}
-    ${sum.missing.length?`<div class="miss"><div class="miss-h">${daysLeftIn(m)<0?'못 채운 작업':'아직 남은 작업'} ${sum.missing.length}건</div>${sum.missing.map(x=>`<button class="miss-i ${cellState(x.d,x.t,m)}" data-action="wkcell" data-c="${x.p.clientId}" data-k="${esc(x.k)}">${esc(x.p.name)} · ${esc(keyShort(x.k))} <b>${x.t.kind==='once'?'미완료':`${x.d}/${x.t.target}`}</b></button>`).join('')}</div>`
+    ${sum.missing.length?`<div class="miss"><div class="miss-h">${daysLeftIn(m)<0?'못 채운 작업':'아직 남은 작업'} ${sum.missing.length}건</div>${sum.missing.map(x=>`<button class="miss-i ${cellState(x.d,x.t,m)}" data-action="wkcell" data-c="${x.p.clientId}" data-k="${esc(x.k)}">${esc(x.p.name)} · ${x.k==='tv'?'여행 연관':esc(keyShort(x.k))} <b>${x.t.kind==='once'?'미완료':`${x.d}/${x.t.target}`}</b></button>`).join('')}</div>`
       :`<div class="miss ok">✓ ${mLabel(m)} 작업을 모두 채웠습니다</div>`}
-    <div class="mtx-wrap"><table class="mtx"><thead><tr><th class="sticky-c">업체</th>${keys.map(k=>`<th><span class="t-${teamOfKey(k)}">${esc(keyShort(k))}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="mtx-wrap"><table class="mtx"><thead><tr><th class="sticky-c">업체</th>${keys.map(k=>`<th><span style="color:${keyColor(k)}">${esc(keyShort(k))}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
     <div class="legend-row"><span><i style="background:var(--green)"></i>채움</span><span><i style="background:#d08a2c"></i>진행 중</span><span><i style="background:var(--gray)"></i>아직 없음</span><span><i style="background:var(--red)"></i>마감 임박·못 채움</span></div>
-    <div class="wcal-hint" style="text-align:center">숫자를 누르면 그 작업의 기록을 보고 고칠 수 있어요</div>`;
+    <div class="wcal-hint" style="text-align:center">숫자를 누르면 그 작업의 기록을 보고 고칠 수 있어요${isAdm?' · 업체 이름을 누르면 월 작업 구성을 고칩니다':''}</div>`;
 }
 function weekHtml(m,team,keys,plans,tabs){
   let ws=state.weekStart;
@@ -2420,105 +2555,130 @@ function weekHtml(m,team,keys,plans,tabs){
   if(!ws || (ws.slice(0,7)!==m && addDays(ws,6).slice(0,7)!==m)) ws=weekStartOf(m===nowMonth()?today:`${m}-01`);
   state.weekStart=ws;
   const we=addDays(ws,6);
-  const wl=state.logs.filter(l=>l.date>=ws && l.date<=we && inTeam(l.key,team));
-  const cnt=(cid,k)=>wl.filter(l=>l.clientId===cid && l.key===k).length;
-  const wkKeys=sortKeys([...keys,...wl.map(l=>l.key)]);
-  const rows=plans.filter(p=>Object.keys(targetsOf(p,m)).some(k=>inTeam(k,team)) || wl.some(l=>l.clientId===p.clientId)).map(p=>{
+  const wl=state.logs.filter(l=>l.date>=ws && l.date<=we && logInTeam(l,team));
+  const cl=wl.filter(l=>l.key!=='etc');
+  const cnt=(cid,k)=>cl.filter(l=>l.clientId===cid && l.key===k).length;
+  const wkKeys=sortKeys([...keys.filter(k=>k!=='tv'),...cl.map(l=>l.key)]);
+  const rows=plans.filter(p=>Object.keys(targetsOf(p,m)).some(k=>inTeam(k,team) && !FREE_KEYS.includes(k)) || cl.some(l=>l.clientId===p.clientId)).map(p=>{
     const has=wkKeys.some(k=>cnt(p.clientId,k));
-    return `<tr class="${has?'':'dim'}"><th class="sticky-c"><span class="cn">${esc(p.name)}</span></th>${wkKeys.map(k=>{ const n=cnt(p.clientId,k); return `<td>${n?`<span class="mc wk">${n}</span>`:'<span class="na">·</span>'}</td>`; }).join('')}</tr>`;
+    return `<tr class="${has?'':'dim'}"><th class="sticky-c"><span class="cn">${esc(p.name)}</span></th>${wkKeys.map(k=>{ const n=cnt(p.clientId,k); const tv=cl.filter(l=>l.clientId===p.clientId && l.key===k && l.travel).length; return `<td>${n?`<span class="mc wk">${n}${tv?`<small> 🧳${tv}</small>`:''}</span>`:'<span class="na">·</span>'}</td>`; }).join('')}</tr>`;
   }).join('');
   const byDay={}; wl.forEach(l=>{ (byDay[l.date]=byDay[l.date]||[]).push(l); });
-  const list=Object.keys(byDay).sort().map(d=>`<div class="wl-day"><div class="wl-d">${dayTitle(d)}</div>${byDay[d].sort((a,b)=>keyRank(a.key)-keyRank(b.key)).map(l=>`<button class="wl-i" data-action="wkedit" data-id="${l.id}"><span class="t-${teamOfKey(l.key)}">${esc(keyShort(l.key))}</span> ${esc(l.clientName)}<small>${esc(l.by||'')}</small></button>`).join('')}</div>`).join('');
+  const list=Object.keys(byDay).sort().map(d=>`<div class="wl-day"><div class="wl-d">${dayTitle(d)}</div>${byDay[d].sort((a,b)=>keyRank(a.key)-keyRank(b.key)).map(l=>`<button class="wl-i" data-action="wkedit" data-id="${l.id}">${kTag(l.key,keyShort(l.key)+tvMark(l))} <span class="wl-t">${esc(logText(l))}</span><small>${esc(l.by||'')}</small></button>`).join('')}</div>`).join('');
   return `<div class="section-label" style="margin-top:20px">집계 <span>주간</span></div>${tabs}
     <div class="month-nav wk-wnav"><button data-action="wkprev">‹</button><div class="mlabel">${mmdd(ws)} ~ ${mmdd(we)}<small>이번 주 기록 ${wl.length}건</small></div><button data-action="wknext">›</button></div>
-    ${wl.length?`<div class="mtx-wrap"><table class="mtx"><thead><tr><th class="sticky-c">업체</th>${wkKeys.map(k=>`<th><span class="t-${teamOfKey(k)}">${esc(keyShort(k))}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>
+    ${wl.length?`${cl.length?`<div class="mtx-wrap"><table class="mtx"><thead><tr><th class="sticky-c">업체</th>${wkKeys.map(k=>`<th><span style="color:${keyColor(k)}">${esc(keyShort(k))}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`:''}
       <div class="wl">${list}</div>`
     :`<div class="card" style="padding:22px;text-align:center;color:var(--muted);font-size:13.5px">이 주에는 기록이 없습니다</div>`}`;
 }
 
-/* ---------- 날짜 창: 그날 기록 / 작업 고르기 / 업체 고르기 ---------- */
+/* ---------- 날짜 창: 그날 기록 / 작업 고르기 / 업체 고르기 / 기타 ---------- */
 // openModal()이 이전 창 상태를 지우므로, 창을 연 뒤에 상태를 넣고 내용을 그림
-function openWorkModal(ui){ openModal('<div class="wk-sheet"></div>'); workUI={day:null,step:'day',key:null,editId:null,cell:null,...ui}; refreshWorkModal(); }
+function openWorkModal(ui){ openModal('<div class="wk-sheet"></div>'); workUI={day:null,step:'day',key:null,editId:null,cell:null,travel:false,...ui}; refreshWorkModal(); }
 function openDay(iso){ openWorkModal({day:iso}); }
 function workModalHtml(){
   if(workUI.editId) return editLogHtml(workUI.editId);
   if(workUI.cell) return cellLogsHtml(workUI.cell.c, workUI.cell.k);
   if(workUI.step==='client') return pickClientHtml(workUI.day, workUI.key);
+  if(workUI.step==='etc') return etcHtml(workUI.day);
   return dayHtml(workUI.day);
 }
 function refreshWorkModal(){
   const modal=document.querySelector('#modalBg .modal');
   if(!modal || !modal.querySelector('.wk-sheet')) return;
   const ae=document.activeElement;
-  if(ae && modal.contains(ae) && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName)) return;
+  if(ae && modal.contains(ae) && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName) && ae.type!=='checkbox') return;
   const sc=modal.scrollTop; modal.innerHTML='<div class="grabber"></div>'+workModalHtml(); modal.scrollTop=sc;
 }
 function dayHtml(iso){
   const m=iso.slice(0,7), team=viewTeam();
-  const ls=state.logs.filter(l=>l.date===iso && inTeam(l.key,team)).sort((a,b)=>keyRank(a.key)-keyRank(b.key)||a.at-b.at);
-  const keys=teamKeysFor(m,team);
-  const left=k=>activePlans(m).reduce((a,p)=>{ const t=targetsOf(p,m)[k]; if(!t||t.kind==='shoot') return a; return a+Math.max(0,t.target-doneOf(p.clientId,k,m)); },0);
+  const ls=state.logs.filter(l=>l.date===iso && logInTeam(l,team)).sort((a,b)=>keyRank(a.key)-keyRank(b.key)||a.at-b.at);
+  const keys=teamKeysFor(m,team).filter(k=>k!=='tv');
+  const left=k=>activePlans(m).reduce((a,p)=>{ const t=targetsOf(p,m)[k]; if(!t||t.kind==='free') return a; return a+Math.max(0,t.target-doneOf(p.clientId,k,m)); },0);
   return `<div class="wk-sheet">
   <div class="modal-hd"><h2>${dayTitle(iso)}</h2><button class="x" data-action="close">✕</button></div>
   <div class="modal-body">
     <div class="section-label" style="margin:2px 0 10px">이날 기록 <span>${ls.length}건</span></div>
     ${ls.length?ls.map(l=>`<button class="lg-row" data-action="wkedit" data-id="${l.id}">
-        <span class="lg-k t-${teamOfKey(l.key)}">${esc(keyShort(l.key))}</span>
-        <span class="lg-c">${esc(l.clientName)}</span>
+        <span class="lg-k" style="color:${keyColor(l.key)}">${esc(keyShort(l.key))}${tvMark(l)}</span>
+        <span class="lg-c">${esc(logText(l))}</span>
         <span class="lg-by">${esc(l.by||'')}</span><span class="lg-go">고치기 ›</span></button>`).join('')
       :`<div class="lg-empty">아직 기록이 없습니다</div>`}
     <div class="section-label" style="margin:18px 0 10px">기록 추가 <span>작업을 고르세요</span></div>
-    ${keys.length?`<div class="task-grid">${keys.map(k=>{ const n=left(k); return `<button class="task-btn t-${teamOfKey(k)}" data-action="wktask" data-k="${esc(k)}"><b>${esc(keyLabel(k))}</b><small>${k==='shoot'?'횟수만 기록':n?`남은 ${n}건`:'모두 채움'}</small></button>`; }).join('')}</div>`
-      :`<div class="lg-empty">이 달에 ${TEAMS[team]||''} 작업이 있는 거래처가 없습니다</div>`}
+    <div class="task-grid">${keys.map(k=>{ const n=left(k); return `<button class="task-btn" style="border-left:4px solid ${keyColor(k)}" data-action="wktask" data-k="${esc(k)}"><b style="color:${keyColor(k)}">${esc(keyLabel(k))}</b><small>${FREE_KEYS.includes(k)?'횟수만 기록':n?`남은 ${n}건`:'모두 채움'}</small></button>`; }).join('')}
+      <button class="task-btn" style="border-left:4px solid ${keyColor('etc')}" data-action="wketc"><b style="color:${keyColor('etc')}">기타</b><small>내용 직접 입력</small></button></div>
+    ${keys.length?'':`<div class="lg-empty" style="margin-top:8px">이 달에 ${TEAMS[team]||''} 작업이 있는 거래처가 없습니다</div>`}
   </div></div>`;
 }
 function pickClientHtml(iso,k){
   const m=iso.slice(0,7);
   const list=activePlans(m).map(p=>({p,t:targetsOf(p,m)[k]})).filter(x=>x.t);
+  const isVideo=VIDEO_KEYS.includes(k);
   return `<div class="wk-sheet">
-  <div class="modal-hd"><button class="back" data-action="wkback">‹</button><h2 style="flex:1;margin-left:6px">${dayTitle(iso)} · ${esc(keyLabel(k))}</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-hd"><button class="back" data-action="wkback">‹</button><h2 style="flex:1;margin-left:6px">${dayTitle(iso)} · <span style="color:${keyColor(k)}">${esc(keyLabel(k))}</span></h2><button class="x" data-action="close">✕</button></div>
   <div class="modal-body">
+    ${isVideo?`<label class="tv-check ${workUI.travel?'on':''}"><input type="checkbox" id="tvChk" ${workUI.travel?'checked':''}><span><b>🧳 여수 여행 연관 ${keyShort(k)}</b><small>관광지·맛집·카페·여행 코스와 함께 숙소를 보여 준 영상이면 체크하고 업체를 누르세요</small></span></label>`:''}
     <div class="wcal-hint" style="margin:0 0 10px">업체를 누르면 완료로 기록됩니다. 여러 곳을 이어서 눌러도 돼요.</div>
     ${list.map(({p,t})=>{
       const d=doneOf(p.clientId,k,m), today=state.logs.filter(l=>l.date===iso && l.clientId===p.clientId && l.key===k).length;
-      const full=t.kind!=='shoot' && d>=t.target;
+      const full=t.kind!=='free' && d>=t.target;
+      const tvNeed=isVideo && travelRequired(p) && !doneOf(p.clientId,'tv',m);
       return `<button class="cl-row ${full?'full':''}" data-action="wkpick" data-c="${p.clientId}">
         <div class="avatar" style="background:${colorFor(p.name)}">${initial(p.name)}</div>
-        <div class="body"><div class="name">${esc(p.name)}</div><div class="meta">${t.kind==='shoot'?`이번 달 ${d}회`:t.kind==='once'?(d?'이번 달 완료':'이번 달 미완료'):`이번 달 ${d}/${t.target}`}${today?` · <b style="color:var(--primary)">이날 ${today}건 기록됨</b>`:''}</div></div>
+        <div class="body"><div class="name">${esc(p.name)}</div><div class="meta">${t.kind==='free'?`이번 달 ${d}회`:t.kind==='once'?(d?'이번 달 완료':'이번 달 미완료'):`이번 달 ${d}/${t.target}`}${today?` · <b style="color:var(--primary)">이날 ${today}건 기록됨</b>`:''}${tvNeed?` · <span style="color:#e65100;font-weight:700">여행 연관 아직 없음</span>`:''}</div></div>
         <span class="cl-add">${full?'✓ 채움':'+ 기록'}</span></button>`;
     }).join('')}
     <button class="btn btn-ghost" data-action="wkback" style="margin-top:8px">다 했어요 (날짜로 돌아가기)</button>
   </div></div>`;
 }
+function etcHtml(iso){
+  return `<div class="wk-sheet">
+  <div class="modal-hd"><button class="back" data-action="wkback">‹</button><h2 style="flex:1;margin-left:6px">${dayTitle(iso)} · 기타</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div class="field"><label>한 일</label><input id="etc-text" maxlength="60" placeholder="예: 아이테르 객실 사진 보정" autocomplete="off"></div>
+    <div class="wcal-hint" style="margin:-4px 0 12px">달력에 "기타 · 내용"으로 표시됩니다. 목표 집계에는 들어가지 않아요.</div>
+    <button class="btn btn-primary" data-action="etcsave">저장</button>
+  </div></div>`;
+}
 function editLogHtml(id){
   const l=state.logs.find(x=>x.id===id);
   if(!l) return `<div class="wk-sheet"><div class="modal-hd"><h2>기록</h2><button class="x" data-action="close">✕</button></div><div class="modal-body"><div class="lg-empty">지워진 기록입니다</div></div></div>`;
-  const m=l.month, team=viewTeam(), editable=canEditLog(l);
-  const keys=sortKeys([...teamKeysFor(m,team), l.key]);
-  const plans=activePlans(m).filter(p=>targetsOf(p,m)[l.key]);
-  if(!plans.some(p=>p.clientId===l.clientId)) plans.push({clientId:l.clientId, name:l.clientName});
-  return `<div class="wk-sheet">
-  <div class="modal-hd">${workUI.day||workUI.cell?`<button class="back" data-action="wkback">‹</button>`:''}<h2 style="flex:1;margin-left:6px">기록 고치기</h2><button class="x" data-action="close">✕</button></div>
-  <div class="modal-body">
-    <div class="field"><label>날짜</label><input type="date" id="le-date" value="${l.date}" ${editable?'':'disabled'}></div>
-    <div class="field"><label>작업</label><select id="le-key" ${editable?'':'disabled'}>${keys.map(k=>`<option value="${esc(k)}" ${k===l.key?'selected':''}>${esc(keyLabel(k))}</option>`).join('')}</select></div>
-    <div class="field"><label>업체</label><select id="le-client" ${editable?'':'disabled'}>${plans.map(p=>`<option value="${p.clientId}" ${p.clientId===l.clientId?'selected':''}>${esc(p.name)}</option>`).join('')}</select></div>
-    <div class="lg-meta">기록 ${esc(l.by||'')} · ${fmtAt(l.at)}${l.editedBy?`<br>수정 ${esc(l.editedBy)} · ${fmtAt(l.editedAt)}`:''}</div>
+  const m=l.month, team=viewTeam(), editable=canEditLog(l), dis=editable?'':'disabled';
+  const back=(workUI.day||workUI.cell)?`<button class="back" data-action="wkback">‹</button>`:'';
+  const foot=`<div class="lg-meta">기록 ${esc(l.by||'')} · ${fmtAt(l.at)}${l.editedBy?`<br>수정 ${esc(l.editedBy)} · ${fmtAt(l.editedAt)}`:''}</div>
     ${editable?`<div class="btn-row">
       <button class="btn btn-danger" data-action="wkdel" data-id="${l.id}" style="flex:0 0 34%">삭제</button>
       <button class="btn btn-primary" data-action="wksave" data-id="${l.id}">저장</button>
-    </div>`:`<div class="lg-empty">다른 팀 기록이라 고칠 수 없습니다</div>`}
+    </div>`:`<div class="lg-empty">다른 팀 기록이라 고칠 수 없습니다</div>`}`;
+  if(l.key==='etc') return `<div class="wk-sheet">
+  <div class="modal-hd">${back}<h2 style="flex:1;margin-left:6px">기타 기록 고치기</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div class="field"><label>날짜</label><input type="date" id="le-date" value="${l.date}" ${dis}></div>
+    <div class="field"><label>한 일</label><input id="le-text" maxlength="60" value="${esc(l.text||'')}" ${dis}></div>
+    ${foot}
+  </div></div>`;
+  const keys=sortKeys([...teamKeysFor(m,team).filter(k=>k!=='tv'), l.key]);
+  const plans=activePlans(m).filter(p=>targetsOf(p,m)[l.key]);
+  if(!plans.some(p=>p.clientId===l.clientId)) plans.push({clientId:l.clientId, name:l.clientName});
+  return `<div class="wk-sheet">
+  <div class="modal-hd">${back}<h2 style="flex:1;margin-left:6px">기록 고치기</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-body">
+    <div class="field"><label>날짜</label><input type="date" id="le-date" value="${l.date}" ${dis}></div>
+    <div class="field"><label>작업</label><select id="le-key" ${dis}>${keys.map(k=>`<option value="${esc(k)}" ${k===l.key?'selected':''}>${esc(keyLabel(k))}</option>`).join('')}</select></div>
+    <div class="field"><label>업체</label><select id="le-client" ${dis}>${plans.map(p=>`<option value="${p.clientId}" ${p.clientId===l.clientId?'selected':''}>${esc(p.name)}</option>`).join('')}</select></div>
+    <label class="tv-check sm ${l.travel?'on':''} ${VIDEO_KEYS.includes(l.key)?'':'hidden'}" id="le-tvwrap"><input type="checkbox" id="le-travel" ${l.travel?'checked':''} ${dis}><span><b>🧳 여수 여행 연관 영상</b></span></label>
+    ${foot}
   </div></div>`;
 }
 function cellLogsHtml(cid,k){
   const m=state.month, p=state.plans[cid];
   const t=p?targetsOf(p,m)[k]:null;
-  const ls=state.logs.filter(l=>l.month===m && l.clientId===cid && l.key===k).sort((a,b)=>a.date.localeCompare(b.date)||a.at-b.at);
+  const ls=state.logs.filter(l=>l.month===m && l.clientId===cid && (k==='tv'?(VIDEO_KEYS.includes(l.key)&&l.travel):l.key===k)).sort((a,b)=>a.date.localeCompare(b.date)||a.at-b.at);
   return `<div class="wk-sheet">
-  <div class="modal-hd"><h2>${esc(p?p.name:'')} · ${esc(keyLabel(k))}</h2><button class="x" data-action="close">✕</button></div>
+  <div class="modal-hd"><h2>${esc(p?p.name:'')} · <span style="color:${keyColor(k)}">${esc(keyLabel(k))}</span></h2><button class="x" data-action="close">✕</button></div>
   <div class="modal-body">
-    <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px">${mLabel(m)} · ${t?(t.kind==='shoot'?`${ls.length}회`:t.kind==='once'?(ls.length?'완료':'미완료'):`${ls.length}/${t.target}`):`${ls.length}건`}</div>
-    ${ls.length?ls.map(l=>`<button class="lg-row" data-action="wkedit" data-id="${l.id}"><span class="lg-k">${mmdd(l.date)}</span><span class="lg-c">${esc(dayTitle(l.date))}</span><span class="lg-by">${esc(l.by||'')}</span><span class="lg-go">고치기 ›</span></button>`).join('')
+    <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:12px">${mLabel(m)} · ${t?(t.kind==='free'?`${ls.length}회`:t.kind==='once'?(ls.length?'완료':'미완료'):`${ls.length}/${t.target}`):`${ls.length}건`}${k==='tv'?' · 숏폼·롱폼 기록 때 🧳 체크한 영상':''}</div>
+    ${ls.length?ls.map(l=>`<button class="lg-row" data-action="wkedit" data-id="${l.id}"><span class="lg-k" style="color:${keyColor(l.key)}">${mmdd(l.date)}</span><span class="lg-c">${esc(dayTitle(l.date))}${k==='tv'?` · ${esc(keyShort(l.key))}`:tvMark(l)}</span><span class="lg-by">${esc(l.by||'')}</span><span class="lg-go">고치기 ›</span></button>`).join('')
       :`<div class="lg-empty">아직 기록이 없습니다</div>`}
     <div class="wcal-hint" style="margin-top:12px">새 기록은 달력에서 날짜를 눌러 넣어 주세요.</div>
   </div></div>`;
@@ -2537,33 +2697,48 @@ async function changeExtra(cid,delta){
 }
 function planSummary(id){
   const p=state.plans[id]; if(!hasPlan(id)) return '';
-  const parts=(p.items||[]).map(it=>tKey(it.type)==='sns'?`${it.label} ${it.count}편`:it.label);
-  return `${pkgName(p.pkg)} · ${parts.join(', ')}`;
+  const parts=(p.items||[]).filter(it=>taskKeyOf(it)!=='travel').map(it=>tKey(it.type)==='sns'?`${it.label} ${it.count}편`:it.label);
+  return `${pkgName(p.pkg)} · ${parts.join(', ')}${travelRequired(p)?' · 여행 연관 영상 1편 이상':''}`;
 }
 
 /* ---------- 월 작업 구성 편집 (거래처 등록·수정 폼) ---------- */
 function planEditor(c){
   const p=(c&&state.plans[c.id])||{items:[],pkg:''};
-  const items=p.items||[];
+  const items=(p.items||[]).filter(it=>taskKeyOf(it)!=='travel');
   const cur=p.pkg||(items.length?'custom':'');
-  return `<div class="field"><label>월 작업 구성 <span style="font-weight:500">(매달 목표가 되는 작업)</span></label>
+  return `<div class="field" id="planField"><label>월 작업 구성 <span style="font-weight:500">(매달 목표가 되는 작업 · 언제든 추가·삭제 가능)</span></label>
     <input type="hidden" id="f-pkg" value="${esc(cur)}">
     <div class="pkgseg">${PACKAGES.map(x=>`<button type="button" data-action="pkgpick" data-v="${x.id}" class="${cur===x.id?'on':''}">${x.name}</button>`).join('')}<button type="button" data-action="pkgpick" data-v="custom" class="${cur==='custom'?'on':''}">직접 설정</button></div>
+    <div class="tv-note ${pkgOf(cur)&&pkgOf(cur).travel?'':'hidden'}" id="tvNote">🧳 이 패키지는 <b>여수 여행 연관 영상 월 1편 이상</b>이 포함됩니다 (숏폼·롱폼 기록 때 체크)</div>
     <div id="tpList">${items.map(planRow).join('')}</div>
     <div class="tp-empty ${items.length?'hidden':''}" id="tpEmpty">패키지를 고르면 계약서 제5조의 작업이 채워집니다. 기존 계약서 업체는 '직접 설정'으로 작업을 하나씩 넣으세요.</div>
     <div class="tp-presets">${TASK_PRESETS.map((x,i)=>`<button type="button" data-action="tpadd" data-i="${i}">+ ${x.label}</button>`).join('')}<button type="button" data-action="tpadd" data-i="-1">+ 직접 입력</button></div>
-    <div class="hint">‘여러 편’은 숫자만큼 기록해야 채워지는 작업(숏폼·롱폼), ‘한 번 완료’는 한 달에 한 번 기록하면 되는 작업이에요. 촬영은 목표 없이 할 때마다 기록합니다.</div>
+    <div class="hint">‘여러 편’은 편수만큼 기록해야 채워지는 작업(숏폼·롱폼), ‘한 번 완료’는 한 달에 한 번 기록하면 되는 작업이에요. 같은 작업 버튼을 다시 누르면 편수가 1 늘어납니다. 촬영·클립은 목표 없이 할 때마다 기록합니다.</div>
   </div>
   <div class="field"><label>관리 키워드 <span style="font-weight:500">(선택)</span></label><input id="f-kw" value="${esc(p.keywords||'')}" placeholder="예: 여수 풀빌라, 돌산 펜션"></div>`;
 }
 function planRow(it){
   const t=tKey(it.type)==='sns'?'sns':'simple';
-  return `<div class="tp-row" data-iid="${esc(it.id||uid())}" data-t="${t}" data-orig="${tKey(it.type)}">
+  const k=taskKeyOf(it);
+  return `<div class="tp-row" data-iid="${esc(it.id||uid())}" data-t="${t}" data-orig="${tKey(it.type)}" data-key="${esc(k)}">
     <input class="tp-label" value="${esc(it.label||'')}" placeholder="작업 이름">
     <select class="tp-type"><option value="sns" ${t==='sns'?'selected':''}>여러 편</option><option value="simple" ${t==='simple'?'selected':''}>한 번 완료</option></select>
-    <div class="stepper sm"><button type="button" data-action="tpstep" data-d="-1">−</button><input class="tp-count" inputmode="numeric" value="${+it.count||1}"><button type="button" data-action="tpstep" data-d="1">+</button></div>
-    <button type="button" class="tp-del" data-action="tpdel">✕</button>
+    <div class="stepper"><button type="button" data-action="tpstep" data-d="-1">−</button><input class="tp-count" inputmode="numeric" value="${+it.count||1}"><button type="button" data-action="tpstep" data-d="1">+</button><span>편 / 월</span></div>
+    <button type="button" class="tp-del" data-action="tpdel" title="이 작업 빼기">✕</button>
   </div>`;
+}
+// 같은 작업이 이미 있으면 새 줄을 만들지 않음 — 여러 편이면 편수 +1, 한 번 완료면 안내만
+function addPlanRow(pr){
+  const k=taskKeyOf(pr);
+  const row=[...document.querySelectorAll('#tpList .tp-row')].find(r=>taskKeyOf({id:r.dataset.iid,label:r.querySelector('.tp-label').value})===k);
+  if(row){
+    if(row.querySelector('.tp-type').value==='sns'){ const inp=row.querySelector('.tp-count'); inp.value=Math.min(50,(parseInt(inp.value)||0)+1); toast(`${pr.label} ${inp.value}편으로 늘렸습니다`); }
+    else toast(`${pr.label}은(는) 이미 들어 있습니다`);
+    row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash');
+    return;
+  }
+  $('#tpList').insertAdjacentHTML('beforeend',planRow({...pr, id:I[k]?k:uid(), count:1}));
+  $('#tpEmpty')?.classList.add('hidden');
 }
 function pickPackage(id){
   const hid=$('#f-pkg'); if(!hid) return;
@@ -2574,22 +2749,31 @@ function pickPackage(id){
   }
   hid.value=id;
   document.querySelectorAll('.pkgseg button').forEach(b=>b.classList.toggle('on',b.dataset.v===id));
+  $('#tvNote')?.classList.toggle('hidden',!(pkgOf(id)&&pkgOf(id).travel));
   $('#tpEmpty')?.classList.toggle('hidden',!!list.querySelector('.tp-row'));
 }
 function collectPlanItems(){
-  return [...document.querySelectorAll('#tpList .tp-row')].map(r=>{
+  const out=new Map();
+  [...document.querySelectorAll('#tpList .tp-row')].forEach(r=>{
     const sel=r.querySelector('.tp-type').value;
     // '한 번 완료'로 둔 리뷰·블로그는 원래 종류(count)를 유지 — 집계상 둘 다 한 번 완료
     const type=sel==='sns'?'sns':(r.dataset.orig==='count'?'count':'simple');
-    return { id:r.dataset.iid, label:r.querySelector('.tp-label').value.trim(), type,
-      count:type==='sns'?Math.max(0,Math.min(50,parseInt(r.querySelector('.tp-count').value)||0)):1 };
-  }).filter(x=>x.label && x.count>0);
+    const label=r.querySelector('.tp-label').value.trim();
+    const count=type==='sns'?Math.max(0,Math.min(50,parseInt(r.querySelector('.tp-count').value)||0)):1;
+    if(!label || count<=0) return;
+    const k=taskKeyOf({id:r.dataset.iid,label});
+    if(k==='travel') return;
+    const it={ id:I[k]?k:r.dataset.iid, label:I[k]?I[k].label:label, type, count };
+    if(out.has(k)){ const o=out.get(k); if(it.type==='sns'){ const wasSns=o.type==='sns'; o.type='sns'; o.count=Math.max(wasSns?o.count:0,it.count); } }  // 같은 작업 두 줄이면 큰 쪽
+    else out.set(k,it);
+  });
+  return [...out.values()];
 }
 
 /* ---------- 계정 (관리자: 직원·팀 관리) ---------- */
 function staffSheet(){
   const list=[...state.users].sort((a,b)=>((a.active===false)-(b.active===false))||(a.name||'').localeCompare(b.name||'','ko'));
-  const allKeys=sortKeys([...Object.keys(DEFAULT_TEAM), ...Object.values(state.plans).flatMap(p=>(p.items||[]).map(taskKeyOf))]);
+  const allKeys=sortKeys([...Object.keys(DEFAULT_TEAM).filter(k=>k!=='travel'&&k!=='tv'), ...Object.values(state.plans).flatMap(p=>(p.items||[]).map(taskKeyOf)).filter(k=>k!=='travel')]);
   return `<div class="modal-hd"><h2>직원·팀 관리</h2><button class="x" data-action="close">✕</button></div>
   <div class="modal-body">
     ${list.length?list.map(u=>`<div class="st-row ${u.active===false?'off':''}">
@@ -2608,7 +2792,7 @@ function staffSheet(){
     <button class="btn btn-primary" data-action="addstaff" id="addStaffBtn">직원 계정 만들기</button>
     <div style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6">직원은 자기 팀 작업만 보고 기록합니다. 팀을 바꾸면 바로 반영돼요.<br>비밀번호를 잊어버리면 그 계정은 사용 중지하고 새 아이디로 다시 만들어 주세요.</div>
     <div class="section-label">작업별 담당 팀</div>
-    ${allKeys.map(k=>`<div class="kt-row"><span>${esc(keyLabel(k))}</span><div class="teamseg sm">${Object.entries(TEAMS).map(([v,t])=>`<button data-action="keyteam" data-k="${esc(k)}" data-v="${v}" class="${teamOfKey(k)===v?'on':''}">${t}</button>`).join('')}</div></div>`).join('')}
+    ${allKeys.map(k=>`<div class="kt-row"><span style="color:${keyColor(k)}">${esc(keyLabel(k))}</span><div class="teamseg sm">${Object.entries(TEAMS).map(([v,t])=>`<button data-action="keyteam" data-k="${esc(k)}" data-v="${v}" class="${teamOfKey(k)===v?'on':''}">${t}</button>`).join('')}</div></div>`).join('')}
   </div>`;
 }
 async function setStaffTeam(id,team){
@@ -2699,9 +2883,12 @@ function toastAction(msg,label,fn,ms){
 /* ---------- 작업 화면 입력 ---------- */
 document.addEventListener('change',e=>{
   const el=e.target;
-  if(el.classList.contains('tp-type')){ el.closest('.tp-row').dataset.t=el.value; }
+  if(el.id==='tvChk'){ workUI.travel=el.checked; el.closest('.tv-check')?.classList.toggle('on',el.checked); el.blur(); }
+  else if(el.id==='le-travel'){ el.closest('.tv-check')?.classList.toggle('on',el.checked); }
+  else if(el.id==='le-key'){ $('#le-tvwrap')?.classList.toggle('hidden',!VIDEO_KEYS.includes(el.value)); }
+  else if(el.classList.contains('tp-type')){ el.closest('.tp-row').dataset.t=el.value; }
 });
-document.addEventListener('keydown',e=>{ if(e.key==='Enter' && e.target.dataset && e.target.dataset.count) e.target.blur(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Enter' && e.target.id==='etc-text'){ e.preventDefault(); document.querySelector('[data-action=etcsave]')?.click(); } });
 document.addEventListener('input',e=>{ if(e.target.matches('[data-count]')) e.target.value=e.target.value.replace(/[^0-9]/g,'').slice(0,5);
   if(e.target.matches('.tp-count')) e.target.value=e.target.value.replace(/[^0-9]/g,'').slice(0,2); });
 
@@ -2768,7 +2955,7 @@ document.addEventListener('submit',async e=>{
   }
 });
 function resetSession(){
-  Store.stop(); closeModal();
+  Store.stop(); closeModal(); cleanupDone=false; state.logsLoaded=false;
   Object.assign(state,{clients:[],payments:[],extras:[],plans:{},users:[],logs:[],settings:{},ready:false,plansLoaded:false,role:null,me:null,workTeam:'all',sumMode:'month',weekStart:null,month:nowMonth(),tab:'dashboard'});
   document.body.classList.remove('staff','wide');
   $('#app').innerHTML='';
@@ -2783,7 +2970,7 @@ function onListenError(err){
     else toast('권한 오류 — Firestore 보안 규칙을 확인하세요',4000);
   } else toast('동기화 오류: '+((err&&err.code)||''),3000);
 }
-function onDataChange(){ state.ready=true; render(); }
+function onDataChange(){ state.ready=true; render(); cleanupPlans(); }
 function startSession(role,me){
   hideLogin();
   state.role=role; state.me=me;
