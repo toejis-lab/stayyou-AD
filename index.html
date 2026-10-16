@@ -646,7 +646,9 @@ body.wide main{max-width:1180px}
 
 /* v3.2.3 작업 태그 */
 .ktag{display:inline-block;padding:1px 6px;border-radius:4px;color:#fff !important;font-weight:800;margin-right:5px;line-height:1.4;letter-spacing:-.01em}
-.wc-e{color:#111 !important;border:none;border-radius:5px;padding:2px 6px !important;font-weight:400}
+/* 달력 칸: 초반 스타일 — 아주 연한 작업 색 바탕, 같은 계열 진한 글씨, 작업 이름만 굵게 */
+.wc-e{border:none;border-radius:4px;padding:2px 6px !important;font-weight:400}
+.wc-e b{font-weight:800}
 @media(min-width:900px){ .wc{gap:4px} .wc-e{font-size:13px !important} }
 .wc-e .ktag{font-size:11px;padding:0 5px;margin-right:4px}
 .lg-k .ktag{font-size:12.5px;padding:3px 8px;margin:0}
@@ -724,8 +726,9 @@ const USE_FB = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('YOU
 const LS_KEY = 'stayu_ad_billing_v1';
 
 /* ---------- 앱 버전 ---------- */
-const APP_VERSION='3.2.8';
+const APP_VERSION='3.2.9';
 const CHANGELOG=[
+  {v:'3.2.9', d:'2026-10-16', items:['달력 칸을 초반 스타일로 변경 — 아주 연한 작업 색 바탕, 같은 계열 진한 글씨, 작업 이름만 굵게 (작업별 색은 유지)']},
   {v:'3.2.8', d:'2026-10-16', items:['달력 칸 글씨를 보통 굵기로 변경 (예약 앱 달력과 같은 굵기)']},
   {v:'3.2.7', d:'2026-10-16', items:["'새소식' 추가 (영상팀, 노랑, 목표 없이 올릴 때마다 기록) — 달력 순서는 숏폼 → 기타 → 새소식 → 클립 …"]},
   {v:'3.2.6', d:'2026-10-16', items:['달력 칸 표시를 "숏폼 · 업체명" 줄 전체 연한 작업 색 띠 + 검정 글씨로 변경']},
@@ -2430,6 +2433,8 @@ function fmtAt(ts){ if(!ts) return ''; const d=new Date(ts); return `${d.getMont
 
 /* ---------- 표시 도우미 ---------- */
 const tvMark=l=>l.travel?' 🧳':'';
+// 작업 색을 어둡게 — 연한 바탕 위 글씨용
+const shade=h=>{ const n=parseInt(h.slice(1),16); const f=c=>Math.round(c*0.62).toString(16).padStart(2,'0'); return '#'+f(n>>16&255)+f(n>>8&255)+f(n&255); };
 const kTag=(k,txt)=>`<b class="ktag" style="background:${keyColor(k)}">${esc(txt)}</b>`;
 function logText(l){ return l.key==='etc' ? (l.text||'') : (l.clientName||''); }
 
@@ -2584,7 +2589,7 @@ function calendarHtml(m,team){
     const MAX=4;
     cells+=`<button class="wc ${iso===today?'today':''} ${wd===0?'sun':wd===6?'sat':''}" data-action="wkday" data-d="${iso}">
       <span class="wc-n">${d}</span>
-      ${ls.slice(0,MAX).map(l=>`<span class="wc-e" style="background:${keyColor(l.key)}55 !important">${esc(keyShort(l.key))} · ${esc(logText(l))}${tvMark(l)}</span>`).join('')}
+      ${ls.slice(0,MAX).map(l=>`<span class="wc-e" style="background:${keyColor(l.key)}1f !important;color:${shade(keyColor(l.key))} !important"><b>${esc(keyShort(l.key))}</b> · ${esc(logText(l))}${tvMark(l)}</span>`).join('')}
       ${ls.length>MAX?`<span class="wc-more">+${ls.length-MAX}건 더</span>`:''}
       ${ls.length?`<span class="wc-dot">${ls.length}</span>`:''}
     </button>`;
