@@ -715,8 +715,12 @@ const USE_FB = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('YOU
 const LS_KEY = 'stayu_ad_billing_v1';
 
 /* ---------- 앱 버전 ---------- */
-const APP_VERSION='3.2.1';
+const APP_VERSION='3.2.2';
 const CHANGELOG=[
+  {v:'3.2.2', d:'2026-10-16', items:[
+    '날짜 창에서 숏폼·롱폼을 누르면 계약 중인 업체가 전부 나오도록 변경 (월 작업 구성에 없는 업체는 횟수만 기록)',
+    '달력 표시 순서를 숏폼 → 기타 → 클립 → 롱폼 → 촬영 → SEO → 브랜드광고 → 보고서로 변경'
+  ]},
   {v:'3.2.1', d:'2026-10-16', items:[
     '달력·날짜 창·주간 기록 표시 순서를 숏폼 → 클립 → 롱폼 → 촬영 → SEO → 브랜드광고 → 보고서 → 기타로 고정 (같은 작업은 업체 가나다순)'
   ]},
@@ -2285,8 +2289,8 @@ const LABEL={shoot:'촬영', clip:'클립', tv:'여행 연관 영상', travel:'�
 const SHORT_NAME={shoot:'촬영', clip:'클립', short:'숏폼', long:'롱폼', tv:'여행연관', travel:'여행콘텐츠', seo:'SEO', review:'리뷰', blog:'블로그', report:'보고서', brand:'브랜드광고', etc:'기타'};
 const KEY_COLOR={shoot:'#2e7d32', clip:'#00838f', short:'#1565c0', long:'#6a1b9a', tv:'#e65100', travel:'#e65100', seo:'#283593', review:'#c2185b', blog:'#8d5524', report:'#546e7a', brand:'#c62828', etc:'#37474f'};
 const EXTRA_COLORS=['#ad1457','#00695c','#4527a0','#9e6b00','#0277bd','#558b2f','#6d4c41','#5e35b1'];
-// 달력·목록 표시 순서 — 숏폼 1순위, 클립 2순위 (기록 시간과 무관), 기타는 맨 끝
-const KEY_ORDER=['short','clip','long','shoot','tv','seo','brand','report','review','blog','travel'];
+// 달력·목록 표시 순서 — 숏폼 1순위, 기타 2순위 (기록 시간과 무관)
+const KEY_ORDER=['short','etc','clip','long','shoot','tv','seo','brand','report','review','blog','travel'];
 const FREE_KEYS=['shoot','clip'];   // 목표 없이 횟수만 기록
 const VIDEO_KEYS=['short','long'];  // 여행 연관 체크 가능
 const URGENT_DAYS=7;   // 이번 달 마감 며칠 전부터 못 채운 작업을 빨간색으로 보일지
@@ -2307,7 +2311,7 @@ function customLabel(k){ for(const p of Object.values(state.plans)) for(const it
 const keyLabel=k=>LABEL[k]||(I[k]?I[k].label:customLabel(k));
 const keyShort=k=>SHORT_NAME[k]||customLabel(k);
 function keyColor(k){ if(KEY_COLOR[k]) return KEY_COLOR[k]; const s=String(k); let h=0; for(const ch of s) h=(h*31+ch.charCodeAt(0))>>>0; return EXTRA_COLORS[h%EXTRA_COLORS.length]; }
-const keyRank=k=>{ if(k==='etc') return 999; const i=KEY_ORDER.indexOf(k); return i<0?100:i; };
+const keyRank=k=>{ const i=KEY_ORDER.indexOf(k); return i<0?100:i; };
 const sortKeys=ks=>[...new Set(ks)].sort((a,b)=>keyRank(a)-keyRank(b)||a.localeCompare(b,'ko'));
 const hasPlan=id=>{ const p=state.plans[id]; return !!(p && (p.items||[]).length); };
 // 편수 정함 = 계약상 숏폼·롱폼 편수 의무가 있는 업체 → '아직 남은 작업'·진행률 대상
@@ -2354,6 +2358,8 @@ function targetsOf(p,m){
     [['short',4],['long',1]].forEach(([k,n])=>{ if(!out[k]) out[k]={label:I[k].label,target:0,kind:'multi'}; out[k].target+=n*ex; out[k].kind='multi'; });
   }
   if(travelRequired(p)) out.tv={label:'여행 연관 영상', target:1, kind:'once'};
+  // 숏폼·롱폼이 월 작업 구성에 없는 업체도 기록할 수 있게 — 목표 없이 횟수만 (기록만과 같음)
+  VIDEO_KEYS.forEach(k=>{ if(!out[k]) out[k]={label:I[k].label, target:0, kind:'free'}; });
   out.shoot={label:'촬영', target:0, kind:'free'};   // 사진 촬영 포함 — 계약 중인 업체 전부
   out.clip={label:'클립', target:0, kind:'free'};
   return out;
