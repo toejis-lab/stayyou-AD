@@ -646,7 +646,7 @@ body.wide main{max-width:1180px}
 
 /* v3.2.3 작업 태그 */
 .ktag{display:inline-block;padding:1px 6px;border-radius:4px;color:#fff !important;font-weight:800;margin-right:5px;line-height:1.4;letter-spacing:-.01em}
-.wc-e{color:#111 !important;border:none;border-radius:5px;padding:2px 6px !important;font-weight:700}
+.wc-e{color:#111 !important;border:none;border-radius:5px;padding:2px 6px !important;font-weight:400}
 @media(min-width:900px){ .wc{gap:4px} .wc-e{font-size:13px !important} }
 .wc-e .ktag{font-size:11px;padding:0 5px;margin-right:4px}
 .lg-k .ktag{font-size:12.5px;padding:3px 8px;margin:0}
@@ -724,8 +724,9 @@ const USE_FB = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('YOU
 const LS_KEY = 'stayu_ad_billing_v1';
 
 /* ---------- 앱 버전 ---------- */
-const APP_VERSION='3.2.7';
+const APP_VERSION='3.2.8';
 const CHANGELOG=[
+  {v:'3.2.8', d:'2026-10-16', items:['달력 칸 글씨를 보통 굵기로 변경 (예약 앱 달력과 같은 굵기)']},
   {v:'3.2.7', d:'2026-10-16', items:["'새소식' 추가 (영상팀, 노랑, 목표 없이 올릴 때마다 기록) — 달력 순서는 숏폼 → 기타 → 새소식 → 클립 …"]},
   {v:'3.2.6', d:'2026-10-16', items:['달력 칸 표시를 "숏폼 · 업체명" 줄 전체 연한 작업 색 띠 + 검정 글씨로 변경']},
   {v:'3.2.5', d:'2026-10-16', items:['달력 칸 표시를 "숏폼 · 업체명" 한 줄 전체 작업 색 글씨로 변경']},
