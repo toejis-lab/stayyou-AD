@@ -643,6 +643,14 @@ body.wide main{max-width:1180px}
 .modeseg button.on{background:var(--primary);color:#fff}
 .tp-row[data-t=simple] .modeseg{display:none}
 .tp-row[data-mode=log] .stepper{display:none}
+
+/* v3.2.3 작업 태그 */
+.ktag{display:inline-block;padding:1px 6px;border-radius:4px;color:#fff !important;font-weight:800;margin-right:5px;line-height:1.4;letter-spacing:-.01em}
+.wc-e{background:#fff !important;color:var(--ink) !important;border:1px solid var(--line)}
+.wc-e .ktag{font-size:11px;padding:0 5px;margin-right:4px}
+.lg-k .ktag{font-size:12.5px;padding:3px 8px;margin:0}
+.wl-i .ktag{font-size:12px}
+@media(min-width:900px){ .wc-e .ktag{font-size:11.5px} }
 </style>
 </head>
 <body>
@@ -715,8 +723,11 @@ const USE_FB = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('YOU
 const LS_KEY = 'stayu_ad_billing_v1';
 
 /* ---------- 앱 버전 ---------- */
-const APP_VERSION='3.2.2';
+const APP_VERSION='3.2.3';
 const CHANGELOG=[
+  {v:'3.2.3', d:'2026-10-16', items:[
+    '작업 이름을 진한 색 바탕에 흰 글씨 표시로 변경 — 숏폼 빨강, 기타 보라, 클립 파랑, 롱폼 초록, 촬영 주황, SEO 청록, 브랜드광고 갈색, 보고서 자주'
+  ]},
   {v:'3.2.2', d:'2026-10-16', items:[
     '날짜 창에서 숏폼·롱폼을 누르면 계약 중인 업체가 전부 나오도록 변경 (월 작업 구성에 없는 업체는 횟수만 기록)',
     '달력 표시 순서를 숏폼 → 기타 → 클립 → 롱폼 → 촬영 → SEO → 브랜드광고 → 보고서로 변경'
@@ -2287,7 +2298,8 @@ const PACKAGES=[
 const DEFAULT_TEAM={shoot:'video', clip:'video', short:'video', long:'video', tv:'video', travel:'video', seo:'sales', review:'sales', blog:'sales', report:'sales', brand:'sales'};
 const LABEL={shoot:'촬영', clip:'클립', tv:'여행 연관 영상', travel:'여수 여행 연관 콘텐츠', etc:'기타'};
 const SHORT_NAME={shoot:'촬영', clip:'클립', short:'숏폼', long:'롱폼', tv:'여행연관', travel:'여행콘텐츠', seo:'SEO', review:'리뷰', blog:'블로그', report:'보고서', brand:'브랜드광고', etc:'기타'};
-const KEY_COLOR={shoot:'#2e7d32', clip:'#00838f', short:'#1565c0', long:'#6a1b9a', tv:'#e65100', travel:'#e65100', seo:'#283593', review:'#c2185b', blog:'#8d5524', report:'#546e7a', brand:'#c62828', etc:'#37474f'};
+// 작업별 색 — 진한 색 바탕에 흰 글씨 표(태그)로 표시해 달력에서 바로 구분되게 함
+const KEY_COLOR={short:'#E53935', etc:'#8E24AA', clip:'#1E88E5', long:'#2E7D32', shoot:'#F57C00', seo:'#00897B', brand:'#5D4037', report:'#C2185B', tv:'#BF360C', travel:'#BF360C', review:'#757575', blog:'#757575'};
 const EXTRA_COLORS=['#ad1457','#00695c','#4527a0','#9e6b00','#0277bd','#558b2f','#6d4c41','#5e35b1'];
 // 달력·목록 표시 순서 — 숏폼 1순위, 기타 2순위 (기록 시간과 무관)
 const KEY_ORDER=['short','etc','clip','long','shoot','tv','seo','brand','report','review','blog','travel'];
@@ -2411,7 +2423,7 @@ function fmtAt(ts){ if(!ts) return ''; const d=new Date(ts); return `${d.getMont
 
 /* ---------- 표시 도우미 ---------- */
 const tvMark=l=>l.travel?' 🧳':'';
-const kTag=(k,txt)=>`<b style="color:${keyColor(k)}">${esc(txt)}</b>`;
+const kTag=(k,txt)=>`<b class="ktag" style="background:${keyColor(k)}">${esc(txt)}</b>`;
 function logText(l){ return l.key==='etc' ? (l.text||'') : (l.clientName||''); }
 
 /* ---------- 저장 ---------- */
@@ -2544,7 +2556,7 @@ function viewWorkBoard(){
     ${calendarHtml(m,team)}
     ${summaryHtml(m,team)}
     ${noPlan.length?`<div class="section-label">월 작업 구성 미설정 <span>${noPlan.length}곳</span></div>
-      <div style="font-size:12.5px;color:var(--muted);margin:0 4px 10px;line-height:1.55">매달 할 작업이 정해져 있지 않아 달력에 업체가 나오지 않는 거래처예요. 눌러서 월 작업 구성을 정해 주세요.</div>
+      <div style="font-size:12.5px;color:var(--muted);margin:0 4px 10px;line-height:1.55">매달 할 작업이 정해져 있지 않은 거래처예요. 숏폼·촬영·클립 등은 기록할 수 있지만 '아직 남은 작업'에는 들어가지 않습니다. 눌러서 월 작업 구성을 정할 수 있어요.</div>
       <div class="wk-noplan">${noPlan.map(c=>`<button class="row" data-action="editplan" data-id="${c.id}">
         <div class="avatar" style="background:${colorFor(c.name)}">${initial(c.name)}</div>
         <div class="body"><div class="name">${esc(c.name)}</div><div class="meta">월 작업 구성 정하기 ›</div></div></button>`).join('')}</div>`:''}
@@ -2565,7 +2577,7 @@ function calendarHtml(m,team){
     const MAX=4;
     cells+=`<button class="wc ${iso===today?'today':''} ${wd===0?'sun':wd===6?'sat':''}" data-action="wkday" data-d="${iso}">
       <span class="wc-n">${d}</span>
-      ${ls.slice(0,MAX).map(l=>`<span class="wc-e" style="color:${keyColor(l.key)};background:${keyColor(l.key)}14"><b>${esc(keyShort(l.key))}${tvMark(l)}</b> · ${esc(logText(l))}</span>`).join('')}
+      ${ls.slice(0,MAX).map(l=>`<span class="wc-e">${kTag(l.key,keyShort(l.key))}${esc(logText(l))}${tvMark(l)}</span>`).join('')}
       ${ls.length>MAX?`<span class="wc-more">+${ls.length-MAX}건 더</span>`:''}
       ${ls.length?`<span class="wc-dot">${ls.length}</span>`:''}
     </button>`;
@@ -2624,7 +2636,7 @@ function weekHtml(m,team,keys,plans,tabs){
     return `<tr class="${has?'':'dim'}"><th class="sticky-c"><span class="cn">${esc(p.name)}</span></th>${wkKeys.map(k=>{ const n=cnt(p.clientId,k); const tv=cl.filter(l=>l.clientId===p.clientId && l.key===k && l.travel).length; return `<td>${n?`<span class="mc wk">${n}${tv?`<small> 🧳${tv}</small>`:''}</span>`:'<span class="na">·</span>'}</td>`; }).join('')}</tr>`;
   }).join('');
   const byDay={}; wl.forEach(l=>{ (byDay[l.date]=byDay[l.date]||[]).push(l); });
-  const list=Object.keys(byDay).sort().map(d=>`<div class="wl-day"><div class="wl-d">${dayTitle(d)}</div>${byDay[d].sort((a,b)=>keyRank(a.key)-keyRank(b.key)||logText(a).localeCompare(logText(b),'ko')||a.at-b.at).map(l=>`<button class="wl-i" data-action="wkedit" data-id="${l.id}">${kTag(l.key,keyShort(l.key)+tvMark(l))} <span class="wl-t">${esc(logText(l))}</span><small>${esc(l.by||'')}</small></button>`).join('')}</div>`).join('');
+  const list=Object.keys(byDay).sort().map(d=>`<div class="wl-day"><div class="wl-d">${dayTitle(d)}</div>${byDay[d].sort((a,b)=>keyRank(a.key)-keyRank(b.key)||logText(a).localeCompare(logText(b),'ko')||a.at-b.at).map(l=>`<button class="wl-i" data-action="wkedit" data-id="${l.id}">${kTag(l.key,keyShort(l.key))}<span class="wl-t">${esc(logText(l))}${tvMark(l)}</span><small>${esc(l.by||'')}</small></button>`).join('')}</div>`).join('');
   return `<div class="section-label" style="margin-top:20px">집계 <span>주간</span></div>${tabs}
     <div class="month-nav wk-wnav"><button data-action="wkprev">‹</button><div class="mlabel">${mmdd(ws)} ~ ${mmdd(we)}<small>이번 주 기록 ${wl.length}건</small></div><button data-action="wknext">›</button></div>
     ${wl.length?`${cl.length?`<div class="mtx-wrap"><table class="mtx"><thead><tr><th class="sticky-c">업체</th>${wkKeys.map(k=>`<th><span style="color:${keyColor(k)}">${esc(keyShort(k))}</span></th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`:''}
@@ -2660,8 +2672,8 @@ function dayHtml(iso){
   <div class="modal-body">
     <div class="section-label" style="margin:2px 0 10px">이날 기록 <span>${ls.length}건</span></div>
     ${ls.length?ls.map(l=>`<button class="lg-row" data-action="wkedit" data-id="${l.id}">
-        <span class="lg-k" style="color:${keyColor(l.key)}">${esc(keyShort(l.key))}${tvMark(l)}</span>
-        <span class="lg-c">${esc(logText(l))}</span>
+        <span class="lg-k">${kTag(l.key,keyShort(l.key))}</span>
+        <span class="lg-c">${esc(logText(l))}${tvMark(l)}</span>
         <span class="lg-by">${esc(l.by||'')}</span><span class="lg-go">고치기 ›</span></button>`).join('')
       :`<div class="lg-empty">아직 기록이 없습니다</div>`}
     <div class="section-label" style="margin:18px 0 10px">기록 추가 <span>작업을 고르세요</span></div>
